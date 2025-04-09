@@ -807,11 +807,7 @@
 
         // showModal, hideModal (defined earlier)
 
-        function showMessage(message, isError = false) {
-            messageText.textContent = message;
-            messageText.style.color = isError ? 'var(--error-color)' : 'var(--primary-color)';
-            showModal('message');
-        }
+        
 
         function updateUIBasedOnAuth() {
             console.log("Updating UI for auth state:", currentUser ? currentUser.email : 'Logged out');
