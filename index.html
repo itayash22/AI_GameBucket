@@ -738,10 +738,10 @@
     </div>
 
     <script type="module">
-        // --- Supabase Configuration ---
-        const SUPABASE_URL = 'https://vniwugmbpssesxvnoefc.supabaseClient.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZuaXd1Z21icHNzZXN4dm5vZWZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwOTU0MzcsImV4cCI6MjA1OTY3MTQzN30.6uTmc7ma4Jd_H5yqN7GZEatFzzUEJS5zgbRRrblT_eU';
-        const supabaseClient = supabaseClient.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+       // --- Supabase Configuration ---
+        const SUPABASE_URL = 'https://vniwugmbpssesxvnoefc.supabase.co'; // Correct URL ending
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZuaXd1Z21icHNzZXN4dm5vZWZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwOTU0MzcsImV4cCI6MjA1OTY3MTQzN30.6uTmc7ma4Jd_H5yqN7GZEatFzzUEJS5zgbRRrblT_eU'; // Your key stays the same
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); // Use 'supabase.createClient' here
         const GAME_FILES_BUCKET = 'game-files'; // ** MAKE SURE BUCKET NAME MATCHES **
 
         // --- SUPABASE DB/STORAGE/RLS SETUP NOTES ---
