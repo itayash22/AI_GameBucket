@@ -828,18 +828,10 @@
     const messageText = document.getElementById('message-text');
 
    // --- Helper Functions --- 
-	function showView(viewId) { 
-    // code inside... 
-		}
-		function showModal(modalId) { 
-    // code inside... 
-		}
-		function hideModal(modalId) { 
-    		// code inside... 
-		}
-		function showMessage(message, isError = false) { 
-    		// code inside... 
-		}
+	function showView(viewId) { /* ... */ }
+	function showModal(modalId) { /* ... */ }
+	function hideModal(modalId) { /* ... */ }
+	function showMessage(message, isError = false) { /* ... */ }
 // --- Authentication --- // <-- This heading should come AFTER the functions above
 	
 
@@ -1387,23 +1379,34 @@
 
 
         // --- Event Listeners ---
-        function setupEventListeners() {
-            // Navigation Links & Modals
+        // Replace your existing navLinksContainer listener with this:
             navLinksContainer.addEventListener('click', (e) => {
-                 const target = e.target.closest('a[data-view], button[data-view], a[data-modal], button[data-modal]');
-                 if (!target) return;
+                console.log('Nav link container clicked!'); // <-- Debug message
+                const target = e.target.closest('a[data-view], button[data-view], a[data-modal], button[data-modal]');
+                console.log('Clicked target:', target); // <-- Debug message
 
-                 e.preventDefault(); // Prevent default link behavior/button submit
+                if (!target) return;
 
-                 if(target.id === 'logout-button') {
-                      handleLogout();
-                 } else if (target.dataset.view) {
-                     // Handled by hashchange event
-                     // window.location.hash = target.getAttribute('href');
-                 } else if (target.dataset.modal) {
-                     showModal(target.dataset.modal);
-                 }
+                console.log('Target dataset:', target.dataset); // <-- Debug message
+
+                e.preventDefault(); // Keep this
+
+                if (target.id === 'logout-button') {
+                    console.log('Logout button detected'); // <-- Debug message
+                    handleLogout();
+                } else if (target.dataset.modal) {
+                    console.log(`Modal target detected: ${target.dataset.modal}`); // <-- Debug message
+                    showModal(target.dataset.modal); // This should call the showModal function
+                } else if (target.dataset.view) {
+                    console.log(`View target detected: ${target.dataset.view}`); // <-- Debug message
+                    // We let the hashchange listener handle view changes, 
+                    // but make sure the link updates the hash
+                    window.location.hash = target.getAttribute('href'); 
+                }
             });
+
+            // Make sure the REST of setupEventListeners function is still there below this block
+            // (like listeners for modal close buttons, auth forms, filters, etc.)
 
              // Modal Close Buttons
              modals.forEach(modal => {
