@@ -739,9 +739,9 @@
 
     <script type="module">
         // --- Supabase Configuration ---
-        const SUPABASE_URL = 'https://vniwugmbpssesxvnoefc.supabase.co';
+        const SUPABASE_URL = 'https://vniwugmbpssesxvnoefc.supabaseClient.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZuaXd1Z21icHNzZXN4dm5vZWZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwOTU0MzcsImV4cCI6MjA1OTY3MTQzN30.6uTmc7ma4Jd_H5yqN7GZEatFzzUEJS5zgbRRrblT_eU';
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const supabaseClient = supabaseClient.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         const GAME_FILES_BUCKET = 'game-files'; // ** MAKE SURE BUCKET NAME MATCHES **
 
         // --- SUPABASE DB/STORAGE/RLS SETUP NOTES ---
@@ -881,12 +881,12 @@
 
         // --- Authentication ---
         async function setupAuthListeners() {
-            const { data: { session } } = await supabase.auth.getSession();
+            const { data: { session } } = await supabaseClient.auth.getSession();
             currentUser = session?.user ?? null;
             updateUIBasedOnAuth();
             handleRouteChange(); // Initial route handling after auth check
 
-            supabase.auth.onAuthStateChange((_event, session) => {
+            supabaseClient.auth.onAuthStateChange((_event, session) => {
                 const previousUser = currentUser?.id;
                 currentUser = session?.user ?? null;
                 console.log("Auth state changed:", currentUser?.email ?? 'Logged out');
@@ -919,7 +919,7 @@
              }
 
             try {
-                const { data, error } = await supabase.auth.signUp({ email, password });
+                const { data, error } = await supabaseClient.auth.signUp({ email, password });
                 if (error) throw error;
                 hideModal('register');
                 // Consider disabling email confirmation in Supabase Auth settings for easier testing
@@ -939,7 +939,7 @@
              errorElement.classList.add('hidden'); // Clear previous errors
 
             try {
-                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
                 if (error) throw error;
                 hideModal('login');
                 // Auth listener will handle UI update and route change
@@ -952,7 +952,7 @@
 
         async function handleLogout() {
             try {
-                const { error } = await supabase.auth.signOut();
+                const { error } = await supabaseClient.auth.signOut();
                 if (error) throw error;
                 // Auth listener handles UI update and route change
                 window.location.hash = '#/'; // Go to home on logout
@@ -970,7 +970,7 @@
             const [sortField, sortOrder] = currentSort.split('.');
 
             try {
-                let query = supabase
+                let query = supabaseClient
                     .from('games')
                     .select('id, title, description, category, preview_image_path, likes_count')
                     .order(sortField, { ascending: sortOrder === 'asc' });
@@ -1039,7 +1039,7 @@
 
             try {
                  // Fetch game details
-                 const { data: game, error: gameError } = await supabase
+                 const { data: game, error: gameError } = await supabaseClient
                      .from('games')
                      .select(`
                          id,
@@ -1062,7 +1062,7 @@
                  // Fetch user's like status if logged in
                  let userHasLiked = false;
                  if (currentUser) {
-                     const { data: likeData, error: likeError } = await supabase
+                     const { data: likeData, error: likeError } = await supabaseClient
                          .from('likes')
                          .select('game_id')
                          .eq('user_id', currentUser.id)
@@ -1128,14 +1128,14 @@
             try {
                 if (userIsLiked) {
                     // Unlike
-                    const { error } = await supabase
+                    const { error } = await supabaseClient
                         .from('likes')
                         .delete()
                         .match({ user_id: currentUser.id, game_id: gameId });
                     if (error) throw error;
 
                     // Decrement count using RPC function (optional but recommended)
-                    const { error: rpcError } = await supabase.rpc('decrement_like_count', { game_uuid: gameId });
+                    const { error: rpcError } = await supabaseClient.rpc('decrement_like_count', { game_uuid: gameId });
                     if(rpcError) console.warn("RPC decrement failed:", rpcError); // Log but continue UI update
 
                     likeButton.classList.remove('liked');
@@ -1144,13 +1144,13 @@
 
                 } else {
                     // Like
-                    const { error } = await supabase
+                    const { error } = await supabaseClient
                         .from('likes')
                         .insert({ user_id: currentUser.id, game_id: gameId });
                      if (error) throw error;
 
                     // Increment count using RPC function (optional but recommended)
-                     const { error: rpcError } = await supabase.rpc('increment_like_count', { game_uuid: gameId });
+                     const { error: rpcError } = await supabaseClient.rpc('increment_like_count', { game_uuid: gameId });
                      if(rpcError) console.warn("RPC increment failed:", rpcError); // Log but continue UI update
 
                      likeButton.classList.add('liked');
@@ -1215,7 +1215,7 @@
             }
 
             try {
-                 const { error } = await supabase
+                 const { error } = await supabaseClient
                      .from('reports')
                      .insert({
                          game_id: gameId,
@@ -1283,7 +1283,7 @@
 
                 // 2. Upload Game File
                 uploadStatus.textContent = 'Uploading game file...';
-                 const { data: gameUploadData, error: gameUploadError } = await supabase.storage
+                 const { data: gameUploadData, error: gameUploadError } = await supabaseClient.storage
                      .from(GAME_FILES_BUCKET)
                      .upload(gameFolderPath, gameFile);
 
@@ -1299,7 +1299,7 @@
                      const previewFileName = `preview-${fileSuffix}.${previewFileExt}`;
                      const previewFolderPath = `previews/${currentUser.id}/${previewFileName}`;
 
-                     const { data: previewUploadData, error: previewUploadError } = await supabase.storage
+                     const { data: previewUploadData, error: previewUploadError } = await supabaseClient.storage
                          .from(GAME_FILES_BUCKET)
                          .upload(previewFolderPath, previewFile);
 
@@ -1315,7 +1315,7 @@
 
                  // 4. Insert Game Metadata into Database
                  uploadStatus.textContent = 'Saving game details...';
-                 const { data: gameInsertData, error: gameInsertError } = await supabase
+                 const { data: gameInsertData, error: gameInsertError } = await supabaseClient
                      .from('games')
                      .insert({
                          title: title,
