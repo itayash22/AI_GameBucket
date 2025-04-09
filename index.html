@@ -781,30 +781,29 @@
         // --- DOM Element References (already defined in previous thought block) ---
         // Assuming all refs from the <style> thought block are correct
 	const navLinksContainer = document.getElementById('nav-links');
+	const modals = document.querySelectorAll('.modal'); 
         // --- Helper Functions ---
-        function showView(viewId) {
-            console.log(`Showing view: ${viewId}`);
-            views.forEach(view => view.classList.remove('active'));
-            const activeView = document.getElementById(viewId);
-            if (activeView) {
-                 // Check login requirement *before* activating
-                if (activeView.classList.contains('requires-login') && !currentUser) {
-                    showMessage("Please log in or register to access this page.");
-                    showModal('login');
-                    // Stay on the current view or redirect to home
-                    const currentActive = document.querySelector('.view.active') || document.getElementById('view-game-list');
-                    currentActive.classList.add('active'); // Keep old view active
-                    window.location.hash = '#/'; // Go to home hash to prevent loop
-                    return; // Stop further processing
-                }
-                activeView.classList.add('active');
-            } else {
-                console.error(`View with ID ${viewId} not found. Showing game list.`);
-                showView('view-game-list');
-                window.location.hash = '#/';
-            }
-            window.scrollTo(0, 0); // Scroll to top on view change
-        }
+        // --- Supabase Configuration ---
+	// ...
+
+	// --- Global State ---
+	// ...
+
+	// --- DOM Element References --- 
+	const views = ...;
+	const modals = document.querySelectorAll('.modal'); // Added this
+	const navLinksContainer = ...;
+	// ... all other element refs ...
+
+	// --- Helper Functions --- // <--- PASTE THE BLOCK HERE
+	function showView(viewId) { /* ... */ }
+	function showModal(modalId) { /* ... */ }
+	function hideModal(modalId) { /* ... */ }
+	function showMessage(message, isError = false) { /* ... */ }
+
+	// --- Authentication ---
+	async function setupAuthListeners() { /* ... */ }
+	// ... rest of the script ...
 
         // showModal, hideModal (defined earlier)
 
