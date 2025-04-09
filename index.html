@@ -782,24 +782,53 @@
         // Assuming all refs from the <style> thought block are correct
 	const navLinksContainer = document.getElementById('nav-links');
 	 
-        // --- Helper Functions ---
-        // --- Supabase Configuration ---
-	// ...
+      // --- DOM Element References ---
+    const loginForm = document.getElementById('login-form'); // You have this
+    const views = document.querySelectorAll('.view'); // You have this
+    const modals = document.querySelectorAll('.modal'); // You have this
 
-	// --- Global State ---
-	// ...
+    // Add all of these:
+    const navLinksContainer = document.getElementById('nav-links'); // Should be here from before
+    const loginLink = document.getElementById('login-link');
+    const registerLink = document.getElementById('register-link');
+    const logoutButton = document.getElementById('logout-button');
+    const requiresLoginElements = document.querySelectorAll('.requires-login');
+    const gameGrid = document.getElementById('game-grid');
+    const categoryFilter = document.getElementById('category-filter');
+    const sortBy = document.getElementById('sort-by');
+    const sidebarCategories = document.getElementById('sidebar-categories');
 
-	// --- DOM Element References --- 
-	const views = document.querySelectorAll('.view');
-	const modals = document.querySelectorAll('.modal'); // Added this
-	
-	// ... all other element refs ...
+    // Game Play View Elements
+    const gameTitle = document.getElementById('game-title');
+    const gameIframe = document.getElementById('game-iframe');
+    const gameUploader = document.getElementById('game-uploader');
+    const gameCategory = document.getElementById('game-category');
+    const gameDescription = document.getElementById('game-description');
+    const likeButton = document.getElementById('like-button');
+    const likeCount = document.getElementById('like-count');
+    const downloadButton = document.getElementById('download-button');
+    const reportButton = document.getElementById('report-button');
+    const backButton = document.getElementById('back-button');
 
-	// --- Helper Functions --- // <--- PASTE THE BLOCK HERE
-	function showView(viewId) { /* ... */ }
-	function showModal(modalId) { /* ... */ }
-	function hideModal(modalId) { /* ... */ }
-	function showMessage(message, isError = false) { /* ... */ }
+    // Upload Form Elements
+    const uploadForm = document.getElementById('upload-form');
+    const uploadTitle = document.getElementById('upload-title');
+    const uploadDescription = document.getElementById('upload-description');
+    const uploadCategory = document.getElementById('upload-category');
+    const uploadGameFile = document.getElementById('upload-game-file');
+    const uploadPreviewImage = document.getElementById('upload-preview-image');
+    const uploadSubmitButton = document.getElementById('upload-submit-button');
+    const uploadStatus = document.getElementById('upload-status');
+    const uploadError = document.getElementById('upload-error');
+
+    // Other Forms / Modals
+    const registerForm = document.getElementById('register-form');
+    const reportForm = document.getElementById('report-form');
+    const messageModal = document.getElementById('modal-message');
+    const messageText = document.getElementById('message-text');
+
+    // --- Helper Functions --- // <--- Make sure this comes AFTER all the const definitions above
+    // ... (showView, showModal, etc.) ...
 
 	
 	
