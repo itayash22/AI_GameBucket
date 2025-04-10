@@ -828,11 +828,78 @@
     const messageText = document.getElementById('message-text');
 
    // --- Helper Functions --- 
-	function showView(viewId) { /* ... */ }
-	function showModal(modalId) { /* ... */ }
-	function hideModal(modalId) { /* ... */ }
-	function showMessage(message, isError = false) { /* ... */ }
-// --- Authentication --- // <-- This heading should come AFTER the functions above
+    function showView(viewId) {
+        console.log(`Showing view: ${viewId}`); // Keep console logs for now
+        views.forEach(view => view.classList.remove('active'));
+        const activeView = document.getElementById(viewId);
+        if (activeView) {
+            // Check login requirement *before* activating
+            if (activeView.classList.contains('requires-login') && !currentUser) {
+                // Check if already trying to show login modal to prevent loops
+                if (document.getElementById('modal-login').style.display !== 'block') {
+                     showMessage("Please log in or register to access this page.");
+                     showModal('login');
+                }
+                // Stay on the current view or redirect to home
+                 const currentActive = document.querySelector('.view.active') || document.getElementById('view-game-list');
+                 if (!currentActive) { // Ensure game list exists if all else fails
+                      document.getElementById('view-game-list').classList.add('active');
+                 } else {
+                      currentActive.classList.add('active'); // Keep old view active if possible
+                 }
+
+                // Don't change hash if redirecting to login
+                if (window.location.hash !== '#/login' && window.location.hash !== '#/register') {
+                   window.location.hash = '#/'; // Go to home hash only if not already trying auth
+                }
+                return; // Stop further processing
+            }
+            activeView.classList.add('active');
+        } else {
+            console.error(`View with ID ${viewId} not found. Showing game list.`);
+            // Fallback to game list if view not found
+            const gameListView = document.getElementById('view-game-list');
+             if(gameListView) gameListView.classList.add('active');
+             window.location.hash = '#/';
+        }
+        window.scrollTo(0, 0); // Scroll to top on view change
+    }
+
+    function showModal(modalId) {
+        console.log(`Attempting to show modal with ID: ${modalId}`); // Keep console logs
+        const modal = document.getElementById(`modal-${modalId}`);
+        console.log('Found modal element:', modal); // Keep console logs
+        if (modal) {
+            // Clear previous errors in the specific modal being opened
+            const errorElement = modal.querySelector('.error-message'); // Find error element within this modal
+            if (errorElement) {
+                errorElement.textContent = '';
+                errorElement.classList.add('hidden');
+            }
+             // Reset forms inside modals if needed (optional, depends on desired UX)
+             const form = modal.querySelector('form');
+             // if(form) form.reset(); // Uncomment to reset form every time modal opens
+
+            modal.style.display = 'block';
+            console.log(`Set display=block for modal-${modalId}`); // Keep console logs
+        } else {
+            console.error(`Modal element not found for ID: modal-${modalId}`); 
+        }
+    }
+
+    function hideModal(modalId) {
+        const modal = document.getElementById(`modal-${modalId}`);
+        if (modal) modal.style.display = 'none';
+         // It's generally better to clear errors/reset forms when opening or submitting,
+         // but could add it here too if needed.
+    }
+
+    function showMessage(message, isError = false) {
+        messageText.textContent = message;
+        messageText.style.color = isError ? 'var(--error-color)' : 'var(--primary-color)';
+        showModal('message'); // Use showModal to display the generic message modal
+    }
+    // --- Authentication --- // <-- This heading should come AFTER the functions above
 	
 
         // showModal, hideModal (defined earlier)
