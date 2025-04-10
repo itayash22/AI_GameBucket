@@ -1581,6 +1581,141 @@ You should now see your specific icons displayed in the horizontal strip!       
 
 
         // --- Event Listeners ---
+
+// --- Event Listeners --- 
+function setupEventListeners() {
+    console.log("Setting up event listeners..."); // Log: Check if setup starts
+
+    // Navigation Links & Modals (with logs from previous debugging step)
+    if (navLinksContainer) { // Check if container exists
+        navLinksContainer.addEventListener('click', (e) => {
+            console.log('Nav link container clicked!'); 
+            const target = e.target.closest('a[data-view], button[data-view], a[data-modal], button[data-modal]');
+            console.log('Clicked target:', target); 
+
+            if (!target) return;
+
+            console.log('Target dataset:', target.dataset); 
+
+            e.preventDefault(); // Prevent default link action
+
+            if (target.id === 'logout-button') {
+                console.log('Logout button detected'); 
+                handleLogout();
+            } else if (target.dataset.modal) {
+                console.log(`Modal target detected: ${target.dataset.modal}`); 
+                showModal(target.dataset.modal); // Call showModal
+            } else if (target.dataset.view) {
+                console.log(`View target detected: ${target.dataset.view}`); 
+                // Update hash, let hashchange listener handle view change
+                window.location.hash = target.getAttribute('href'); 
+            }
+        });
+    } else { console.error("navLinksContainer not found during listener setup"); }
+
+    // Modal Close Buttons (delegate from document for reliability)
+     document.addEventListener('click', (e) => {
+         // Close if background is clicked
+         if (e.target.classList.contains('modal')) {
+             const modalId = e.target.id.replace('modal-', '');
+             if(modalId) hideModal(modalId);
+         } 
+         // Close if dedicated close button is clicked
+         else if (e.target.classList.contains('modal-close')) {
+              const modal = e.target.closest('.modal');
+              if(modal) {
+                  const modalId = modal.id.replace('modal-', '');
+                  if(modalId) hideModal(modalId);
+              }
+         }
+     });
+
+    // Auth Forms
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    } else { console.error("loginForm not found during listener setup"); }
+
+    if (registerForm) {
+        registerForm.addEventListener('submit', handleRegister);
+    } else { console.error("registerForm not found during listener setup"); }
+
+    // Filtering and Sorting
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', () => {
+            currentCategory = categoryFilter.value;
+            window.location.hash = `#/category/${encodeURIComponent(currentCategory || 'All')}`;
+        });
+    } else { console.error("categoryFilter not found during listener setup"); }
+
+     if (sortBy) {
+        sortBy.addEventListener('change', () => {
+            currentSort = sortBy.value;
+            fetchAndRenderGames(); // Re-fetch with new sort order
+        });
+    } else { console.error("sortBy not found during listener setup"); }
+
+     if (sidebarCategories) {
+        sidebarCategories.addEventListener('click', (e) => {
+             if (e.target.tagName === 'A' && e.target.dataset.category !== undefined) {
+                  e.preventDefault();
+                  window.location.hash = `#/category/${encodeURIComponent(e.target.dataset.category || 'All')}`;
+             }
+        });
+     } else { console.error("sidebarCategories not found during listener setup"); }
+
+    // Game Grid Click (Event Delegation)
+    if (gameGrid) {
+        gameGrid.addEventListener('click', (e) => {
+            const button = e.target.closest('button.view-game-button');
+            if (button && button.dataset.gameId) {
+                 e.preventDefault();
+                 window.location.hash = `#/game/${button.dataset.gameId}`;
+            }
+        });
+    } else { console.error("gameGrid not found during listener setup"); }
+
+    // Game Play View Buttons
+    if (backButton) {
+        backButton.addEventListener('click', () => window.location.hash = `#/category/${encodeURIComponent(currentCategory || 'All')}`);
+    } else { console.error("backButton not found during listener setup"); }
+
+    if (likeButton) {
+        likeButton.addEventListener('click', handleLike);
+    } else { console.error("likeButton not found during listener setup"); }
+
+     if (downloadButton) {
+        downloadButton.addEventListener('click', handleDownload);
+    } else { console.error("downloadButton not found during listener setup"); }
+
+     if (reportButton) {
+        reportButton.addEventListener('click', showReportModal);
+    } else { console.error("reportButton not found during listener setup"); }
+
+     // Report Form Submit
+     if (reportForm) {
+        reportForm.addEventListener('submit', handleReportSubmit);
+    } else { console.error("reportForm not found during listener setup"); }
+
+     // Upload Form Submit
+     if (uploadForm) {
+        uploadForm.addEventListener('submit', handleUpload);
+    } else { console.error("uploadForm not found during listener setup"); }
+
+     // Terms Link/Button
+     const termsLink = document.getElementById('terms-link');
+     const termsBackButton = document.getElementById('terms-back-button');
+     if (termsLink) {
+         termsLink.addEventListener('click', (e) => { e.preventDefault(); window.location.hash = '#/terms'; });
+     } else { console.error("termsLink not found during listener setup"); }
+      if (termsBackButton) {
+         termsBackButton.addEventListener('click', () => { window.history.back(); });
+     } else { console.error("termsBackButton not found during listener setup"); }
+
+     // Hashchange Listener for Routing
+     window.addEventListener('hashchange', handleRouteChange);
+
+     console.log("Event listeners setup complete."); // Log: Check if setup finishes
+} // End of setupEventListeners function
         // Replace your existing navLinksContainer listener with this:
             navLinksContainer.addEventListener('click', (e) => {
                 console.log('Nav link container clicked!'); // <-- Debug message
