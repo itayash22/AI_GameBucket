@@ -217,11 +217,13 @@
 }
 
         .strip-icon {
-            height: 40px; /* Adjust desired height */
-            width: auto; /* Maintain aspect ratio */
-            image-rendering: pixelated; /* Keep 8-bit style sharp */
-        }
-
+    height: 60px; /* Increased height */
+    width: auto; 
+    image-rendering: pixelated; 
+    max-width: 100%; 
+    display: inline-block; 
+    vertical-align: middle; 
+}
         /* Optional: Smaller icons on small screens */
          @media (max-width: 480px) {
             .strip-icon {
