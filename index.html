@@ -627,9 +627,20 @@ You should now see your specific icons displayed in the horizontal strip!       
     </style>
 </head>
 <body>
+    <body>
     <div class="container">
         <header>
-            <h1><a href="#/" style="color: inherit; text-decoration: none;">AI Game Arcade</a></h1>
+            <div class="header-content">
+                <img src="images/8-Bit Space Alien.png" alt="Space Alien Icon" class="header-icon">
+
+                <div>
+                    <h1><a href="#/" style="color: inherit; text-decoration: none;">Vibe Gaming</a></h1>
+                    <p class="tagline">One File Games Created by AI Vibe Coding</p>
+                </div>
+
+                <img src="images/8-Bit Coder.png" alt="Coder Icon" class="header-icon">
+            </div>
+
             <nav id="nav-links">
                 <a href="#/" data-view="game-list">Home</a>
                 <a href="#/upload" data-view="upload-form" class="requires-login hidden">Upload</a>
@@ -637,11 +648,21 @@ You should now see your specific icons displayed in the horizontal strip!       
                 <a href="#/register" id="register-link" data-modal="register">Register</a>
                 <button id="logout-button" class="requires-login hidden">Logout</button>
             </nav>
-             <div id="ad-slot-header" class="ad-slot">
-                 <p>ADVERTISEMENT - HEADER<br>(728x90 recommended)<br>(Replace this with your ad code/image)</p>
-             </div>
-             </header>
 
+            <div id="ad-slot-header" class="ad-slot">
+                 <p>ADVERTISEMENT - HEADER<br>(728x90 recommended)<br>(Replace this with your ad code/image)</p>
+            </div>
+            </header>
+
+        <div id="icon-strip">
+            <img src="images/8-Bit Sword Warrior.png" alt="Sword Warrior Icon" class="strip-icon">
+            <img src="images/8-Bit Space Alien.png" alt="Space Alien Icon" class="strip-icon">
+            <img src="images/Pixel Ghost.png" alt="Pixel Ghost Icon" class="strip-icon">
+            <img src="images/8-Bit Coin.png" alt="Coin Icon" class="strip-icon">
+            <img src="images/Pixel Potion.png" alt="Pixel Potion Icon" class="strip-icon">
+            <img src="images/8-Bit Coder.png" alt="Coder Icon" class="strip-icon">
+            <img src="images/8-Bit Broccoli.png" alt="Broccoli Icon" class="strip-icon">
+        </div>
         <div class="main-content">
             <main>
                 <div id="view-game-list" class="view active">
@@ -672,7 +693,7 @@ You should now see your specific icons displayed in the horizontal strip!       
                     <h2 id="game-title">Loading Game...</h2>
                     <div id="game-iframe-container">
                         <iframe id="game-iframe" sandbox="allow-scripts allow-same-origin" title="Game Area" src="about:blank"></iframe>
-                        </div>
+                    </div>
                     <div id="game-details">
                         <p>Uploader: <span id="game-uploader">...</span></p>
                         <p>Category: <span id="game-category">...</span></p>
@@ -690,7 +711,7 @@ You should now see your specific icons displayed in the horizontal strip!       
                 <div id="view-upload-form" class="view requires-login hidden">
                     <h2>Upload Your Game</h2>
                     <form id="upload-form">
-                        <div class="form-group">
+                         <div class="form-group">
                             <label for="upload-title">Game Title:</label>
                             <input type="text" id="upload-title" required maxlength="100">
                         </div>
@@ -727,61 +748,26 @@ You should now see your specific icons displayed in the horizontal strip!       
                  <div id="view-terms" class="view">
                      <button id="terms-back-button">&lt; Back</button>
                      <h2>Terms of Service & Content Policy</h2>
-
-                    <p><strong>Welcome to AI Game Arcade!</strong></p>
-
-                    <p>This site allows users to share and play single-file games, often created with the help of AI. By using this site (Browse, uploading, downloading, liking, or registering), you agree to these terms.</p>
-
-                    <h3>1. User Accounts:</h3>
-                    <ul>
-                        <li>You need to register an account to upload, download, or like games.</li>
-                        <li>You are responsible for keeping your account information secure.</li>
-                        <li>Browse games does not require registration.</li>
-                    </ul>
-
-                    <h3>2. Content Uploads:</h3>
-                    <ul>
-                        <li>You may only upload single-file games (primarily `.html` format) that you have the right to share.</li>
-                        <li>You grant AI Game Arcade a license to host, display, and allow users to play and download your uploaded games.</li>
-                        <li>You are responsible for the content you upload.</li>
-                    </ul>
-
-                    <h3>3. Prohibited Content:</h3>
-                    <ul>
-                        <li>Do not upload content that is illegal, hateful, harassing, threatening, pornographic, excessively violent, or infringes on copyright or intellectual property.</li>
-                        <li>Do not upload malicious code (viruses, spyware, etc.). All games run in a sandboxed environment for security, but malicious intent is forbidden.</li>
-                    </ul>
-
-                    <h3>4. Playing Games:</h3>
-                    <ul>
-                        <li>Games are provided by other users "as is". AI Game Arcade does not guarantee the quality, functionality, or safety of user-uploaded games, although we use sandboxing for security. Play at your own discretion.</li>
-                    </ul>
-
-                    <h3>5. Reporting Content:</h3>
-                    <ul>
-                        <li>You can report games you believe violate these terms using the "Report" feature. Please provide a clear reason.</li>
-                        <li>AI Game Arcade reserves the right to review reported content and remove any content at its sole discretion, without notice.</li>
-                    </ul>
-
-                    <h3>6. Advertising:</h3>
-                    <ul>
-                        <li>This site may display advertising to support its operation.</li>
-                    </ul>
-
-                    <h3>7. Disclaimers:</h3>
-                    <ul>
-                        <li>AI Game Arcade is provided "as is". We make no warranties regarding site uptime or data retention.</li>
-                        <li>We reserve the right to modify or discontinue the service at any time.</li>
-                    </ul>
-
+                     <p><strong>Welcome to Vibe Gaming!</strong></p>
+                     <p>This site allows users to share and play single-file games, often created with the help of AI. By using this site (Browse, uploading, downloading, liking, or registering), you agree to these terms.</p>
+                     <h3>1. User Accounts:</h3>
+                     <ul><li>You need to register an account to upload, download, or like games.</li><li>You are responsible for keeping your account information secure.</li><li>Browse games does not require registration.</li></ul>
+                     <h3>2. Content Uploads:</h3>
+                     <ul><li>You may only upload single-file games (primarily `.html` format) that you have the right to share.</li><li>You grant Vibe Gaming a license to host, display, and allow users to play and download your uploaded games.</li><li>You are responsible for the content you upload.</li></ul>
+                     <h3>3. Prohibited Content:</h3>
+                     <ul><li>Do not upload content that is illegal, hateful, harassing, threatening, pornographic, excessively violent, or infringes on copyright or intellectual property.</li><li>Do not upload malicious code (viruses, spyware, etc.). All games run in a sandboxed environment for security, but malicious intent is forbidden.</li></ul>
+                     <h3>4. Playing Games:</h3>
+                     <ul><li>Games are provided by other users "as is". Vibe Gaming does not guarantee the quality, functionality, or safety of user-uploaded games, although we use sandboxing for security. Play at your own discretion.</li></ul>
+                     <h3>5. Reporting Content:</h3>
+                     <ul><li>You can report games you believe violate these terms using the "Report" feature. Please provide a clear reason.</li><li>Vibe Gaming reserves the right to review reported content and remove any content at its sole discretion, without notice.</li></ul>
+                     <h3>6. Advertising:</h3>
+                     <ul><li>This site may display advertising to support its operation.</li></ul>
+                     <h3>7. Disclaimers:</h3>
+                     <ul><li>Vibe Gaming is provided "as is". We make no warranties regarding site uptime or data retention.</li><li>We reserve the right to modify or discontinue the service at any time.</li></ul>
                      <h3>8. Governing Law:</h3>
-                     <ul>
-                         <li>These terms shall be governed by the laws of Israel.</li>
-                     </ul>
-
-                    <p><strong>By using this site, you acknowledge and agree to these terms.</strong></p>
-                    </div>
-
+                     <ul><li>These terms shall be governed by the laws of Israel.</li></ul>
+                     <p><strong>By using this site, you acknowledge and agree to these terms.</strong></p>
+                     </div>
             </main>
 
             <aside id="sidebar">
@@ -800,10 +786,8 @@ You should now see your specific icons displayed in the horizontal strip!       
                      <p>ADVERTISEMENT - SIDEBAR<br>(e.g., 300x250)<br>(Replace this with your ad code/image)</p>
                  </div>
                  </aside>
-        </div>
-
-        <footer>
-            <p>&copy; <span id="copyright-year"></span> AI Game Arcade. All rights reserved.</p>
+        </div> <footer>
+            <p>&copy; <span id="copyright-year"></span> Vibe Gaming. All rights reserved.</p>
             <a href="#/terms" id="terms-link">Terms of Service</a>
         </footer>
     </div> <div id="modal-login" class="modal">
@@ -830,7 +814,7 @@ You should now see your specific icons displayed in the horizontal strip!       
             <button class="modal-close" data-modal="register">&times;</button>
             <h2>Register</h2>
             <form id="register-form">
-                <div class="form-group">
+                 <div class="form-group">
                     <label for="register-email">Email:</label>
                     <input type="email" id="register-email" required autocomplete="email">
                 </div>
@@ -849,7 +833,7 @@ You should now see your specific icons displayed in the horizontal strip!       
     </div>
 
     <div id="modal-report" class="modal">
-        <div class="modal-content">
+         <div class="modal-content">
             <button class="modal-close" data-modal="report">&times;</button>
             <h2>Report Game</h2>
             <form id="report-form">
@@ -865,12 +849,25 @@ You should now see your specific icons displayed in the horizontal strip!       
     </div>
 
      <div id="modal-message" class="modal">
-        <div class="modal-content">
+         <div class="modal-content">
             <button class="modal-close" data-modal="message">&times;</button>
              <div class="modal-body" id="message-text">
                  </div>
         </div>
     </div>
+    ```
+
+*(Note: I updated the Header icons to use two specific ones from your list as examples, updated the site name in the ToS and Footer as well).*
+
+**Action:**
+
+1.  **Replace** the content between `<body>` and `<script type="module">` in your `index.html` file with the complete block above.
+2.  **Save** the file.
+3.  **Upload/Push** the updated file to GitHub.
+4.  **Wait** for deployment.
+5.  **Hard Refresh** your website (Ctrl+Shift+R or Cmd+Shift+R).
+
+Now, you should see your header, icon strip, game list area, sidebar, and footer again! Hopefully, the login/register buttons and the icons will also work correctly this time. Check the console (F12) for errors just in case, and test the functionality.
 
     <script type="module">
        // --- Supabase Configuration ---
@@ -1744,6 +1741,7 @@ function setupEventListeners() {
 
             // Make sure the REST of setupEventListeners function is still there below this block
             // (like listeners for modal close buttons, auth forms, filters, etc.)
+
 
              // Modal Close Buttons
              modals.forEach(modal => {
