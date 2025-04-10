@@ -229,17 +229,19 @@ You should now see your specific icons displayed in the horizontal strip!       
         /* Add these styles inside your <style> tags */
 
         #icon-strip {
-            display: flex;
-            flex-wrap: wrap; /* Allow icons to wrap on small screens */
-            justify-content: space-around; /* Distribute icons evenly */
-            align-items: center;
-            padding: 10px 0; /* Space above/below icons */
-            margin-bottom: 25px; /* Space below the strip */
-            border-top: 3px solid var(--border-color);
-            border-bottom: 3px solid var(--border-color);
-            background-color: rgba(0,0,0, 0.2); /* Optional subtle background */
-            gap: 15px; /* Space between icons if they wrap */
-        }
+    display: flex;
+    flex-direction: row; /* Explicitly set direction to horizontal */
+    flex-wrap: wrap; 
+    justify-content: space-around; 
+    align-items: center;
+    padding: 10px 0; 
+    margin-bottom: 25px; 
+    border-top: 3px solid var(--border-color);
+    border-bottom: 3px solid var(--border-color);
+    background-color: rgba(0,0,0, 0.2); 
+    gap: 15px; 
+    width: 100%; /* Ensure it takes available width */
+}
 
         .strip-icon {
             height: 40px; /* Adjust desired height */
