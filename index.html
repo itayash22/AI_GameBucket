@@ -18,6 +18,14 @@
 
 /* Add these styles inside your <style> tags */
 
+.no-games-message {
+    grid-column: 1 / -1; /* Make message span all grid columns */
+    text-align: center;  /* Center the text */
+    padding: 40px 15px;  /* Add some vertical padding */
+    color: var(--secondary-color); /* Use secondary color */
+    font-size: 1.6rem;
+}
+
         .header-content {
             display: flex; /* Use flexbox to align icon-text-icon */
             align-items: center; /* Vertically center items */
@@ -217,7 +225,7 @@
 }
 
         .strip-icon {
-    height: 48px; /* Increased height */
+    height: 80px; /* Increased height */
     width: auto; 
     image-rendering: pixelated; 
     max-width: 100%; 
@@ -227,7 +235,7 @@
         /* Optional: Smaller icons on small screens */
          @media (max-width: 480px) {
             .strip-icon {
-                 height: 32px; 
+                 height: 60px; 
             }
             #icon-strip {
                  gap: 10px;
@@ -321,8 +329,9 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Slightly smaller min size */
             gap: 25px; /* Increased gap */
-            text-align: center;
+            
         }
+	
 
         .game-card {
             border: 3px solid var(--border-color);
@@ -1178,11 +1187,11 @@
                     gameGrid.innerHTML = ''; // Clear loading state
                     games.forEach(renderGameCard);
                 } else {
-                    gameGrid.innerHTML = '<p>No games found matching your criteria.</p>';
+                    gameGrid.innerHTML = '<p class="no-games-message">No games found matching your criteria.</p>';
                 }
             } catch (error) {
                  console.error('Error fetching games:', error);
-                 gameGrid.innerHTML = '<p class="error-message">Could not load games. Please try again later.</p>';
+                 gameGrid.innerHTML = '<p class="no-games-message error-message">Could not load games. Please try again later.</p>';
             }
         }
 
