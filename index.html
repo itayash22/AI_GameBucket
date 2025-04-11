@@ -261,6 +261,39 @@
              margin-right: 5px;
          }
 
+<div id="view-how-to" class="view">
+    <button id="howto-back-button">&lt; Back</button> {/* Added Back Button */}
+    <h2>How To Create Games for Vibe Gaming</h2>
+
+    <p style="margin-top: 15px;">Welcome, Vibe Coder!</p>
+    <p>The games on this site are special: they are entirely self-contained in **one single HTML file** and often generated with the help of AI!</p>
+
+    <h3 style="margin-top: 20px; color: var(--secondary-color);">Core Idea: Single HTML File</h3>
+    <p>Your entire game - HTML structure, CSS styling, and JavaScript logic - must be bundled into one `.html` file. No external `.css` or `.js` files allowed!</p>
+    <ul>
+        <li>Embed CSS using `<style>` tags in the `<head>`.</li>
+        <li>Embed JavaScript using `<script>` tags, usually at the end of the `<body>`.</li>
+    </ul>
+
+    <h3 style="margin-top: 20px; color: var(--secondary-color);">Using AI (like ChatGPT, Claude, Gemini, etc.)</h3>
+    <p>AI can be a great partner for "vibe coding" these simple games:</p>
+    <ul>
+        <li>**Prompting:** Clearly ask the AI to generate a simple game (like Snake, Pong, a basic platformer, a text adventure) that fits entirely within a single HTML file. Specify "using HTML, CSS, and JavaScript".</li>
+        <li>**Canvas:** For graphical games, ask the AI to use the HTML `<canvas>` element for drawing.</li>
+        <li>**Simplicity:** Start simple! Complex assets or physics can be hard to manage in one file. Focus on core mechanics.</li>
+        <li>**Iteration:** Get a basic version working, then ask the AI to add features (scoring, levels, better graphics) one step at a time.</li>
+        <li>**Debugging:** Paste errors the AI code gives you back into the AI and ask it to fix them!</li>
+    </ul>
+
+    <h3 style="margin-top: 20px; color: var(--secondary-color);">Technical Tips</h3>
+    <ul>
+        <li>**No Server:** Your game code runs entirely in the user's browser. It cannot easily save data persistently or communicate with external servers (unless using advanced techniques usually beyond simple single-file games).</li>
+        <li>**Keep it Small:** While not a strict limit, try to keep the file size reasonable. Avoid huge embedded images or libraries if possible. Consider using data URIs for very small images if needed.</li>
+        <li>**Testing:** Test your single `.html` file by simply opening it directly in your web browser before uploading.</li>
+    </ul>
+    <p style="margin-top: 15px;">Happy Vibe Coding!</p>
+</div>
+
         #game-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
@@ -578,12 +611,13 @@
             </div>
 
             <nav id="nav-links">
-                <a href="#/" data-view="game-list">Home</a>
-                <a href="#/upload" data-view="upload-form" class="requires-login hidden">Upload</a>
-                <a href="#/login" id="login-link" data-modal="login">Login</a>
-                <a href="#/register" id="register-link" data-modal="register">Register</a>
-                <button id="logout-button" class="requires-login hidden">Logout</button>
-            </nav>
+    <a href="#/" data-view="game-list">Home</a>
+    <a href="#/upload" data-view="upload-form" class="requires-login hidden">Upload</a>
+    <a href="#/how-to" data-view="how-to">How To</a> {/* <-- ADD THIS LINK */}
+    <a href="#/login" id="login-link" data-modal="login">Login</a>
+    <a href="#/register" id="register-link" data-modal="register">Register</a>
+    <button id="logout-button" class="requires-login hidden">Logout</button>
+</nav>
 
             <div id="ad-slot-header" class="ad-slot">
                  <p>ADVERTISEMENT - HEADER<br>(728x90 recommended)<br>(Replace this with your ad code/image)</p>
@@ -722,9 +756,11 @@
                      <p>ADVERTISEMENT - SIDEBAR<br>(e.g., 300x250)<br>(Replace this with your ad code/image)</p>
                  </div>
                  </aside>
-        </div> <footer>
+        </div> 
+		<footer>
             <p>&copy; <span id="copyright-year"></span> Vibe Gaming. All rights reserved.</p>
             <a href="#/terms" id="terms-link">Terms of Service</a>
+	    <span id="contact-link" style="cursor: pointer; text-decoration: underline; color: var(--link-color);">Contact Me</span> 
         </footer>
     </div> <div id="modal-login" class="modal">
         <div class="modal-content">
@@ -911,6 +947,62 @@
             messageText.style.color = isError ? 'var(--error-color)' : 'var(--primary-color)';
             showModal('message'); 
         }
+
+
+	// --- Routing ---
+function handleRouteChange() {
+    const hash = window.location.hash || '#/';
+    console.log("Route changed:", hash); // Keep log for debugging
+
+    // Close any open modals on route change (important!)
+    modals.forEach(modal => { // Ensure 'modals' variable is defined above
+        if(modal) modal.style.display = 'none';
+    });
+
+    // Determine which view to show based on the hash
+    if (hash.startsWith('#/game/')) {
+        const gameId = hash.substring(7);
+        // fetchAndRenderGameDetails function is responsible 
+        // for fetching data AND calling showView('view-game-play')
+        fetchAndRenderGameDetails(gameId); 
+    } else if (hash === '#/upload') {
+        showView('view-upload-form');
+        // Reset upload form state if elements exist
+        if(uploadForm) uploadForm.reset(); 
+        if(uploadStatus) uploadStatus.classList.add('hidden');
+        if(uploadError) uploadError.classList.add('hidden');
+        if(uploadSubmitButton) {
+            uploadSubmitButton.disabled = false;
+            uploadSubmitButton.textContent = 'Upload Game';
+        }
+    } else if (hash === '#/terms') {
+        showView('view-terms');
+    } else if (hash === '#/how-to') { // Handle the new How To view
+        showView('view-how-to');
+    } else if (hash.startsWith('#/category/')) {
+        // Handle category view (which is the game list filtered)
+        const category = decodeURIComponent(hash.substring(11));
+        currentCategory = (category === 'All' || category === '') ? '' : category;
+        if(categoryFilter) categoryFilter.value = currentCategory; // Update dropdown
+        fetchAndRenderGames(); // Re-fetch games for the category
+        showView('view-game-list'); // Show the list view
+    } else if (hash === '#/login') {
+        // If someone navigates directly to #/login, show home + modal
+        showView('view-game-list'); 
+        showModal('login');
+    } else if (hash === '#/register') {
+        // If someone navigates directly to #/register, show home + modal
+        showView('view-game-list'); 
+        showModal('register');
+    } else { 
+        // Default to game list view (handles #/ or unknown hashes)
+        currentCategory = ''; 
+        if(categoryFilter) categoryFilter.value = ''; // Reset category filter
+        fetchAndRenderGames();
+        showView('view-game-list');
+    }
+} // --- End of handleRouteChange ---
+
 
         // --- Authentication --- 
         async function setupAuthListeners() {
