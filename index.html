@@ -207,8 +207,8 @@
     flex-wrap: wrap; 
     justify-content: center; 
     align-items: center;
-    padding: 10px 0; 
-    margin-bottom: 25px; 
+    padding: 8px 0; 
+    margin-bottom: 15px; 
     border-top: 3px solid var(--border-color);
     border-bottom: 3px solid var(--border-color);
     background-color: rgba(0,0,0, 0.2); 
@@ -217,7 +217,7 @@
 }
 
         .strip-icon {
-    height: 80px; /* Increased height */
+    height: 48px; /* Increased height */
     width: auto; 
     image-rendering: pixelated; 
     max-width: 100%; 
@@ -227,7 +227,7 @@
         /* Optional: Smaller icons on small screens */
          @media (max-width: 480px) {
             .strip-icon {
-                 height: 60px; 
+                 height: 32px; 
             }
             #icon-strip {
                  gap: 10px;
@@ -321,6 +321,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Slightly smaller min size */
             gap: 25px; /* Increased gap */
+            text-align: center;
         }
 
         .game-card {
