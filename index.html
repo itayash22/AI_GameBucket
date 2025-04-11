@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Game Arcade</title>
+    <title>Vibe Gaming</title> {/* Updated Title */}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -15,66 +15,6 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-
-/* Add these styles inside your <style> tags */
-
-.no-games-message {
-    grid-column: 1 / -1; /* Make message span all grid columns */
-    text-align: center;  /* Center the text */
-    padding: 40px 15px;  /* Add some vertical padding */
-    color: var(--secondary-color); /* Use secondary color */
-    font-size: 1.6rem;
-}
-
-        .header-content {
-            display: flex; /* Use flexbox to align icon-text-icon */
-            align-items: center; /* Vertically center items */
-            justify-content: center; /* Center the group */
-            gap: 15px; /* Space between icons and text */
-            width: 100%; /* Take full width initially */
-            margin-bottom: 10px; /* Space below title/tagline */
-            flex-wrap: wrap; /* Allow wrapping on small screens */
-        }
-
-        .header-content h1 {
-             margin-bottom: 0px; /* Remove default margin if any */
-             text-align: center;
-        }
-        
-        .tagline {
-            font-size: 1.2rem; /* Smaller font size */
-            color: var(--accent-color); /* Use accent color */
-            text-align: center;
-            margin-top: 0px; 
-            line-height: 1.3;
-        }
-
-        .header-icon {
-            width: 32px; /* Adjust size as needed */
-            height: 32px; /* Adjust size as needed */
-            image-rendering: pixelated; /* Keep pixel art crisp */
-            vertical-align: middle; /* Align with text if wrapped differently */
-        }
-
-        /* Adjust header layout to accommodate the centered content */
-         header {
-             flex-direction: column; /* Stack content, nav, ad vertically */
-         }
-         nav#nav-links {
-             margin-bottom: 15px; /* Space below nav */
-             width: auto; /* Allow nav to size naturally */
-         }
-         /* Remove margin-right: auto from h1 if it was added previously */
-         header h1 { margin-right: 0; } 
-
-        /* Responsive adjustments if needed */
-         @media (max-width: 480px) {
-            .header-icon {
-                 width: 24px;
-                 height: 24px;
-            }
-             .tagline { font-size: 1.0rem; }
-         }
         }
 
         :root {
@@ -94,7 +34,7 @@
         }
 
         html {
-            font-size: 10px; /* Base font size for easier rem calculations */
+            font-size: 10px; 
             scroll-behavior: smooth;
         }
 
@@ -103,8 +43,8 @@
             background-color: var(--bg-color);
             color: var(--primary-color);
             line-height: 1.6;
-            font-size: 1.4rem; /* Default font size */
-            padding-bottom: 60px; /* Footer height */
+            font-size: 1.4rem; 
+            padding-bottom: 60px; 
             position: relative;
             min-height: 100vh;
         }
@@ -113,10 +53,10 @@
             max-width: 100%;
             height: auto;
             display: block;
-            image-rendering: pixelated; /* Keep pixel art crisp */
+            image-rendering: pixelated; 
             image-rendering: -moz-crisp-edges;
             image-rendering: crisp-edges;
-            background-color: var(--placeholder-bg); /* BG for loading/missing */
+            background-color: var(--placeholder-bg); 
         }
 
         a {
@@ -134,7 +74,7 @@
             border: 2px solid var(--border-color);
             background-color: var(--input-bg);
             color: var(--primary-color);
-            border-radius: 0; /* No rounded corners */
+            border-radius: 0; 
         }
         input:focus, textarea:focus, select:focus {
              outline: 2px solid var(--accent-color);
@@ -147,7 +87,7 @@
             border: 2px solid var(--border-color);
             box-shadow: 3px 3px 0px var(--border-color);
             transition: transform 0.1s ease, box-shadow 0.1s ease;
-            border-radius: 0; /* No rounded corners */
+            border-radius: 0; 
         }
         button:hover {
              transform: translate(1px, 1px);
@@ -173,86 +113,59 @@
             padding: 0 15px;
         }
 
-        <header>
-            <div class="header-content">
-                <img src="placeholder-icon-left.png" alt="Pixel Icon" class="header-icon"> 
+        header {
+            padding: 15px 0; /* Reduced padding */
+            border-bottom: 4px solid var(--border-color);
+            margin-bottom: 20px; 
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px; 
+            flex-direction: column; /* Stack header items vertically */
+        }
+        
+        .header-content {
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 15px; 
+            width: 100%; 
+            margin-bottom: 10px; 
+            flex-wrap: wrap; 
+        }
 
-                <div>
-                    <h1><a href="#/" style="color: inherit; text-decoration: none;">Vibe Gaming</a></h1>
-                    <p class="tagline">One File Games Created by AI Vibe Coding</p>
-                </div>
+        .header-content h1 {
+             margin-bottom: 0px; 
+             text-align: center;
+             font-size: 2.8rem; /* Ensure h1 style is defined */
+             color: var(--secondary-color);
+             text-shadow: 2px 2px var(--accent-color);
+             margin-right: 0; /* Ensure no extra margin */
+        }
+        
+        .tagline {
+            font-size: 1.2rem; 
+            color: var(--accent-color); 
+            text-align: center;
+            margin-top: 0px; 
+            line-height: 1.3;
+        }
 
-                <img src="placeholder-icon-right.png" alt="Pixel Icon" class="header-icon">
-            </div>
+        .header-icon {
+            width: 32px; 
+            height: 32px; 
+            image-rendering: pixelated; 
+            vertical-align: middle; 
+        }
 
-            <nav id="nav-links">
-                <a href="#/" data-view="game-list">Home</a>
-                <a href="#/upload" data-view="upload-form" class="requires-login hidden">Upload</a>
-                <a href="#/login" id="login-link" data-modal="login">Login</a>
-                <a href="#/register" id="register-link" data-modal="register">Register</a>
-                <button id="logout-button" class="requires-login hidden">Logout</button>
-            </nav>
-
-            <div id="ad-slot-header" class="ad-slot">
-                 <p>ADVERTISEMENT - HEADER<br>(728x90 recommended)<br>(Replace this with your ad code/image)</p>
-            </div>
-            </header>
-
-<div id="icon-strip">
-            <img src="images/8-Bit Sword Warrior.png" alt="Sword Warrior Icon" class="strip-icon">
-            <img src="images/8-Bit Space Alien.png" alt="Space Alien Icon" class="strip-icon">
-            <img src="images/Pixel Ghost.png" alt="Pixel Ghost Icon" class="strip-icon">
-            <img src="images/8-Bit Coin.png" alt="Coin Icon" class="strip-icon">
-            <img src="images/Pixel Potion.png" alt="Pixel Potion Icon" class="strip-icon">
-            <img src="images/8-Bit Coder.png" alt="Coder Icon" class="strip-icon">
-            <img src="images/8-Bit Broccoli.png" alt="Broccoli Icon" class="strip-icon">
-        </div>
-     
-
-        #icon-strip {
-    display: flex;
-    flex-direction: row; /* Explicitly set direction to horizontal */
-    flex-wrap: wrap; 
-    justify-content: center; 
-    align-items: center;
-    padding: 8px 0; 
-    margin-bottom: 15px; 
-    border-top: 3px solid var(--border-color);
-    border-bottom: 3px solid var(--border-color);
-    background-color: rgba(0,0,0, 0.2); 
-    gap: 15px; 
-    width: 100%; /* Ensure it takes available width */
-}
-
-        .strip-icon {
-    height: 80px; /* Increased height */
-    width: auto; 
-    image-rendering: pixelated; 
-    max-width: 100%; 
-    display: inline-block; 
-    vertical-align: middle; 
-}
-        /* Optional: Smaller icons on small screens */
-         @media (max-width: 480px) {
-            .strip-icon {
-                 height: 60px; 
-            }
-            #icon-strip {
-                 gap: 10px;
-                 padding: 8px 0;
-                 margin-bottom: 20px;
-            }
-         }
-
-        header h1 {
-            font-size: 2.8rem;
-            color: var(--secondary-color);
-            text-shadow: 2px 2px var(--accent-color);
-            margin-right: auto; /* Push nav to the right */
+        nav#nav-links {
+            margin-bottom: 15px; 
+            width: auto; 
+            text-align: center; /* Center nav links */
         }
 
         nav#nav-links a, nav#nav-links button {
-            margin-left: 15px;
+            margin: 0 8px; /* Adjusted spacing */
             font-size: 1.4rem;
             background: none;
             border: none;
@@ -265,15 +178,38 @@
              transform: none;
          }
 
+        #icon-strip {
+            display: flex;
+            flex-direction: row; 
+            flex-wrap: wrap; 
+            justify-content: center; /* Center icons */
+            align-items: center;
+            padding: 10px 0; /* Adjusted padding */
+            margin-bottom: 15px; /* Adjusted margin */
+            border-top: 3px solid var(--border-color);
+            border-bottom: 3px solid var(--border-color);
+            background-color: rgba(0,0,0, 0.2); 
+            gap: 15px; 
+            width: 100%; 
+        }
 
+        .strip-icon {
+            height: 100px; /* Larger icon height */
+            width: auto; 
+            image-rendering: pixelated; 
+            max-width: 100%; 
+            display: inline-block; 
+            vertical-align: middle; 
+        }
+        
         .main-content {
             display: flex;
             gap: 20px;
         }
 
         main {
-            flex: 3; /* Takes up most space */
-            min-width: 0; /* Prevent flex item overflow */
+            flex: 3; 
+            min-width: 0; 
         }
 
         aside#sidebar {
@@ -306,18 +242,18 @@
             border-top: 4px solid var(--border-color);
             background-color: var(--bg-color);
             font-size: 1.2rem;
-            height: 60px; /* Match body padding-bottom */
+            height: 60px; 
         }
 
         /* --- Views --- */
-        .view { display: none; } /* Hide all views by default */
-        .view.active { display: block; } /* Show active view */
+        .view { display: none; } 
+        .view.active { display: block; } 
 
         /* --- Game List View --- */
         #view-game-list .filters {
             margin-bottom: 20px;
             display: flex;
-            gap: 15px; /* Increased gap */
+            gap: 15px; 
             align-items: center;
             flex-wrap: wrap;
         }
@@ -327,11 +263,18 @@
 
         #game-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Slightly smaller min size */
-            gap: 25px; /* Increased gap */
-            
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
+            gap: 25px; 
+             /* text-align removed - handled by .no-games-message */
         }
-	
+        
+        .no-games-message {
+            grid-column: 1 / -1; /* Span full grid width */
+            text-align: center;  /* Center the text */
+            padding: 40px 15px;  /* Add some vertical padding */
+            color: var(--secondary-color); /* Use secondary color */
+            font-size: 1.6rem;
+        }
 
         .game-card {
             border: 3px solid var(--border-color);
@@ -344,24 +287,24 @@
         .game-card img.preview {
             width: 100%;
             aspect-ratio: 4 / 3;
-            object-fit: cover; /* Changed to cover */
+            object-fit: cover; 
             background-color: var(--placeholder-bg);
             margin-bottom: 10px;
             border: 2px solid var(--border-color);
             display: block;
         }
         .game-card h3 {
-            font-size: 1.5rem; /* Adjusted size */
+            font-size: 1.5rem; 
             margin-bottom: 5px;
             color: var(--secondary-color);
-            overflow-wrap: break-word; /* Prevent long titles breaking layout */
-            word-break: break-all; /* Allow breaking long words */
-             min-height: 3em; /* Reserve space for ~2 lines title */
+            overflow-wrap: break-word; 
+            word-break: break-all; 
+             min-height: 3em; 
         }
         .game-card .category {
             font-size: 1.1rem;
             color: var(--accent-color);
-            margin-bottom: 8px; /* Increased space */
+            margin-bottom: 8px; 
             display: block;
         }
         .game-card .likes {
@@ -371,19 +314,18 @@
          .game-card .description-preview {
              font-size: 1.2rem;
              margin-bottom: 10px;
-             flex-grow: 1; /* Push button to bottom */
+             flex-grow: 1; 
              color: #ccc;
-             /* Limit description lines */
              display: -webkit-box;
              -webkit-line-clamp: 3;
              -webkit-box-orient: vertical;
              overflow: hidden;
              text-overflow: ellipsis;
-             min-height: 4.8em; /* Reserve space for 3 lines */
+             min-height: 4.8em; 
          }
 
         .game-card button {
-             align-self: flex-start; /* Align button left */
+             align-self: flex-start; 
         }
 
         /* --- Game Play View --- */
@@ -397,7 +339,7 @@
         #game-iframe-container {
             position: relative;
             width: 100%;
-            height: 60vh; /* Adjust height */
+            height: 60vh; 
             margin-bottom: 15px;
             background-color: #000;
             border: 4px solid var(--border-color);
@@ -409,7 +351,7 @@
             width: 100%;
             height: 100%;
             border: none;
-            background-color: #000; /* Black background while loading */
+            background-color: #000; 
         }
          #game-details { margin-bottom: 15px; }
          #game-details p {
@@ -417,11 +359,11 @@
              word-break: break-word;
          }
          #game-details p span {
-             color: var(--secondary-color); /* Highlight detail values */
+             color: var(--secondary-color); 
          }
         #game-actions button {
             margin-right: 10px;
-            margin-bottom: 10px; /* Spacing on mobile */
+            margin-bottom: 10px; 
         }
          #like-button.liked {
              background-color: var(--secondary-color);
@@ -451,7 +393,7 @@
          .form-group input[type="file"] {
              background-color: transparent;
              border: none;
-             padding: 5px 0; /* Adjusted padding */
+             padding: 5px 0; 
          }
          .form-group input[type="file"]::file-selector-button {
               font-family: inherit;
@@ -462,7 +404,7 @@
               color: var(--button-text);
               cursor: pointer;
               box-shadow: 3px 3px 0px var(--border-color);
-              margin-right: 10px; /* Space between button and text */
+              margin-right: 10px; 
               border-radius: 0;
          }
          .form-group input[type="file"]::file-selector-button:hover {
@@ -473,7 +415,7 @@
 
         /* --- Modals --- */
         .modal {
-            display: none; /* Hidden by default */
+            display: none; 
             position: fixed;
             z-index: 1000;
             left: 0;
@@ -481,14 +423,14 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 20, 0.8); /* Use BG color with alpha */
+            background-color: rgba(0, 0, 20, 0.8); 
         }
         .modal-content {
             background-color: var(--card-bg);
             margin: 10% auto;
             padding: 25px;
             border: 4px solid var(--border-color);
-            width: 85%; /* Slightly wider */
+            width: 85%; 
             max-width: 500px;
             position: relative;
             box-shadow: 6px 6px 0px var(--accent-color);
@@ -503,17 +445,17 @@
             border: none;
             background: none;
             cursor: pointer;
-            padding: 0; /* Remove padding */
+            padding: 0; 
         }
         .modal-close:hover, .modal-close:focus {
              color: var(--accent-color);
-             transform: none; /* Prevent button style shift */
+             transform: none; 
              box-shadow: none;
         }
          .modal h2 {
              margin-bottom: 15px;
              color: var(--secondary-color);
-             font-size: 2rem; /* Adjusted size */
+             font-size: 2rem; 
          }
          #modal-message .modal-body {
              font-size: 1.6rem;
@@ -550,32 +492,24 @@
         .ad-slot {
             border: 2px dashed var(--accent-color);
             padding: 10px;
-            margin: 20px 0; /* Use margin for spacing */
-            min-height: 100px; /* Example minimum height */
+            margin: 20px 0; 
+            min-height: 100px; 
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             background-color: var(--input-bg);
-            width: 100%; /* Ensure full width */
+            width: 100%; 
         }
          #ad-slot-header { min-height: 90px; }
-         #ad-slot-sidebar { min-height: 250px; margin-top: 0; } /* Taller sidebar ad */
+         #ad-slot-sidebar { min-height: 250px; margin-top: 0; } 
 
         /* --- Utilities --- */
         .hidden { display: none !important; }
-        .error-message { color: var(--error-color); font-size: 1.2rem; margin-top: 5px; display: block; /* Ensure it takes space */ }
+        .error-message { color: var(--error-color); font-size: 1.2rem; margin-top: 5px; display: block; }
         .loading-indicator { text-align: center; font-size: 1.8rem; padding: 30px; color: var(--secondary-color); }
-        .sr-only { /* Screen reader only text */
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border-width: 0;
+        .sr-only { 
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;
         }
 
 
@@ -585,1214 +519,4 @@
                 flex-direction: column;
             }
             aside#sidebar {
-                border-left: none;
-                border-top: 4px solid var(--border-color);
-                padding-left: 0;
-                padding-top: 20px;
-            }
-             header { flex-direction: column; align-items: stretch; }
-            header h1 { text-align: center; margin-right: 0; margin-bottom: 10px; }
-            nav#nav-links { text-align: center; margin-bottom: 10px; } /* Add spacing below nav */
-            nav#nav-links a, nav#nav-links button { margin: 0 8px; }
-             #ad-slot-header { order: 3; } /* Keep ad below nav */
-
-            .modal-content { width: 90%; margin: 15% auto;}
-            #game-iframe-container { height: 50vh; } /* Adjust iframe height on mobile */
-        }
-         @media (max-width: 480px) {
-             html { font-size: 9px; } /* Adjust base for smaller screens */
-             #game-grid {
-                 grid-template-columns: 1fr; /* Single column */
-                 gap: 15px;
-             }
-             header h1 { font-size: 2rem; } /* Adjusted size */
-             nav#nav-links a, nav#nav-links button { font-size: 1.4rem; } /* Adjusted size */
-             button { padding: 8px 10px; } /* Adjusted padding */
-             #view-game-play #game-title { font-size: 2rem; }
-         }
-
-    </style>
-</head>
-<body>
-    <body>
-    <div class="container">
-        <header>
-            <div class="header-content">
-                <img src="images/8-Bit Space Alien.png" alt="Space Alien Icon" class="header-icon">
-
-                <div>
-                    <h1><a href="#/" style="color: inherit; text-decoration: none;">Vibe Gaming</a></h1>
-                    <p class="tagline">One File Games Created by AI Vibe Coding</p>
-                </div>
-
-                <img src="images/8-Bit Coder.png" alt="Coder Icon" class="header-icon">
-            </div>
-
-            <nav id="nav-links">
-                <a href="#/" data-view="game-list">Home</a>
-                <a href="#/upload" data-view="upload-form" class="requires-login hidden">Upload</a>
-                <a href="#/login" id="login-link" data-modal="login">Login</a>
-                <a href="#/register" id="register-link" data-modal="register">Register</a>
-                <button id="logout-button" class="requires-login hidden">Logout</button>
-            </nav>
-
-            <div id="ad-slot-header" class="ad-slot">
-                 <p>ADVERTISEMENT - HEADER<br>(728x90 recommended)<br>(Replace this with your ad code/image)</p>
-            </div>
-            </header>
-
-        <div id="icon-strip">
-            <img src="images/8-Bit Sword Warrior.png" alt="Sword Warrior Icon" class="strip-icon">
-            <img src="images/8-Bit Space Alien.png" alt="Space Alien Icon" class="strip-icon">
-            <img src="images/Pixel Ghost.png" alt="Pixel Ghost Icon" class="strip-icon">
-            <img src="images/8-Bit Coin.png" alt="Coin Icon" class="strip-icon">
-            <img src="images/Pixel Potion.png" alt="Pixel Potion Icon" class="strip-icon">
-            <img src="images/8-Bit Coder.png" alt="Coder Icon" class="strip-icon">
-            <img src="images/8-Bit Broccoli.png" alt="Broccoli Icon" class="strip-icon">
-        </div>
-        <div class="main-content">
-            <main>
-                <div id="view-game-list" class="view active">
-                    <h2>Browse Games</h2>
-                    <div class="filters">
-                         <label for="category-filter">Category:</label>
-                         <select id="category-filter">
-                             <option value="">All</option>
-                             <option value="Action">Action</option>
-                             <option value="Puzzle">Puzzle</option>
-                             <option value="Adventure">Adventure</option>
-                             <option value="Arcade">Arcade</option>
-                             <option value="Simulation">Simulation</option>
-                             <option value="Other">Other</option>
-                         </select>
-                         <label for="sort-by">Sort By:</label>
-                         <select id="sort-by">
-                             <option value="created_at.desc">Newest</option>
-                             <option value="likes_count.desc">Most Liked</option>
-                             <option value="title.asc">Title (A-Z)</option>
-                         </select>
-                    </div>
-                    <div id="game-grid" class="loading-indicator">Loading games...</div>
-                </div>
-
-                <div id="view-game-play" class="view">
-                    <button id="back-button">&lt; Back to List</button>
-                    <h2 id="game-title">Loading Game...</h2>
-                    <div id="game-iframe-container">
-                        <iframe id="game-iframe" sandbox="allow-scripts allow-same-origin" title="Game Area" src="about:blank"></iframe>
-                    </div>
-                    <div id="game-details">
-                        <p>Uploader: <span id="game-uploader">...</span></p>
-                        <p>Category: <span id="game-category">...</span></p>
-                        <p>Description:</p>
-                        <p id="game-description">...</p>
-                    </div>
-                    <div id="game-actions">
-                        <button id="like-button" class="requires-login hidden" disabled><span class="sr-only">Like status: </span>Like</button>
-                        <span>Likes: <span id="like-count">0</span></span>
-                        <button id="download-button" class="requires-login hidden" disabled>Download</button>
-                        <button id="report-button" class="requires-login hidden" disabled>Report</button>
-                    </div>
-                </div>
-
-                <div id="view-upload-form" class="view requires-login hidden">
-                    <h2>Upload Your Game</h2>
-                    <form id="upload-form">
-                         <div class="form-group">
-                            <label for="upload-title">Game Title:</label>
-                            <input type="text" id="upload-title" required maxlength="100">
-                        </div>
-                        <div class="form-group">
-                            <label for="upload-description">Description:</label>
-                            <textarea id="upload-description" required maxlength="500"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="upload-category">Category:</label>
-                            <select id="upload-category" required>
-                                <option value="" disabled selected>Select a category...</option>
-                                <option value="Action">Action</option>
-                                <option value="Puzzle">Puzzle</option>
-                                <option value="Adventure">Adventure</option>
-                                <option value="Arcade">Arcade</option>
-                                <option value="Simulation">Simulation</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="upload-game-file">Game File (.html only):</label>
-                            <input type="file" id="upload-game-file" accept=".html" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="upload-preview-image">Preview Image (Optional, JPG/PNG/GIF):</label>
-                            <input type="file" id="upload-preview-image" accept="image/*">
-                        </div>
-                        <button type="submit" id="upload-submit-button">Upload Game</button>
-                        <p id="upload-status" class="loading-indicator hidden"></p>
-                        <p id="upload-error" class="error-message hidden"></p>
-                    </form>
-                </div>
-
-                 <div id="view-terms" class="view">
-                     <button id="terms-back-button">&lt; Back</button>
-                     <h2>Terms of Service & Content Policy</h2>
-                     <p><strong>Welcome to Vibe Gaming!</strong></p>
-                     <p>This site allows users to share and play single-file games, often created with the help of AI. By using this site (Browse, uploading, downloading, liking, or registering), you agree to these terms.</p>
-                     <h3>1. User Accounts:</h3>
-                     <ul><li>You need to register an account to upload, download, or like games.</li><li>You are responsible for keeping your account information secure.</li><li>Browse games does not require registration.</li></ul>
-                     <h3>2. Content Uploads:</h3>
-                     <ul><li>You may only upload single-file games (primarily `.html` format) that you have the right to share.</li><li>You grant Vibe Gaming a license to host, display, and allow users to play and download your uploaded games.</li><li>You are responsible for the content you upload.</li></ul>
-                     <h3>3. Prohibited Content:</h3>
-                     <ul><li>Do not upload content that is illegal, hateful, harassing, threatening, pornographic, excessively violent, or infringes on copyright or intellectual property.</li><li>Do not upload malicious code (viruses, spyware, etc.). All games run in a sandboxed environment for security, but malicious intent is forbidden.</li></ul>
-                     <h3>4. Playing Games:</h3>
-                     <ul><li>Games are provided by other users "as is". Vibe Gaming does not guarantee the quality, functionality, or safety of user-uploaded games, although we use sandboxing for security. Play at your own discretion.</li></ul>
-                     <h3>5. Reporting Content:</h3>
-                     <ul><li>You can report games you believe violate these terms using the "Report" feature. Please provide a clear reason.</li><li>Vibe Gaming reserves the right to review reported content and remove any content at its sole discretion, without notice.</li></ul>
-                     <h3>6. Advertising:</h3>
-                     <ul><li>This site may display advertising to support its operation.</li></ul>
-                     <h3>7. Disclaimers:</h3>
-                     <ul><li>Vibe Gaming is provided "as is". We make no warranties regarding site uptime or data retention.</li><li>We reserve the right to modify or discontinue the service at any time.</li></ul>
-                     <h3>8. Governing Law:</h3>
-                     <ul><li>These terms shall be governed by the laws of Israel.</li></ul>
-                     <p><strong>By using this site, you acknowledge and agree to these terms.</strong></p>
-                     </div>
-            </main>
-
-            <aside id="sidebar">
-                <h3>Categories</h3>
-                <ul id="sidebar-categories">
-                   <li><a href="#/category/All" data-category="">All</a></li>
-                   <li><a href="#/category/Action" data-category="Action">Action</a></li>
-                   <li><a href="#/category/Puzzle" data-category="Puzzle">Puzzle</a></li>
-                   <li><a href="#/category/Adventure" data-category="Adventure">Adventure</a></li>
-                   <li><a href="#/category/Arcade" data-category="Arcade">Arcade</a></li>
-                   <li><a href="#/category/Simulation" data-category="Simulation">Simulation</a></li>
-                   <li><a href="#/category/Other" data-category="Other">Other</a></li>
-                </ul>
-                <hr style="border: none; border-top: 2px solid var(--border-color); margin: 20px 0;">
-                 <div id="ad-slot-sidebar" class="ad-slot">
-                     <p>ADVERTISEMENT - SIDEBAR<br>(e.g., 300x250)<br>(Replace this with your ad code/image)</p>
-                 </div>
-                 </aside>
-        </div> <footer>
-            <p>&copy; <span id="copyright-year"></span> Vibe Gaming. All rights reserved.</p>
-            <a href="#/terms" id="terms-link">Terms of Service</a>
-        </footer>
-    </div> <div id="modal-login" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" data-modal="login">&times;</button>
-            <h2>Login</h2>
-            <form id="login-form">
-                <div class="form-group">
-                    <label for="login-email">Email:</label>
-                    <input type="email" id="login-email" required autocomplete="email">
-                </div>
-                <div class="form-group">
-                    <label for="login-password">Password:</label>
-                    <input type="password" id="login-password" required autocomplete="current-password">
-                </div>
-                <button type="submit">Login</button>
-                <p id="login-error" class="error-message hidden"></p>
-            </form>
-        </div>
-    </div>
-
-    <div id="modal-register" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" data-modal="register">&times;</button>
-            <h2>Register</h2>
-            <form id="register-form">
-                 <div class="form-group">
-                    <label for="register-email">Email:</label>
-                    <input type="email" id="register-email" required autocomplete="email">
-                </div>
-                <div class="form-group">
-                    <label for="register-password">Password (min 6 chars):</label>
-                    <input type="password" id="register-password" required minlength="6" autocomplete="new-password">
-                </div>
-                 <div class="form-group">
-                     <label for="register-password-confirm">Confirm Password:</label>
-                     <input type="password" id="register-password-confirm" required minlength="6" autocomplete="new-password">
-                 </div>
-                <button type="submit">Register</button>
-                <p id="register-error" class="error-message hidden"></p>
-            </form>
-        </div>
-    </div>
-
-    <div id="modal-report" class="modal">
-         <div class="modal-content">
-            <button class="modal-close" data-modal="report">&times;</button>
-            <h2>Report Game</h2>
-            <form id="report-form">
-                <input type="hidden" id="report-game-id">
-                <div class="form-group">
-                    <label for="report-reason">Reason for reporting:</label>
-                    <textarea id="report-reason" required maxlength="500"></textarea>
-                </div>
-                <button type="submit">Submit Report</button>
-                <p id="report-error" class="error-message hidden"></p>
-            </form>
-        </div>
-    </div>
-
-     <div id="modal-message" class="modal">
-         <div class="modal-content">
-            <button class="modal-close" data-modal="message">&times;</button>
-             <div class="modal-body" id="message-text">
-                 </div>
-        </div>
-    </div>
-    ```
-
-
-    <script type="module">
-       // --- Supabase Configuration ---
-        const SUPABASE_URL = 'https://vniwugmbpssesxvnoefc.supabase.co'; // Correct URL ending
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZuaXd1Z21icHNzZXN4dm5vZWZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwOTU0MzcsImV4cCI6MjA1OTY3MTQzN30.6uTmc7ma4Jd_H5yqN7GZEatFzzUEJS5zgbRRrblT_eU'; // Your key stays the same
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); // Use 'supabase.createClient' here
-        const GAME_FILES_BUCKET = 'game-files'; // ** MAKE SURE BUCKET NAME MATCHES **
-
-        // --- SUPABASE DB/STORAGE/RLS SETUP NOTES ---
-        // ** YOU NEED TO DO THIS MANUALLY IN YOUR SUPABASE PROJECT DASHBOARD **
-        // 1. Database Tables:
-        //    - `games` table:
-        //        Columns: id (uuid, pk, default uuid_generate_v4()), created_at (timestampz, default now()), title (text, not null), description (text), category (text), uploader_user_id (uuid, fk references auth.users, not null), game_file_path (text, not null), preview_image_path (text, nullable), likes_count (int4, default 0, not null)
-        //        RLS: Enable RLS. Policy "Allow public read access": `SELECT` for `all users`. Policy "Allow authenticated users insert": `INSERT` for `authenticated` with check `auth.uid() = uploader_user_id`. Policy "Allow owner delete": `DELETE` for `authenticated` with check `auth.uid() = uploader_user_id`. Policy "Allow like count update": `UPDATE` for `authenticated` (or better, use RPC). Add indexes on `category`, `likes_count`, `created_at`.
-        //    - `likes` table:
-        //        Columns: user_id (uuid, pk, fk references auth.users), game_id (uuid, pk, fk references games on delete cascade)
-        //        RLS: Enable RLS. Policy "Allow individual read access": `SELECT` for `authenticated` with check `auth.uid() = user_id`. Policy "Allow individual insert access": `INSERT` for `authenticated` with check `auth.uid() = user_id`. Policy "Allow individual delete access": `DELETE` for `authenticated` with check `auth.uid() = user_id`.
-        //    - `reports` table:
-        //        Columns: id (uuid, pk, default uuid_generate_v4()), created_at (timestampz, default now()), game_id (uuid, fk references games on delete set null), reason (text, not null), reporter_user_id (uuid, fk references auth.users, not null)
-        //        RLS: Enable RLS. Policy "Allow authenticated users insert": `INSERT` for `authenticated` with check `auth.uid() = reporter_user_id`. Policy "Disallow public select": No SELECT policy for `all users`. Admin access via dashboard.
-        // 2. Storage Bucket:
-        //    - Create a bucket named `game-files` (or match GAME_FILES_BUCKET const).
-        //    - **Set access policy:** IMPORTANT! Go to Bucket Settings -> Policies. Create policies:
-        //        - Policy for public read access on game files/previews (simplest V1): Allows `SELECT` for `anon` and `authenticated` roles on objects within 'games/' and 'previews/' folders.
-        //        - Policy for authenticated uploads: Allows `INSERT`, `UPDATE` for `authenticated` role, perhaps restricted to specific paths or based on user ID if needed (more complex). Check Supabase docs for secure file upload policies tied to RLS.
-        // 3. Auth:
-        //    - Email/Password provider enabled. Disable email confirmation if desired for easier testing, but enable for production.
-        // 4. RPC Function (Optional but Recommended for Likes):
-        //    - Go to Database -> Functions -> Create Function.
-        //    - Name: `increment_like_count`. Args: `game_uuid uuid`. Return type: `void`. Definition: `UPDATE public.games SET likes_count = likes_count + 1 WHERE id = game_uuid;`. Security: `DEFINER`. Enable via SQL: `ALTER FUNCTION increment_like_count(uuid) SECURITY DEFINER;`
-        //    - Name: `decrement_like_count`. Args: `game_uuid uuid`. Return type: `void`. Definition: `UPDATE public.games SET likes_count = GREATEST(0, likes_count - 1) WHERE id = game_uuid;`. Security: `DEFINER`. Enable via SQL: `ALTER FUNCTION decrement_like_count(uuid) SECURITY DEFINER;`
-        // --- END SETUP NOTES ---
-
-
-        // --- Global State ---
-        let currentUser = null;
-        let currentGameData = null; // Store full data of the currently viewed game
-        let currentCategory = '';
-        let currentSort = 'created_at.desc';
-        const PREVIEW_PLACEHOLDER_URL = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3Crect width='4' height='3' fill='%23${window.getComputedStyle(document.body).getPropertyValue('--placeholder-bg').substring(1)}'/%3E%3Ctext x='50%25' y='50%25' font-family='${window.getComputedStyle(document.body).getPropertyValue('--pixel-font')}' font-size='1px' fill='%23${window.getComputedStyle(document.body).getPropertyValue('--primary-color').substring(1)}' dominant-baseline='middle' text-anchor='middle'%3E?%3C/text%3E%3C/svg%3E`; // Simple SVG placeholder
-
-
-        // --- DOM Element References (already defined in previous thought block) ---
-        // Assuming all refs from the <style> thought block are correct
-	const navLinksContainer = document.getElementById('nav-links');
-	 
-      // --- DOM Element References ---
-    const loginForm = document.getElementById('login-form'); // You have this
-    const views = document.querySelectorAll('.view'); // You have this
-    const modals = document.querySelectorAll('.modal'); // You have this
-
-    // Add all of these:
-   
-    const loginLink = document.getElementById('login-link');
-    const registerLink = document.getElementById('register-link');
-    const logoutButton = document.getElementById('logout-button');
-    const requiresLoginElements = document.querySelectorAll('.requires-login');
-    const gameGrid = document.getElementById('game-grid');
-    const categoryFilter = document.getElementById('category-filter');
-    const sortBy = document.getElementById('sort-by');
-    const sidebarCategories = document.getElementById('sidebar-categories');
-
-    // Game Play View Elements
-    const gameTitle = document.getElementById('game-title');
-    const gameIframe = document.getElementById('game-iframe');
-    const gameUploader = document.getElementById('game-uploader');
-    const gameCategory = document.getElementById('game-category');
-    const gameDescription = document.getElementById('game-description');
-    const likeButton = document.getElementById('like-button');
-    const likeCount = document.getElementById('like-count');
-    const downloadButton = document.getElementById('download-button');
-    const reportButton = document.getElementById('report-button');
-    const backButton = document.getElementById('back-button');
-
-    // Upload Form Elements
-    const uploadForm = document.getElementById('upload-form');
-    const uploadTitle = document.getElementById('upload-title');
-    const uploadDescription = document.getElementById('upload-description');
-    const uploadCategory = document.getElementById('upload-category');
-    const uploadGameFile = document.getElementById('upload-game-file');
-    const uploadPreviewImage = document.getElementById('upload-preview-image');
-    const uploadSubmitButton = document.getElementById('upload-submit-button');
-    const uploadStatus = document.getElementById('upload-status');
-    const uploadError = document.getElementById('upload-error');
-
-    // Other Forms / Modals
-    const registerForm = document.getElementById('register-form');
-    const reportForm = document.getElementById('report-form');
-    const messageModal = document.getElementById('modal-message');
-    const messageText = document.getElementById('message-text');
-
-   // --- Helper Functions --- 
-    function showView(viewId) {
-        console.log(`Showing view: ${viewId}`); // Keep console logs for now
-        views.forEach(view => view.classList.remove('active'));
-        const activeView = document.getElementById(viewId);
-        if (activeView) {
-            // Check login requirement *before* activating
-            if (activeView.classList.contains('requires-login') && !currentUser) {
-                // Check if already trying to show login modal to prevent loops
-                if (document.getElementById('modal-login').style.display !== 'block') {
-                     showMessage("Please log in or register to access this page.");
-                     showModal('login');
-                }
-                // Stay on the current view or redirect to home
-                 const currentActive = document.querySelector('.view.active') || document.getElementById('view-game-list');
-                 if (!currentActive) { // Ensure game list exists if all else fails
-                      document.getElementById('view-game-list').classList.add('active');
-                 } else {
-                      currentActive.classList.add('active'); // Keep old view active if possible
-                 }
-
-                // Don't change hash if redirecting to login
-                if (window.location.hash !== '#/login' && window.location.hash !== '#/register') {
-                   window.location.hash = '#/'; // Go to home hash only if not already trying auth
-                }
-                return; // Stop further processing
-            }
-            activeView.classList.add('active');
-        } else {
-            console.error(`View with ID ${viewId} not found. Showing game list.`);
-            // Fallback to game list if view not found
-            const gameListView = document.getElementById('view-game-list');
-             if(gameListView) gameListView.classList.add('active');
-             window.location.hash = '#/';
-        }
-        window.scrollTo(0, 0); // Scroll to top on view change
-    }
-
-    function showModal(modalId) {
-        console.log(`Attempting to show modal with ID: ${modalId}`); // Keep console logs
-        const modal = document.getElementById(`modal-${modalId}`);
-        console.log('Found modal element:', modal); // Keep console logs
-        if (modal) {
-            // Clear previous errors in the specific modal being opened
-            const errorElement = modal.querySelector('.error-message'); // Find error element within this modal
-            if (errorElement) {
-                errorElement.textContent = '';
-                errorElement.classList.add('hidden');
-            }
-             // Reset forms inside modals if needed (optional, depends on desired UX)
-             const form = modal.querySelector('form');
-             // if(form) form.reset(); // Uncomment to reset form every time modal opens
-
-            modal.style.display = 'block';
-            console.log(`Set display=block for modal-${modalId}`); // Keep console logs
-        } else {
-            console.error(`Modal element not found for ID: modal-${modalId}`); 
-        }
-    }
-
-    function hideModal(modalId) {
-        const modal = document.getElementById(`modal-${modalId}`);
-        if (modal) modal.style.display = 'none';
-         // It's generally better to clear errors/reset forms when opening or submitting,
-         // but could add it here too if needed.
-    }
-
-    function showMessage(message, isError = false) {
-        messageText.textContent = message;
-        messageText.style.color = isError ? 'var(--error-color)' : 'var(--primary-color)';
-        showModal('message'); // Use showModal to display the generic message modal
-    }
-    // --- Authentication --- // <-- This heading should come AFTER the functions above
-	
-
-        // showModal, hideModal (defined earlier)
-
-        
-
-        function updateUIBasedOnAuth() {
-            console.log("Updating UI for auth state:", currentUser ? currentUser.email : 'Logged out');
-            if (currentUser) {
-                loginLink.classList.add('hidden');
-                registerLink.classList.add('hidden');
-                requiresLoginElements.forEach(el => el.classList.remove('hidden'));
-                // Enable buttons that might have been disabled
-                likeButton.disabled = false;
-                downloadButton.disabled = false;
-                reportButton.disabled = false;
-            } else {
-                loginLink.classList.remove('hidden');
-                registerLink.classList.remove('hidden');
-                requiresLoginElements.forEach(el => el.classList.add('hidden'));
-                 // Disable buttons requiring login when logged out
-                likeButton.disabled = true;
-                downloadButton.disabled = true;
-                reportButton.disabled = true;
-            }
-        }
-
-        // --- Routing ---
-        function handleRouteChange() {
-            const hash = window.location.hash || '#/';
-            console.log("Route changed:", hash);
-
-            // Close any open modals on route change
-            modals.forEach(modal => modal.style.display = 'none');
-
-            if (hash.startsWith('#/game/')) {
-                const gameId = hash.substring(7);
-                fetchAndRenderGameDetails(gameId);
-            } else if (hash === '#/upload') {
-                showView('view-upload-form');
-                // Reset form if revisited
-                 uploadForm.reset();
-                 uploadStatus.classList.add('hidden');
-                 uploadError.classList.add('hidden');
-                 uploadSubmitButton.disabled = false;
-                 uploadSubmitButton.textContent = 'Upload Game';
-
-            } else if (hash === '#/terms') {
-                 showView('view-terms');
-            } else if (hash.startsWith('#/category/')) {
-                 const category = decodeURIComponent(hash.substring(11));
-                 currentCategory = (category === 'All' || category === '') ? '' : category;
-                 categoryFilter.value = currentCategory; // Update filter dropdown
-                 fetchAndRenderGames(); // Will use currentCategory and currentSort
-                 showView('view-game-list');
-            } else if (hash === '#/login') {
-                showView('view-game-list'); // Show home view in background
-                showModal('login');
-            } else if (hash === '#/register') {
-                 showView('view-game-list'); // Show home view in background
-                 showModal('register');
-            }
-            else { // Default to game list
-                currentCategory = ''; // Reset category on home view
-                categoryFilter.value = '';
-                fetchAndRenderGames();
-                showView('view-game-list');
-            }
-        }
-
-
-        // --- Authentication ---
-        async function setupAuthListeners() {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            currentUser = session?.user ?? null;
-            updateUIBasedOnAuth();
-            handleRouteChange(); // Initial route handling after auth check
-
-            supabaseClient.auth.onAuthStateChange((_event, session) => {
-                const previousUser = currentUser?.id;
-                currentUser = session?.user ?? null;
-                console.log("Auth state changed:", currentUser?.email ?? 'Logged out');
-                updateUIBasedOnAuth();
-                 // Avoid unnecessary re-renders if user hasn't changed substantially
-                 // Refresh views only if login status changes or navigating to protected route
-                if (previousUser !== currentUser?.id) {
-                    handleRouteChange(); // Re-evaluate route based on new auth state
-                }
-            });
-        }
-
-        async function handleRegister(event) {
-            event.preventDefault();
-            const email = document.getElementById('register-email').value;
-            const password = document.getElementById('register-password').value;
-            const passwordConfirm = document.getElementById('register-password-confirm').value;
-            const errorElement = document.getElementById('register-error');
-            errorElement.classList.add('hidden'); // Clear previous errors
-
-             if (password !== passwordConfirm) {
-                 errorElement.textContent = "Passwords do not match.";
-                 errorElement.classList.remove('hidden');
-                 return;
-             }
-             if (password.length < 6) {
-                 errorElement.textContent = "Password must be at least 6 characters.";
-                 errorElement.classList.remove('hidden');
-                 return;
-             }
-
-            try {
-                const { data, error } = await supabaseClient.auth.signUp({ email, password });
-                if (error) throw error;
-                hideModal('register');
-                // Consider disabling email confirmation in Supabase Auth settings for easier testing
-                showMessage('Registration successful! Please check your email for verification (if enabled).');
-            } catch (error) {
-                console.error('Registration Error:', error);
-                errorElement.textContent = error.message || 'Registration failed.';
-                errorElement.classList.remove('hidden');
-            }
-        }
-
-        async function handleLogin(event) {
-            event.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            const errorElement = document.getElementById('login-error');
-             errorElement.classList.add('hidden'); // Clear previous errors
-
-            try {
-                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-                if (error) throw error;
-                hideModal('login');
-                // Auth listener will handle UI update and route change
-            } catch (error) {
-                console.error('Login Error:', error);
-                errorElement.textContent = error.message || 'Login failed. Check email/password.';
-                errorElement.classList.remove('hidden');
-            }
-        }
-
-        async function handleLogout() {
-            try {
-                const { error } = await supabaseClient.auth.signOut();
-                if (error) throw error;
-                // Auth listener handles UI update and route change
-                window.location.hash = '#/'; // Go to home on logout
-            } catch (error) {
-                 console.error('Logout Error:', error);
-                 showMessage(`Logout failed: ${error.message}`, true);
-            }
-        }
-
-
-        // --- Game Fetching & Rendering ---
-        async function fetchAndRenderGames() {
-            gameGrid.innerHTML = '<div class="loading-indicator">Loading games...</div>'; // Show loading state
-
-            const [sortField, sortOrder] = currentSort.split('.');
-
-            try {
-                let query = supabaseClient
-                    .from('games')
-                    .select('id, title, description, category, preview_image_path, likes_count')
-                    .order(sortField, { ascending: sortOrder === 'asc' });
-
-                if (currentCategory) {
-                    query = query.eq('category', currentCategory);
-                }
-
-                const { data: games, error } = await query.limit(100); // Limit results for performance
-
-                if (error) throw error;
-
-                if (games && games.length > 0) {
-                    gameGrid.innerHTML = ''; // Clear loading state
-                    games.forEach(renderGameCard);
-                } else {
-                    gameGrid.innerHTML = '<p class="no-games-message">No games found matching your criteria.</p>';
-                }
-            } catch (error) {
-                 console.error('Error fetching games:', error);
-                 gameGrid.innerHTML = '<p class="no-games-message error-message">Could not load games. Please try again later.</p>';
-            }
-        }
-
-        function renderGameCard(game) {
-            const card = document.createElement('div');
-            card.className = 'game-card';
-            card.dataset.gameId = game.id;
-
-            const previewUrl = game.preview_image_path
-                ? `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.preview_image_path}`
-                : PREVIEW_PLACEHOLDER_URL;
-
-            // Truncate description for preview
-            const descriptionPreview = game.description ? game.description.substring(0, 100) + (game.description.length > 100 ? '...' : '') : 'No description.';
-
-
-            card.innerHTML = `
-                <img src="${previewUrl}" alt="${game.title} Preview" class="preview" loading="lazy">
-                <h3>${game.title || 'Untitled Game'}</h3>
-                <span class="category">${game.category || 'Uncategorized'}</span>
-                <p class="likes">Likes: ${game.likes_count || 0}</p>
-                <p class="description-preview">${descriptionPreview}</p>
-                <button data-game-id="${game.id}" class="view-game-button">Play Game</button>
-            `;
-            gameGrid.appendChild(card);
-        }
-
-
-        async function fetchAndRenderGameDetails(gameId) {
-             showView('view-game-play'); // Show the view first
-             gameTitle.textContent = 'Loading Game...';
-             gameIframe.src = 'about:blank'; // Clear previous game
-             likeCount.textContent = '...';
-             gameDescription.textContent = '...';
-             gameUploader.textContent = '...';
-             gameCategory.textContent = '...';
-             likeButton.disabled = true;
-             downloadButton.disabled = true;
-             reportButton.disabled = true;
-             likeButton.classList.remove('liked');
-             likeButton.textContent = 'Like';
-
-
-             currentGameData = null; // Clear previous game data
-
-            try {
-                 // Fetch game details
-                 const { data: game, error: gameError } = await supabaseClient
-                     .from('games')
-                     .select(`
-                         id,
-                         title,
-                         description,
-                         category,
-                         uploader_user_id,
-                         game_file_path,
-                         likes_count,
-                         users:uploader_user_id ( email )
-                     `) // Fetch uploader email too
-                     .eq('id', gameId)
-                     .single(); // Expect only one result
-
-                 if (gameError) throw gameError;
-                 if (!game) throw new Error("Game not found.");
-
-                 currentGameData = game; // Store current game data
-
-                 // Fetch user's like status if logged in
-                 let userHasLiked = false;
-                 if (currentUser) {
-                     const { data: likeData, error: likeError } = await supabaseClient
-                         .from('likes')
-                         .select('game_id')
-                         .eq('user_id', currentUser.id)
-                         .eq('game_id', gameId)
-                         .maybeSingle(); // Might return null if not liked
-
-                     if (likeError) console.warn("Could not fetch like status:", likeError); // Non-critical error
-                     userHasLiked = !!likeData;
-                 }
-
-                 // Update UI
-                 gameTitle.textContent = game.title || 'Untitled Game';
-                 likeCount.textContent = game.likes_count || 0;
-                 gameDescription.textContent = game.description || 'No description provided.';
-                 // Display only part of the uploader's email for privacy
-                 gameUploader.textContent = game.users?.email ? game.users.email.split('@')[0] : 'Anonymous';
-                 gameCategory.textContent = game.category || 'Uncategorized';
-
-                 // Enable buttons if logged in
-                 if (currentUser) {
-                     likeButton.disabled = false;
-                     downloadButton.disabled = false;
-                     reportButton.disabled = false;
-                     if (userHasLiked) {
-                         likeButton.classList.add('liked');
-                         likeButton.textContent = 'Unlike';
-                     } else {
-                         likeButton.classList.remove('liked');
-                         likeButton.textContent = 'Like';
-                     }
-                 }
-
-                 // Construct game URL and load iframe
-                if (game.game_file_path) {
-                    const gameUrl = `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.game_file_path}`;
-                    gameIframe.src = gameUrl;
-                } else {
-                    gameDescription.textContent += "\n\nError: Game file path missing.";
-                }
-
-
-            } catch (error) {
-                console.error("Error fetching game details:", error);
-                gameTitle.textContent = 'Error Loading Game';
-                gameDescription.textContent = `Could not load game details: ${error.message}`;
-                 // Consider redirecting back or showing error message
-                 // showMessage(`Error loading game: ${error.message}`, true);
-                 // showView('view-game-list');
-            }
-        }
-
-
-        // --- Game Actions ---
-        async function handleLike() {
-            if (!currentUser || !currentGameData) return;
-            if (likeButton.disabled) return; // Prevent double clicks
-
-            likeButton.disabled = true; // Disable during operation
-            const gameId = currentGameData.id;
-            const currentLikes = parseInt(likeCount.textContent || '0');
-            const userIsLiked = likeButton.classList.contains('liked');
-
-            try {
-                if (userIsLiked) {
-                    // Unlike
-                    const { error } = await supabaseClient
-                        .from('likes')
-                        .delete()
-                        .match({ user_id: currentUser.id, game_id: gameId });
-                    if (error) throw error;
-
-                    // Decrement count using RPC function (optional but recommended)
-                    const { error: rpcError } = await supabaseClient.rpc('decrement_like_count', { game_uuid: gameId });
-                    if(rpcError) console.warn("RPC decrement failed:", rpcError); // Log but continue UI update
-
-                    likeButton.classList.remove('liked');
-                    likeButton.textContent = 'Like';
-                    likeCount.textContent = Math.max(0, currentLikes - 1);
-
-                } else {
-                    // Like
-                    const { error } = await supabaseClient
-                        .from('likes')
-                        .insert({ user_id: currentUser.id, game_id: gameId });
-                     if (error) throw error;
-
-                    // Increment count using RPC function (optional but recommended)
-                     const { error: rpcError } = await supabaseClient.rpc('increment_like_count', { game_uuid: gameId });
-                     if(rpcError) console.warn("RPC increment failed:", rpcError); // Log but continue UI update
-
-                     likeButton.classList.add('liked');
-                     likeButton.textContent = 'Unlike';
-                     likeCount.textContent = currentLikes + 1;
-                }
-            } catch(error) {
-                console.error("Error liking/unliking game:", error);
-                showMessage(`Action failed: ${error.message}`, true);
-                 // Revert UI optimistically or re-fetch state
-                 likeCount.textContent = currentLikes; // Revert count
-                 likeButton.classList.toggle('liked', userIsLiked); // Revert class
-                 likeButton.textContent = userIsLiked ? 'Unlike' : 'Like'; // Revert text
-
-            } finally {
-                 if(currentUser) likeButton.disabled = false; // Re-enable only if still logged in
-            }
-        }
-
-        async function handleDownload() {
-             if (!currentUser || !currentGameData || !currentGameData.game_file_path) return;
-
-             try {
-                 const gameUrl = `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${currentGameData.game_file_path}`;
-
-                 // Create a temporary link to trigger download
-                 const link = document.createElement('a');
-                 link.href = gameUrl;
-                 // Suggest a filename (browser might override)
-                 const filename = currentGameData.title ? `${currentGameData.title.replace(/[^a-z0-9_\-\s]/gi, '_')}.html` : 'game.html';
-                 link.download = filename;
-                 document.body.appendChild(link);
-                 link.click();
-                 document.body.removeChild(link);
-
-             } catch (error) {
-                 console.error("Error preparing download:", error);
-                 showMessage("Could not prepare download link.", true);
-             }
-        }
-
-        function showReportModal() {
-             if (!currentUser || !currentGameData) return;
-             hideModal('report'); // Clear previous state if any
-             document.getElementById('report-game-id').value = currentGameData.id;
-             showModal('report');
-        }
-
-        async function handleReportSubmit(event) {
-            event.preventDefault();
-            if (!currentUser) return;
-
-            const gameId = document.getElementById('report-game-id').value;
-            const reason = document.getElementById('report-reason').value.trim();
-            const errorElement = document.getElementById('report-error');
-            errorElement.classList.add('hidden');
-
-            if (!reason) {
-                 errorElement.textContent = 'Please provide a reason.';
-                 errorElement.classList.remove('hidden');
-                 return;
-            }
-
-            try {
-                 const { error } = await supabaseClient
-                     .from('reports')
-                     .insert({
-                         game_id: gameId,
-                         reason: reason,
-                         reporter_user_id: currentUser.id
-                     });
-                 if (error) throw error;
-
-                 hideModal('report');
-                 showMessage("Report submitted successfully. Thank you.");
-
-            } catch (error) {
-                 console.error("Error submitting report:", error);
-                 errorElement.textContent = `Failed to submit report: ${error.message}`;
-                 errorElement.classList.remove('hidden');
-            }
-        }
-
-        // --- Uploading ---
-         async function handleUpload(event) {
-            event.preventDefault();
-            if (!currentUser) {
-                 showMessage("Please log in to upload.", true);
-                 return;
-            }
-
-            const title = uploadTitle.value.trim();
-            const description = uploadDescription.value.trim();
-            const category = uploadCategory.value;
-            const gameFile = uploadGameFile.files[0];
-            const previewFile = uploadPreviewImage.files[0];
-
-             uploadError.classList.add('hidden'); // Clear previous error
-
-            // Basic validation
-            if (!title || !description || !category || !gameFile) {
-                 uploadError.textContent = 'Please fill in all required fields (Title, Description, Category, Game File).';
-                 uploadError.classList.remove('hidden');
-                 return;
-            }
-            if (gameFile.type !== 'text/html') {
-                uploadError.textContent = 'Game file must be an .html file.';
-                uploadError.classList.remove('hidden');
-                return;
-            }
-             // Optional preview file validation
-             if (previewFile && !previewFile.type.startsWith('image/')) {
-                 uploadError.textContent = 'Preview file must be an image (JPG, PNG, GIF).';
-                 uploadError.classList.remove('hidden');
-                 return;
-             }
-
-             uploadSubmitButton.disabled = true;
-             uploadSubmitButton.textContent = 'Uploading...';
-             uploadStatus.textContent = 'Starting upload...';
-             uploadStatus.classList.remove('hidden');
-
-
-             try {
-                // 1. Generate unique ID for path (or use Supabase row ID after insert)
-                // Using random element + timestamp for pseudo-uniqueness before insert
-                const fileSuffix = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-                const gameFileName = `game-${fileSuffix}.html`;
-                const gameFolderPath = `games/${currentUser.id}/${gameFileName}`; // Path includes user ID
-
-                // 2. Upload Game File
-                uploadStatus.textContent = 'Uploading game file...';
-                 const { data: gameUploadData, error: gameUploadError } = await supabaseClient.storage
-                     .from(GAME_FILES_BUCKET)
-                     .upload(gameFolderPath, gameFile);
-
-                 if (gameUploadError) throw new Error(`Game file upload failed: ${gameUploadError.message}`);
-                 console.log("Game upload success:", gameUploadData);
-
-
-                // 3. Upload Preview File (if provided)
-                let previewImagePath = null;
-                if (previewFile) {
-                    uploadStatus.textContent = 'Uploading preview image...';
-                     const previewFileExt = previewFile.name.split('.').pop();
-                     const previewFileName = `preview-${fileSuffix}.${previewFileExt}`;
-                     const previewFolderPath = `previews/${currentUser.id}/${previewFileName}`;
-
-                     const { data: previewUploadData, error: previewUploadError } = await supabaseClient.storage
-                         .from(GAME_FILES_BUCKET)
-                         .upload(previewFolderPath, previewFile);
-
-                     if (previewUploadError) {
-                         // Warn but continue, preview is optional
-                         console.warn(`Preview image upload failed: ${previewUploadError.message}`);
-                         showMessage("Game uploaded, but preview image failed. You can try editing later (feature not implemented).", true);
-                     } else {
-                         previewImagePath = previewFolderPath; // Use the relative path
-                         console.log("Preview upload success:", previewUploadData);
-                     }
-                }
-
-                 // 4. Insert Game Metadata into Database
-                 uploadStatus.textContent = 'Saving game details...';
-                 const { data: gameInsertData, error: gameInsertError } = await supabaseClient
-                     .from('games')
-                     .insert({
-                         title: title,
-                         description: description,
-                         category: category,
-                         uploader_user_id: currentUser.id,
-                         game_file_path: gameFolderPath, // Use the relative path
-                         preview_image_path: previewImagePath // Use the relative path
-                         // likes_count defaults to 0
-                     })
-                     .select('id') // Select the ID of the newly inserted game
-                     .single(); // Expect a single row back
-
-                 if (gameInsertError) throw new Error(`Database insert failed: ${gameInsertError.message}`);
-                 console.log("Database insert success:", gameInsertData);
-
-                 // 5. Success
-                 uploadStatus.textContent = 'Upload Complete!';
-                 showMessage("Game uploaded successfully!");
-                 uploadForm.reset(); // Clear the form
-                 // Redirect to the new game's page
-                 window.location.hash = `#/game/${gameInsertData.id}`;
-
-
-             } catch (error) {
-                 console.error("Upload process error:", error);
-                 uploadError.textContent = `Upload failed: ${error.message}`;
-                 uploadError.classList.remove('hidden');
-                 uploadStatus.classList.add('hidden');
-                 // Consider cleanup: delete already uploaded files from storage if DB insert fails? More complex.
-             } finally {
-                 uploadSubmitButton.disabled = false;
-                 uploadSubmitButton.textContent = 'Upload Game';
-             }
-        }
-
-
-        // --- Event Listeners ---
-
-// --- Event Listeners --- 
-function setupEventListeners() {
-    console.log("Setting up event listeners..."); // Log: Check if setup starts
-
-    // Navigation Links & Modals (with logs from previous debugging step)
-    if (navLinksContainer) { // Check if container exists
-        navLinksContainer.addEventListener('click', (e) => {
-            console.log('Nav link container clicked!'); 
-            const target = e.target.closest('a[data-view], button[data-view], a[data-modal], button[data-modal]');
-            console.log('Clicked target:', target); 
-
-            if (!target) return;
-
-            console.log('Target dataset:', target.dataset); 
-
-            e.preventDefault(); // Prevent default link action
-
-            if (target.id === 'logout-button') {
-                console.log('Logout button detected'); 
-                handleLogout();
-            } else if (target.dataset.modal) {
-                console.log(`Modal target detected: ${target.dataset.modal}`); 
-                showModal(target.dataset.modal); // Call showModal
-            } else if (target.dataset.view) {
-                console.log(`View target detected: ${target.dataset.view}`); 
-                // Update hash, let hashchange listener handle view change
-                window.location.hash = target.getAttribute('href'); 
-            }
-        });
-    } else { console.error("navLinksContainer not found during listener setup"); }
-
-    // Modal Close Buttons (delegate from document for reliability)
-     document.addEventListener('click', (e) => {
-         // Close if background is clicked
-         if (e.target.classList.contains('modal')) {
-             const modalId = e.target.id.replace('modal-', '');
-             if(modalId) hideModal(modalId);
-         } 
-         // Close if dedicated close button is clicked
-         else if (e.target.classList.contains('modal-close')) {
-              const modal = e.target.closest('.modal');
-              if(modal) {
-                  const modalId = modal.id.replace('modal-', '');
-                  if(modalId) hideModal(modalId);
-              }
-         }
-     });
-
-    // Auth Forms
-    if (loginForm) {
-        loginForm.addEventListener('submit', handleLogin);
-    } else { console.error("loginForm not found during listener setup"); }
-
-    if (registerForm) {
-        registerForm.addEventListener('submit', handleRegister);
-    } else { console.error("registerForm not found during listener setup"); }
-
-    // Filtering and Sorting
-    if (categoryFilter) {
-        categoryFilter.addEventListener('change', () => {
-            currentCategory = categoryFilter.value;
-            window.location.hash = `#/category/${encodeURIComponent(currentCategory || 'All')}`;
-        });
-    } else { console.error("categoryFilter not found during listener setup"); }
-
-     if (sortBy) {
-        sortBy.addEventListener('change', () => {
-            currentSort = sortBy.value;
-            fetchAndRenderGames(); // Re-fetch with new sort order
-        });
-    } else { console.error("sortBy not found during listener setup"); }
-
-     if (sidebarCategories) {
-        sidebarCategories.addEventListener('click', (e) => {
-             if (e.target.tagName === 'A' && e.target.dataset.category !== undefined) {
-                  e.preventDefault();
-                  window.location.hash = `#/category/${encodeURIComponent(e.target.dataset.category || 'All')}`;
-             }
-        });
-     } else { console.error("sidebarCategories not found during listener setup"); }
-
-    // Game Grid Click (Event Delegation)
-    if (gameGrid) {
-        gameGrid.addEventListener('click', (e) => {
-            const button = e.target.closest('button.view-game-button');
-            if (button && button.dataset.gameId) {
-                 e.preventDefault();
-                 window.location.hash = `#/game/${button.dataset.gameId}`;
-            }
-        });
-    } else { console.error("gameGrid not found during listener setup"); }
-
-    // Game Play View Buttons
-    if (backButton) {
-        backButton.addEventListener('click', () => window.location.hash = `#/category/${encodeURIComponent(currentCategory || 'All')}`);
-    } else { console.error("backButton not found during listener setup"); }
-
-    if (likeButton) {
-        likeButton.addEventListener('click', handleLike);
-    } else { console.error("likeButton not found during listener setup"); }
-
-     if (downloadButton) {
-        downloadButton.addEventListener('click', handleDownload);
-    } else { console.error("downloadButton not found during listener setup"); }
-
-     if (reportButton) {
-        reportButton.addEventListener('click', showReportModal);
-    } else { console.error("reportButton not found during listener setup"); }
-
-     // Report Form Submit
-     if (reportForm) {
-        reportForm.addEventListener('submit', handleReportSubmit);
-    } else { console.error("reportForm not found during listener setup"); }
-
-     // Upload Form Submit
-     if (uploadForm) {
-        uploadForm.addEventListener('submit', handleUpload);
-    } else { console.error("uploadForm not found during listener setup"); }
-
-     // Terms Link/Button
-     const termsLink = document.getElementById('terms-link');
-     const termsBackButton = document.getElementById('terms-back-button');
-     if (termsLink) {
-         termsLink.addEventListener('click', (e) => { e.preventDefault(); window.location.hash = '#/terms'; });
-     } else { console.error("termsLink not found during listener setup"); }
-      if (termsBackButton) {
-         termsBackButton.addEventListener('click', () => { window.history.back(); });
-     } else { console.error("termsBackButton not found during listener setup"); }
-
-     // Hashchange Listener for Routing
-     window.addEventListener('hashchange', handleRouteChange);
-
-     console.log("Event listeners setup complete."); // Log: Check if setup finishes
-} // End of setupEventListeners function
-        // Replace your existing navLinksContainer listener with this:
-            navLinksContainer.addEventListener('click', (e) => {
-                console.log('Nav link container clicked!'); // <-- Debug message
-                const target = e.target.closest('a[data-view], button[data-view], a[data-modal], button[data-modal]');
-                console.log('Clicked target:', target); // <-- Debug message
-
-                if (!target) return;
-
-                console.log('Target dataset:', target.dataset); // <-- Debug message
-
-                e.preventDefault(); // Keep this
-
-                if (target.id === 'logout-button') {
-                    console.log('Logout button detected'); // <-- Debug message
-                    handleLogout();
-                } else if (target.dataset.modal) {
-                    console.log(`Modal target detected: ${target.dataset.modal}`); // <-- Debug message
-                    showModal(target.dataset.modal); // This should call the showModal function
-                } else if (target.dataset.view) {
-                    console.log(`View target detected: ${target.dataset.view}`); // <-- Debug message
-                    // We let the hashchange listener handle view changes, 
-                    // but make sure the link updates the hash
-                    window.location.hash = target.getAttribute('href'); 
-                }
-            });
-
-            // Make sure the REST of setupEventListeners function is still there below this block
-            // (like listeners for modal close buttons, auth forms, filters, etc.)
-
-
-             // Modal Close Buttons
-             modals.forEach(modal => {
-                 modal.addEventListener('click', (e) => {
-                     // Close if background or close button is clicked
-                     if (e.target.classList.contains('modal') || e.target.classList.contains('modal-close')) {
-                          const modalId = modal.id.replace('modal-', '');
-                          hideModal(modalId);
-                     }
-                 });
-             });
-
-             // Auth Forms
-             loginForm.addEventListener('submit', handleLogin);
-             registerForm.addEventListener('submit', handleRegister);
-
-             // Filtering and Sorting
-             categoryFilter.addEventListener('change', () => {
-                 currentCategory = categoryFilter.value;
-                 window.location.hash = `#/category/${encodeURIComponent(currentCategory || 'All')}`; // Trigger route change
-             });
-             sortBy.addEventListener('change', () => {
-                 currentSort = sortBy.value;
-                 fetchAndRenderGames(); // Re-fetch with new sort order
-             });
-             sidebarCategories.addEventListener('click', (e) => {
-                  if (e.target.tagName === 'A' && e.target.dataset.category !== undefined) {
-                       e.preventDefault();
-                       window.location.hash = `#/category/${encodeURIComponent(e.target.dataset.category || 'All')}`;
-                  }
-             });
-
-
-            // Game Grid Click (Event Delegation)
-            gameGrid.addEventListener('click', (e) => {
-                const button = e.target.closest('button.view-game-button');
-                if (button && button.dataset.gameId) {
-                     e.preventDefault();
-                     window.location.hash = `#/game/${button.dataset.gameId}`;
-                }
-            });
-
-            // Game Play View Buttons
-            backButton.addEventListener('click', () => window.location.hash = `#/category/${encodeURIComponent(currentCategory || 'All')}`); // Go back to previous category
-            likeButton.addEventListener('click', handleLike);
-            downloadButton.addEventListener('click', handleDownload);
-            reportButton.addEventListener('click', showReportModal);
-
-             // Report Form Submit
-             reportForm.addEventListener('submit', handleReportSubmit);
-
-             // Upload Form Submit
-             uploadForm.addEventListener('submit', handleUpload);
-
-             // Terms Link/Button
-             document.getElementById('terms-link').addEventListener('click', (e) => { e.preventDefault(); window.location.hash = '#/terms'; });
-             document.getElementById('terms-back-button').addEventListener('click', () => { window.history.back(); }); // Simple back navigation
-
-             // Hashchange Listener for Routing
-             window.addEventListener('hashchange', handleRouteChange);
-        
-
-        // --- Initialization ---
-        function init() {
-             console.log("Initializing AI Game Arcade...");
-             document.getElementById('copyright-year').textContent = new Date().getFullYear();
-             setupEventListeners();
-             setupAuthListeners(); // This will also trigger initial route handling
-             // Initial game fetch is handled by route handler based on auth state
-        }
-
-        // Wait for the DOM to be fully loaded before running scripts
-        document.addEventListener('DOMContentLoaded', init);
-
-    </script>
-
-</body>
-</html>
+                border-left
