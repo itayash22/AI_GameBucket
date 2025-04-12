@@ -846,7 +846,7 @@
         let currentGameData = null; 
         let currentCategory = '';
         let currentSort = 'created_at.desc';
-        const PREVIEW_PLACEHOLDER_URL = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3Crect width='4' height='3' fill='%23${window.getComputedStyle(document.body).getPropertyValue('--placeholder-bg').substring(1)}'/%3E%3Ctext x='50%25' y='50%25' font-family='${window.getComputedStyle(document.body).getPropertyValue('--pixel-font').replace(/'/g, '')}' font-size='1px' fill='%23${window.getComputedStyle(document.body).getPropertyValue('--primary-color').substring(1)}' dominant-baseline='middle' text-anchor='middle'%3E?%3C/text%3E%3C/svg%3E`; 
+        const PREVIEW_PLACEHOLDER_URL = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3Crect width='4' height='3' fill='%23${window.getComputedStyle(document.body).getPropertyValue('--placeholder-bg').substring(1)}'/%3E%3Ctext x='50%25' y='50%25' font-family='<span class="math-inline">\{window\.getComputedStyle\(document\.body\)\.getPropertyValue\('\-\-pixel\-font'\)\.replace\(/'/g, ''\)\}' font\-size\='1px' fill\='%23</span>{window.getComputedStyle(document.body).getPropertyValue('--primary-color').substring(1)}' dominant-baseline='middle' text-anchor='middle'%3E?%3C/text%3E%3C/svg%3E`;
 
         // --- DOM Element References --- 
         const views = document.querySelectorAll('.view');
@@ -1156,27 +1156,37 @@ function handleRouteChange() {
             card.dataset.gameId = game.id;
 
             const previewUrl = game.preview_image_path
-                ? `<span class="math-inline">\{SUPABASE\_URL\}/storage/v1/object/public/</span>{GAME_FILES_BUCKET}/${game.preview_image_path}`
+                ? `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.preview_image_path}`
                 : PREVIEW_PLACEHOLDER_URL;
+            // Ensure descriptionPreview handles null/undefined descriptions safely
+            const descriptionText = game.description || 'No description.';
+            const descriptionPreview = descriptionText.substring(0, 100) + (descriptionText.length > 100 ? '...' : '');
 
-            const descriptionPreview = game.description ? game.description.substring(0, 100) + (game.description.length > 100 ? '...' : '') : 'No description.';
-
+            // Corrected innerHTML with valid template literals
             card.innerHTML = `
-                <img src="<span class="math-inline">\{previewUrl\}" alt\="</span>{game.title || 'Game'} Preview" class="preview" loading="lazy" onerror="this.src='<span class="math-inline">\{PREVIEW\_PLACEHOLDER\_URL\}'"\> \{/\* Added onerror \*/\}
-<h3\></span>{game.title || 'Untitled Game'}</h3>
+                <img src="${previewUrl}" alt="${game.title || 'Game'} Preview" class="preview" loading="lazy" onerror="this.onerror=null; this.src='${PREVIEW_PLACEHOLDER_URL}';">
+                <h3>${game.title || 'Untitled Game'}</h3>
                 <span class="category">${game.category || 'Uncategorized'}</span>
-                <p class="likes">Likes: <span class="math-inline">\{game\.likes\_count \|\| 0\}</p\>
-<p class\="description\-preview"\></span>{descriptionPreview}</p>
-                <button data-game-id="${game.id}" class="view-game-button">Play Game</button>
+                <p class="likes">Likes: ${game.likes_count || 0}</p>
+                <p class="description-preview">${descriptionPreview}</p>
+                <a href="#/game/${game.id}" class="view-game-button" style="display: block; width: fit-content;"><button>Play Game</button></a>
             `;
+            // Find the button in the newly created HTML and prevent default if needed, though the anchor handles navigation
+            const playButtonLink = card.querySelector('a.view-game-button');
+            if (playButtonLink) {
+                 playButtonLink.addEventListener('click', (e) => {
+                    // No need to prevent default, let the hash change trigger route handling
+                     console.log(`Play button clicked for game ${game.id}`);
+                 });
+             }
+
             gameGrid.appendChild(card);
         }
 
-
         async function fetchAndRenderGameDetails(gameId) {
-             showView('view-game-play'); 
+             showView('view-game-play');
              gameTitle.textContent = 'Loading Game...';
-             gameIframe.src = 'about:blank'; 
+             gameIframe.src = 'about:blank';
              likeCount.textContent = '...';
              gameDescription.textContent = '...';
              gameUploader.textContent = '...';
@@ -1184,23 +1194,22 @@ function handleRouteChange() {
              if(likeButton) { likeButton.disabled = true; likeButton.classList.remove('liked'); likeButton.textContent = 'Like'; }
              if(downloadButton) downloadButton.disabled = true;
              if(reportButton) reportButton.disabled = true;
-             
-             currentGameData = null; 
+
+             currentGameData = null;
 
             try {
                  const { data: game, error: gameError } = await supabaseClient
                      .from('games')
                      .select(`
-                         id, title, description, category, uploader_user_id, game_file_path, likes_count,
-                         profiles:uploader_user_id ( username ) 
+                          id, title, description, category, uploader_user_id, game_file_path, likes_count,
+                          profiles:uploader_user_id ( username )
                      `) // Fetch username from profiles if available
                      .eq('id', gameId)
-                     .single(); 
+                     .single();
 
                  if (gameError) throw gameError;
                  if (!game) throw new Error("Game not found.");
-
-                 currentGameData = game; 
+                 currentGameData = game;
 
                  let userHasLiked = false;
                  if (currentUser) {
@@ -1208,9 +1217,9 @@ function handleRouteChange() {
                          .from('likes')
                          .select('game_id', { count: 'exact', head: true }) // Just check if like exists
                          .match({ user_id: currentUser.id, game_id: gameId });
-                         
-                     if (likeError) console.warn("Could not fetch like status:", likeError); 
-                     userHasLiked = (likeData?.count ?? 0) > 0; // Check count
+                     if (likeError) console.warn("Could not fetch like status:", likeError);
+                     // Use the count from the response metadata if available
+                     userHasLiked = (supabaseClient.rpc ? likeData?.count : (likeData?.length ?? 0)) > 0; // Adjust based on actual Supabase client version/behavior if needed
                  }
 
                  gameTitle.textContent = game.title || 'Untitled Game';
@@ -1230,11 +1239,12 @@ function handleRouteChange() {
                  }
 
                 if (game.game_file_path) {
-                    const gameUrl = `<span class="math-inline">\{SUPABASE\_URL\}/storage/v1/object/public/</span>{GAME_FILES_BUCKET}/${game.game_file_path}`;
-                    console.log("Loading game iframe:", gameUrl); // Added log
+                    // Corrected gameUrl template literal
+                    const gameUrl = `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.game_file_path}`;
+                    console.log("Loading game iframe:", gameUrl);
                     gameIframe.src = gameUrl;
                 } else {
-                     console.error("Game file path missing for game:", gameId); // Added log
+                     console.error("Game file path missing for game:", gameId);
                      gameDescription.textContent += "\n\nError: Game file path missing.";
                      gameIframe.src = 'about:blank'; // Ensure blank if path missing
                 }
@@ -1243,9 +1253,17 @@ function handleRouteChange() {
                 console.error("Error fetching game details:", error);
                 gameTitle.textContent = 'Error Loading Game';
                 gameDescription.textContent = `Could not load game details: ${error.message}`;
+                 // Optionally clear or hide other details
+                 likeCount.textContent = 'N/A';
+                 gameUploader.textContent = 'N/A';
+                 gameCategory.textContent = 'N/A';
+                 gameIframe.src = 'about:blank';
+                 // Disable action buttons on error
+                 if(likeButton) likeButton.disabled = true;
+                 if(downloadButton) downloadButton.disabled = true;
+                 if(reportButton) reportButton.disabled = true;
             }
         }
-
 
         // --- Game Actions ---
         async function handleLike() {
@@ -1297,27 +1315,28 @@ function handleRouteChange() {
             }
         }
 
-        async function handleDownload() {
+       async function handleDownload() {
              if (!currentUser || !currentGameData || !currentGameData.game_file_path) return;
-
              try {
-                 const gameUrl = `<span class="math-inline">\{SUPABASE\_URL\}/storage/v1/object/public/</span>{GAME_FILES_BUCKET}/${currentGameData.game_file_path}`;
-                 console.log("Attempting download from:", gameUrl); // Added log
+                 // Corrected gameUrl template literal
+                 const gameUrl = `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${currentGameData.game_file_path}`;
+                 console.log("Attempting download from:", gameUrl);
 
                  const link = document.createElement('a');
                  link.href = gameUrl;
-                 const filename = currentGameData.title ? `${currentGameData.title.replace(/[^a-z0-9_\-\s]/gi, '_')}.html` : 'game.html';
-                 link.download = filename; 
+                 // Sanitize title for filename more thoroughly
+                 const safeTitle = currentGameData.title ? currentGameData.title.replace(/[^a-z0-9_\-\s.]/gi, '_').replace(/\s+/g, '_') : 'game';
+                 const filename = `${safeTitle}.html`;
+                 link.download = filename;
                  document.body.appendChild(link);
                  link.click();
-                 document.body.removeChild(link);
-
+                 document.body.removeChild(link); // Clean up the link element
+                 // Optional: Add revokeObjectURL if using Blobs in the future
              } catch (error) {
                  console.error("Error preparing download:", error);
                  showMessage("Could not prepare download link.", true);
              }
         }
-
         function showReportModal() {
              if (!currentUser || !currentGameData) return;
              hideModal('report'); 
@@ -1374,60 +1393,81 @@ function handleRouteChange() {
             const gameFile = uploadGameFile.files[0];
             const previewFile = uploadPreviewImage.files[0];
 
-             uploadError.classList.add('hidden'); 
-
-            if (!title || !description || !category || !gameFile) {
+             uploadError.classList.add('hidden');
+             if (!title || !description || !category || !gameFile) {
                  uploadError.textContent = 'Please fill in all required fields (Title, Description, Category, Game File).';
                  uploadError.classList.remove('hidden');
                  return;
-            }
-            if (gameFile.type !== 'text/html') {
-                uploadError.textContent = 'Game file must be an .html file.';
-                uploadError.classList.remove('hidden');
-                return;
-            }
-             if (previewFile && !previewFile.type.startsWith('image/')) {
-                 uploadError.textContent = 'Preview file must be an image (JPG, PNG, GIF).';
+             }
+             if (gameFile.type !== 'text/html' && !gameFile.name.toLowerCase().endsWith('.html')) { // Check extension too
+                 uploadError.textContent = 'Game file must be an .html file.';
                  uploadError.classList.remove('hidden');
                  return;
              }
+             // Add file size check (e.g., 5MB limit)
+             const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+             if (gameFile.size > MAX_FILE_SIZE) {
+                 uploadError.textContent = `Game file exceeds the size limit (${MAX_FILE_SIZE / 1024 / 1024}MB).`;
+                 uploadError.classList.remove('hidden');
+                 return;
+             }
+
+             if (previewFile) {
+                if(!previewFile.type.startsWith('image/')) {
+                     uploadError.textContent = 'Preview file must be an image (JPG, PNG, GIF).';
+                     uploadError.classList.remove('hidden');
+                     return;
+                 }
+                 if (previewFile.size > MAX_FILE_SIZE) { // Check preview size too
+                    uploadError.textContent = `Preview image exceeds the size limit (${MAX_FILE_SIZE / 1024 / 1024}MB).`;
+                    uploadError.classList.remove('hidden');
+                    return;
+                 }
+             }
+
 
              uploadSubmitButton.disabled = true;
              uploadSubmitButton.textContent = 'Uploading...';
              uploadStatus.textContent = 'Starting upload...';
              uploadStatus.classList.remove('hidden');
 
-             // Generate unique path using timestamp and user ID for better organization
+             // Corrected folder/file path template literals
              const timestamp = Date.now();
-             const baseFolderPath = `games/<span class="math-inline">\{currentUser\.id\}/</span>{timestamp}`; // Folder per upload
+             const baseFolderPath = `games/${currentUser.id}/${timestamp}`; // Folder per upload
              const gameFileName = `game.html`; // Standard name within folder
-             const gameFolderPath = `<span class="math-inline">\{baseFolderPath\}/</span>{gameFileName}`; 
+             const gameFolderPath = `${baseFolderPath}/${gameFileName}`;
 
              try {
                  uploadStatus.textContent = 'Uploading game file...';
                  const { data: gameUploadData, error: gameUploadError } = await supabaseClient.storage
                      .from(GAME_FILES_BUCKET)
-                     .upload(gameFolderPath, gameFile);
-
+                     .upload(gameFolderPath, gameFile, {
+                         cacheControl: '3600', // Optional: Add cache control
+                         upsert: false // Optional: Prevent overwriting existing file at path
+                     });
                  if (gameUploadError) throw new Error(`Game file upload failed: ${gameUploadError.message}`);
                  console.log("Game upload success:", gameUploadData);
 
                 let previewImagePath = null;
                 if (previewFile) {
                     uploadStatus.textContent = 'Uploading preview image...';
-                     const previewFileExt = previewFile.name.split('.').pop();
-                     const previewFileName = `preview.${previewFileExt}`;
-                     const previewFolderPath = `<span class="math-inline">\{baseFolderPath\}/</span>{previewFileName}`; // Store in same folder
+                    const previewFileExt = previewFile.name.split('.').pop() || 'png'; // Default extension if none
+                    const previewFileName = `preview.${previewFileExt}`;
+                    // Corrected template literal
+                    const previewFolderPath = `${baseFolderPath}/${previewFileName}`; // Store in same folder
 
                      const { data: previewUploadData, error: previewUploadError } = await supabaseClient.storage
                          .from(GAME_FILES_BUCKET)
-                         .upload(previewFolderPath, previewFile);
-
+                         .upload(previewFolderPath, previewFile, {
+                             cacheControl: '3600',
+                             upsert: false
+                         });
                      if (previewUploadError) {
                          console.warn(`Preview image upload failed: ${previewUploadError.message}`);
-                         showMessage("Game uploaded, but preview image failed.", true); // Adjusted message
+                         // Proceed without preview image, maybe inform user later
+                         showMessage("Game uploaded, but preview image failed. You can add it later if needed.", true); // More informative
                      } else {
-                         previewImagePath = previewFolderPath; 
+                         previewImagePath = previewFolderPath; // Use the path returned by Supabase if needed, or the constructed one
                          console.log("Preview upload success:", previewUploadData);
                      }
                 }
@@ -1440,18 +1480,19 @@ function handleRouteChange() {
                          description: description,
                          category: category,
                          uploader_user_id: currentUser.id,
-                         game_file_path: gameFolderPath, 
-                         preview_image_path: previewImagePath 
+                         game_file_path: gameFolderPath, // Use the confirmed path
+                         preview_image_path: previewImagePath // Use null or the confirmed path
                      })
-                     .select('id') 
-                     .single(); 
+                     .select('id') // Select the ID of the newly inserted row
+                     .single(); // Expect only one row back
 
                  if (gameInsertError) throw new Error(`Database insert failed: ${gameInsertError.message}`);
                  console.log("Database insert success:", gameInsertData);
 
                  uploadStatus.textContent = 'Upload Complete!';
                  showMessage("Game uploaded successfully!");
-                 uploadForm.reset(); 
+                 uploadForm.reset();
+                 // Navigate to the new game's page
                  window.location.hash = `#/game/${gameInsertData.id}`;
 
              } catch (error) {
@@ -1459,13 +1500,12 @@ function handleRouteChange() {
                  uploadError.textContent = `Upload failed: ${error.message}`;
                  uploadError.classList.remove('hidden');
                  uploadStatus.classList.add('hidden');
-                 // Consider cleanup logic here if needed
+                 // TODO: Consider cleanup logic here if needed (e.g., delete uploaded files if DB insert fails)
              } finally {
                  uploadSubmitButton.disabled = false;
                  uploadSubmitButton.textContent = 'Upload Game';
              }
         }
-
 
         // --- Event Listeners --- 
         	// --- Event Listeners ---
