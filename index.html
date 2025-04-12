@@ -955,6 +955,7 @@
 	// --- Routing ---
 function handleRouteChange() {
     const hash = window.location.hash || '#/';
+    console.log(">>> handleRouteChange - Hash:", hash);
     console.log("Route changed:", hash); // Keep log for debugging
 
     // Close any open modals on route change (important!)
@@ -1114,6 +1115,7 @@ function handleRouteChange() {
 
         // --- Game Fetching & Rendering ---
         async function fetchAndRenderGames() {
+            console.log(">>> fetchAndRenderGames - Starting fetch...");
             gameGrid.innerHTML = '<div class="loading-indicator">Loading games...</div>'; 
 
             const [sortField, sortOrder] = currentSort.split('.');
