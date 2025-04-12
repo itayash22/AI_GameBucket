@@ -326,16 +326,16 @@
              min-height: 4.8em;
          }
 
-        .game-card button { /* Refers to the play button */
-             align-self: flex-start;
-        }
-        /* Style the anchor link wrapping the play button if needed */
+        /* Style the anchor link wrapping the play button */
         .game-card a.view-game-button {
-            display: block;
-            width: fit-content;
+            display: block; /* Or inline-block */
+            width: fit-content; /* Make the anchor only as wide as the button */
             margin-top: auto; /* Push button to bottom if description is short */
+            align-self: flex-start; /* Align link/button to the left */
         }
-
+        .game-card a.view-game-button button {
+             /* Styles for the button itself are already defined */
+        }
 
         /* --- Game Play View --- */
          #view-game-play button#back-button { margin-bottom: 15px; }
@@ -589,7 +589,7 @@
            <nav id="nav-links">
                 <a href="#/" data-view="game-list">Home</a>
                 <a href="#/upload" data-view="upload-form" class="requires-login hidden">Upload</a>
-                <a href="#/how-to" data-view="how-to">How To</a> {/* REMOVED stray comment from original */}
+                <a href="#/how-to" data-view="how-to">How To</a>
                 <a href="#/login" id="login-link" data-modal="login">Login</a>
                 <a href="#/register" id="register-link" data-modal="register">Register</a>
                 <button id="logout-button" class="requires-login hidden">Logout</button>
@@ -612,7 +612,7 @@
         <div class="main-content">
             <main>
 		<div id="view-how-to" class="view">
-             <button id="howto-back-button">&lt; Back</button> {/* Added Back Button */}
+             <button id="howto-back-button">&lt; Back</button>
              <h2>How To Create Games for Vibe Gaming</h2>
 
              <p style="margin-top: 15px;">Welcome, Vibe Coder!</p>
@@ -1612,12 +1612,8 @@
              if (sidebarCategories) { sidebarCategories.addEventListener('click', (e) => { if (e.target.tagName === 'A' && e.target.dataset.category !== undefined) { /* Let hash change handle routing */ }}); }
              else console.error("setupEventListeners: sidebarCategories not found");
 
-            // Game grid 'Play Game' links (delegated - uses hash change)
-            // Note: The original event listener here wasn't actually needed as the anchor link handles the hash change.
-            // if (gameGrid) { gameGrid.addEventListener('click', (e) => { const link = e.target.closest('a.view-game-button'); if (link) { /* Let hash change handle routing */ } }); }
-            // else console.error("setupEventListeners: gameGrid not found");
+            // Game grid 'Play Game' links (delegated - uses hash change via anchor tag now)
              if (!gameGrid) console.error("setupEventListeners: gameGrid not found"); // Still useful to know if grid is missing
-
 
             // Back button from game view
             if (backButton) backButton.addEventListener('click', () => { window.location.hash = `#/category/${encodeURIComponent(currentCategory || 'All')}`; });
