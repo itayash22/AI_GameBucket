@@ -34,7 +34,7 @@
         }
 
         html {
-            font-size: 10px; 
+            font-size: 10px;
             scroll-behavior: smooth;
         }
 
@@ -43,8 +43,8 @@
             background-color: var(--bg-color);
             color: var(--primary-color);
             line-height: 1.6;
-            font-size: 1.4rem; 
-            padding-bottom: 60px; 
+            font-size: 1.4rem;
+            padding-bottom: 60px; /* Space for footer */
             position: relative;
             min-height: 100vh;
         }
@@ -53,10 +53,11 @@
             max-width: 100%;
             height: auto;
             display: block;
-            image-rendering: pixelated; 
+            image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
             image-rendering: crisp-edges;
-            background-color: var(--placeholder-bg); 
+            /* General placeholder color, will be overridden for icons */
+            background-color: var(--placeholder-bg);
         }
 
         a {
@@ -74,7 +75,7 @@
             border: 2px solid var(--border-color);
             background-color: var(--input-bg);
             color: var(--primary-color);
-            border-radius: 0; 
+            border-radius: 0; /* Pixelated look */
         }
         input:focus, textarea:focus, select:focus {
              outline: 2px solid var(--accent-color);
@@ -87,7 +88,7 @@
             border: 2px solid var(--border-color);
             box-shadow: 3px 3px 0px var(--border-color);
             transition: transform 0.1s ease, box-shadow 0.1s ease;
-            border-radius: 0; 
+            border-radius: 0; /* Pixelated look */
         }
         button:hover {
              transform: translate(1px, 1px);
@@ -114,60 +115,72 @@
         }
 
         header {
-            padding: 15px 0; /* Reduced padding */
+            padding: 15px 0;
             border-bottom: 4px solid var(--border-color);
-            margin-bottom: 20px; 
+            margin-bottom: 20px;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 10px; 
+            gap: 10px;
             flex-direction: column; /* Stack header items vertically */
         }
-        
+
         .header-content {
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 15px; 
-            width: 100%; 
-            margin-bottom: 10px; 
-            flex-wrap: wrap; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
         }
 
         .header-content h1 {
-             margin-bottom: 0px; 
+             margin-bottom: 0px;
              text-align: center;
-             font-size: 2.8rem; /* Ensure h1 style is defined */
+             font-size: 2.8rem;
              color: var(--secondary-color);
              text-shadow: 2px 2px var(--accent-color);
-             margin-right: 0; /* Ensure no extra margin */
+             margin-right: 0;
         }
-        
+
         .tagline {
-            font-size: 1.2rem; 
-            color: var(--accent-color); 
+            font-size: 1.2rem;
+            color: var(--accent-color);
             text-align: center;
-            margin-top: 0px; 
+            margin-top: 0px;
             line-height: 1.3;
         }
 
+        /* --- Icon Styles (Corrected) --- */
         .header-icon {
-            width: 32px; 
-            height: 32px; 
-            image-rendering: pixelated; 
-            vertical-align: middle; 
-	    background-color: transparent;
-    	    cursor: pointer;
+            width: 32px;
+            height: 32px;
+            image-rendering: pixelated;
+            vertical-align: middle;
+            background-color: transparent; /* Make transparent */
+            cursor: pointer; /* Make clickable */
+        }
+
+        .strip-icon {
+            height: 100px;
+            width: auto;
+            image-rendering: pixelated;
+            max-width: 100%;
+            display: inline-block;
+            vertical-align: middle;
+            background-color: transparent; /* Make transparent */
+            cursor: pointer; /* Make clickable */
         }
 
         nav#nav-links {
-            margin-bottom: 15px; 
-            width: auto; 
+            margin-bottom: 15px;
+            width: auto;
             text-align: center; /* Center nav links */
         }
 
         nav#nav-links a, nav#nav-links button {
-            margin: 0 8px; /* Adjusted spacing */
+            margin: 0 8px;
             font-size: 1.4rem;
             background: none;
             border: none;
@@ -182,38 +195,27 @@
 
         #icon-strip {
             display: flex;
-            flex-direction: row; 
-            flex-wrap: wrap; 
+            flex-direction: row;
+            flex-wrap: wrap;
             justify-content: center; /* Center icons */
             align-items: center;
-            padding: 10px 0; /* Adjusted padding */
-            margin-bottom: 15px; /* Adjusted margin */
+            padding: 10px 0;
+            margin-bottom: 15px;
             border-top: 3px solid var(--border-color);
             border-bottom: 3px solid var(--border-color);
-            background-color: rgba(0,0,0, 0.2); 
-            gap: 15px; 
-            width: 100%; 
+            background-color: rgba(0,0,0, 0.2);
+            gap: 15px;
+            width: 100%;
         }
 
-        .strip-icon {
-            height: 100px; /* Larger icon height */
-            width: auto; 
-            image-rendering: pixelated; 
-            max-width: 100%; 
-            display: inline-block; 
-            vertical-align: middle; 
-	    background-color: transparent;
-	    cursor: pointer;
-        }
-        
         .main-content {
             display: flex;
             gap: 20px;
         }
 
         main {
-            flex: 3; 
-            min-width: 0; 
+            flex: 3;
+            min-width: 0; /* Prevent flex item from overflowing */
         }
 
         aside#sidebar {
@@ -246,18 +248,18 @@
             border-top: 4px solid var(--border-color);
             background-color: var(--bg-color);
             font-size: 1.2rem;
-            height: 60px; 
+            height: 60px; /* Fixed footer height */
         }
 
         /* --- Views --- */
-        .view { display: none; } 
-        .view.active { display: block; } 
+        .view { display: none; }
+        .view.active { display: block; }
 
         /* --- Game List View --- */
         #view-game-list .filters {
             margin-bottom: 20px;
             display: flex;
-            gap: 15px; 
+            gap: 15px;
             align-items: center;
             flex-wrap: wrap;
         }
@@ -265,50 +267,17 @@
              margin-right: 5px;
          }
 
-<div id="view-how-to" class="view">
-    <button id="howto-back-button">&lt; Back</button>
-    <h2>How To Create Games for Vibe Gaming</h2>
-
-    <p style="margin-top: 15px;">Welcome, Vibe Coder!</p>
-    <p>The games on this site are special: they are entirely self-contained in **one single HTML file** and often generated with the help of AI!</p>
-
-    <h3 style="margin-top: 20px; color: var(--secondary-color);">Core Idea: Single HTML File</h3>
-    <p>Your entire game - HTML structure, CSS styling, and JavaScript logic - must be bundled into one `.html` file. No external `.css` or `.js` files allowed!</p>
-    <ul>
-        <li>Embed CSS using `<style>` tags in the `<head>`.</li>
-        <li>Embed JavaScript using `<script>` tags, usually at the end of the `<body>`.</li>
-    </ul>
-
-    <h3 style="margin-top: 20px; color: var(--secondary-color);">Using AI (like ChatGPT, Claude, Gemini, etc.)</h3>
-    <p>AI can be a great partner for "vibe coding" these simple games:</p>
-    <ul>
-        <li>**Prompting:** Clearly ask the AI to generate a simple game (like Snake, Pong, a basic platformer, a text adventure) that fits entirely within a single HTML file. Specify "using HTML, CSS, and JavaScript".</li>
-        <li>**Canvas:** For graphical games, ask the AI to use the HTML `<canvas>` element for drawing.</li>
-        <li>**Simplicity:** Start simple! Complex assets or physics can be hard to manage in one file. Focus on core mechanics.</li>
-        <li>**Iteration:** Get a basic version working, then ask the AI to add features (scoring, levels, better graphics) one step at a time.</li>
-         <li>**Debugging:** Paste errors the AI code gives you back into the AI and ask it to fix them!</li>
-    </ul>
-
-    <h3 style="margin-top: 20px; color: var(--secondary-color);">Technical Tips</h3>
-    <ul>
-        <li>**No Server:** Your game code runs entirely in the user's browser. It cannot easily save data persistently or communicate with external servers (unless using advanced techniques usually beyond simple single-file games).</li>
-        <li>**Keep it Small:** While not a strict limit, try to keep the file size reasonable. Avoid huge embedded images or libraries if possible. Consider using data URIs for very small images if needed.</li>
-        <li>**Testing:** Test your single `.html` file by simply opening it directly in your web browser before uploading.</li>
-    </ul>
-    <p style="margin-top: 15px;">Happy Vibe Coding!</p>
-</div>
         #game-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
-            gap: 25px; 
-             /* text-align removed - handled by .no-games-message */
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
         }
-        
+
         .no-games-message {
             grid-column: 1 / -1; /* Span full grid width */
             text-align: center;  /* Center the text */
-            padding: 40px 15px;  /* Add some vertical padding */
-            color: var(--secondary-color); /* Use secondary color */
+            padding: 40px 15px;
+            color: var(--secondary-color);
             font-size: 1.6rem;
         }
 
@@ -323,24 +292,24 @@
         .game-card img.preview {
             width: 100%;
             aspect-ratio: 4 / 3;
-            object-fit: cover; 
+            object-fit: cover;
             background-color: var(--placeholder-bg);
             margin-bottom: 10px;
             border: 2px solid var(--border-color);
             display: block;
         }
         .game-card h3 {
-            font-size: 1.5rem; 
+            font-size: 1.5rem;
             margin-bottom: 5px;
             color: var(--secondary-color);
-            overflow-wrap: break-word; 
-            word-break: break-all; 
-             min-height: 3em; 
+            overflow-wrap: break-word;
+            word-break: break-all;
+             min-height: 3em; /* Ensure space for title */
         }
         .game-card .category {
             font-size: 1.1rem;
             color: var(--accent-color);
-            margin-bottom: 8px; 
+            margin-bottom: 8px;
             display: block;
         }
         .game-card .likes {
@@ -350,18 +319,20 @@
          .game-card .description-preview {
              font-size: 1.2rem;
              margin-bottom: 10px;
-             flex-grow: 1; 
+             flex-grow: 1; /* Allow description to take space */
              color: #ccc;
+             /* Limit description lines */
              display: -webkit-box;
              -webkit-line-clamp: 3;
              -webkit-box-orient: vertical;
              overflow: hidden;
              text-overflow: ellipsis;
-             min-height: 4.8em; 
+             min-height: 4.8em; /* Ensure space for description */
          }
 
-        .game-card button {
-             align-self: flex-start; 
+        .game-card button.view-game-button { /* Specific selector */
+             align-self: flex-start;
+             margin-top: auto; /* Push button to bottom */
         }
 
         /* --- Game Play View --- */
@@ -375,9 +346,9 @@
         #game-iframe-container {
             position: relative;
             width: 100%;
-            height: 60vh; 
+            height: 60vh; /* Adjust height as needed */
             margin-bottom: 15px;
-            background-color: #000;
+            background-color: #000; /* Black background for iframe area */
             border: 4px solid var(--border-color);
         }
         #game-iframe {
@@ -387,7 +358,7 @@
             width: 100%;
             height: 100%;
             border: none;
-            background-color: #000; 
+            background-color: #000; /* Ensure iframe bg is black */
         }
          #game-details { margin-bottom: 15px; }
          #game-details p {
@@ -395,11 +366,11 @@
              word-break: break-word;
          }
          #game-details p span {
-             color: var(--secondary-color); 
+             color: var(--secondary-color); /* Highlight details */
          }
         #game-actions button {
             margin-right: 10px;
-            margin-bottom: 10px; 
+            margin-bottom: 10px; /* Spacing for buttons */
         }
          #like-button.liked {
              background-color: var(--secondary-color);
@@ -426,10 +397,11 @@
              min-height: 100px;
              resize: vertical;
         }
+        /* Style file input button */
          .form-group input[type="file"] {
              background-color: transparent;
              border: none;
-             padding: 5px 0; 
+             padding: 5px 0;
          }
          .form-group input[type="file"]::file-selector-button {
               font-family: inherit;
@@ -440,8 +412,9 @@
               color: var(--button-text);
               cursor: pointer;
               box-shadow: 3px 3px 0px var(--border-color);
-              margin-right: 10px; 
+              margin-right: 10px; /* Space between button and text */
               border-radius: 0;
+              transition: transform 0.1s ease, box-shadow 0.1s ease;
          }
          .form-group input[type="file"]::file-selector-button:hover {
              transform: translate(1px, 1px);
@@ -451,23 +424,23 @@
 
         /* --- Modals --- */
         .modal {
-            display: none; 
-            position: fixed;
-            z-index: 1000;
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 20, 0.8); 
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0, 0, 20, 0.8); /* Dark overlay */
         }
         .modal-content {
             background-color: var(--card-bg);
-            margin: 10% auto;
+            margin: 10% auto; /* Centered */
             padding: 25px;
             border: 4px solid var(--border-color);
-            width: 85%; 
-            max-width: 500px;
+            width: 85%; /* Responsive width */
+            max-width: 500px; /* Max width */
             position: relative;
             box-shadow: 6px 6px 0px var(--accent-color);
         }
@@ -476,75 +449,98 @@
             top: 5px;
             right: 15px;
             color: var(--primary-color);
-            font-size: 3rem;
+            font-size: 3rem; /* Large close button */
             font-weight: bold;
             border: none;
             background: none;
             cursor: pointer;
-            padding: 0; 
+            padding: 0; /* Remove default padding */
         }
         .modal-close:hover, .modal-close:focus {
              color: var(--accent-color);
-             transform: none; 
-             box-shadow: none;
+             transform: none; /* Prevent button movement */
+             box-shadow: none; /* Prevent button shadow */
+             text-decoration: none;
         }
          .modal h2 {
              margin-bottom: 15px;
              color: var(--secondary-color);
-             font-size: 2rem; 
+             font-size: 2rem; /* Modal title size */
          }
+        /* Message Modal Specific Style */
          #modal-message .modal-body {
              font-size: 1.6rem;
              text-align: center;
-             min-height: 50px;
-             display: flex;
+             min-height: 50px; /* Ensure space for message */
+             display: flex; /* Center content vertically */
              align-items: center;
              justify-content: center;
-             word-break: break-word;
+             word-break: break-word; /* Prevent long messages overflowing */
          }
 
-        /* --- Terms View --- */
-         #view-terms {
+        /* --- Terms & How To Views --- */
+         #view-terms, #view-how-to { /* Style both similarly */
              border: 3px solid var(--border-color);
              padding: 20px;
              background-color: var(--card-bg);
-             max-height: 70vh;
+             max-height: 70vh; /* Limit height and allow scroll */
              overflow-y: auto;
          }
-          #view-terms button#terms-back-button { margin-bottom: 15px; }
-         #view-terms h2 {
+          #view-terms button#terms-back-button,
+          #view-how-to button#howto-back-button { /* Style back buttons */
+              margin-bottom: 15px;
+          }
+         #view-terms h2, #view-how-to h2 {
              color: var(--secondary-color);
              margin-bottom: 15px;
          }
-          #view-terms h3 {
+          #view-terms h3, #view-how-to h3 {
              color: var(--accent-color);
              margin-bottom: 10px;
              margin-top: 15px;
          }
-          #view-terms ul { margin-left: 20px; margin-bottom: 10px; }
+          #view-terms ul, #view-how-to ul {
+              margin-left: 20px;
+              margin-bottom: 10px;
+              list-style: square; /* Use square bullets */
+          }
+          #view-how-to p, #view-terms p {
+              margin-bottom: 10px; /* Spacing for paragraphs */
+          }
 
 
         /* --- Ad Slots --- */
         .ad-slot {
             border: 2px dashed var(--accent-color);
             padding: 10px;
-            margin: 20px 0; 
-            min-height: 100px; 
+            margin: 20px 0;
+            min-height: 100px; /* Default ad height */
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             background-color: var(--input-bg);
-            width: 100%; 
+            width: 100%; /* Ensure full width */
         }
          #ad-slot-header { min-height: 90px; }
-         #ad-slot-sidebar { min-height: 250px; margin-top: 0; } 
+         #ad-slot-sidebar { min-height: 250px; margin-top: 0; } /* No top margin for sidebar ad */
 
         /* --- Utilities --- */
         .hidden { display: none !important; }
-        .error-message { color: var(--error-color); font-size: 1.2rem; margin-top: 5px; display: block; }
-        .loading-indicator { text-align: center; font-size: 1.8rem; padding: 30px; color: var(--secondary-color); }
-        .sr-only { 
+        .error-message {
+            color: var(--error-color);
+            font-size: 1.2rem;
+            margin-top: 5px;
+            display: block; /* Ensure it takes space */
+        }
+        .loading-indicator {
+            text-align: center;
+            font-size: 1.8rem;
+            padding: 30px;
+            color: var(--secondary-color);
+        }
+        /* Screen reader only text */
+        .sr-only {
             position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;
         }
 
@@ -552,38 +548,36 @@
         /* --- Responsiveness --- */
         @media (max-width: 768px) {
             .main-content {
-                flex-direction: column;
+                flex-direction: column; /* Stack main and sidebar */
             }
             aside#sidebar {
-                border-left: none;
-                border-top: 4px solid var(--border-color);
-                padding-left: 0;
-                padding-top: 20px;
+                border-left: none; /* Remove left border */
+                border-top: 4px solid var(--border-color); /* Add top border */
+                padding-left: 0; /* Remove padding */
+                padding-top: 20px; /* Add padding */
             }
              header { flex-direction: column; align-items: stretch; }
-            /* header h1 { text-align: center; margin-right: 0; margin-bottom: 10px; } */ /* Let header-content handle centering */
-            nav#nav-links { text-align: center; margin-bottom: 10px; } 
-            nav#nav-links a, nav#nav-links button { margin: 0 8px; }
-             #ad-slot-header { order: 3; } 
+             nav#nav-links { text-align: center; margin-bottom: 10px; }
+             nav#nav-links a, nav#nav-links button { margin: 0 8px; }
+             #ad-slot-header { order: 3; } /* Move header ad down */
 
-            .modal-content { width: 90%; margin: 15% auto;}
-            #game-iframe-container { height: 50vh; } 
+            .modal-content { width: 90%; margin: 15% auto;} /* Wider modal */
+            #game-iframe-container { height: 50vh; } /* Shorter game area */
         }
          @media (max-width: 480px) {
-             html { font-size: 9px; } 
+             html { font-size: 9px; } /* Slightly smaller base font */
              #game-grid {
-                 grid-template-columns: 1fr; 
+                 grid-template-columns: 1fr; /* Single column grid */
                  gap: 15px;
              }
-             /* header h1 { font-size: 2rem; } */ /* Handled by .header-content */
              .header-icon { /* Smaller header icons */
                  width: 24px;
                  height: 24px;
              }
              .tagline { font-size: 1.0rem; }
-             
+
              .strip-icon { /* Smaller strip icons */
-                 height: 70px; 
+                 height: 70px;
              }
              #icon-strip { /* Adjustments for smaller strip icons */
                  gap: 10px;
@@ -591,8 +585,8 @@
                  margin-bottom: 20px;
              }
 
-             nav#nav-links a, nav#nav-links button { font-size: 1.4rem; } 
-             button { padding: 8px 10px; } 
+             nav#nav-links a, nav#nav-links button { font-size: 1.4rem; }
+             button { padding: 8px 10px; } /* Slightly smaller buttons */
              #view-game-play #game-title { font-size: 2rem; }
          }
 
@@ -604,28 +598,26 @@
         <header>
             <div class="header-content">
                 <img src="images/8-Bit Space Alien.png" alt="Space Alien Icon" class="header-icon">
-
                 <div>
                     <h1><a href="#/" style="color: inherit; text-decoration: none;">Vibe Gaming</a></h1>
                     <p class="tagline">One File Games Created by AI Vibe Coding</p>
                 </div>
-
                 <img src="images/8-Bit Coder.png" alt="Coder Icon" class="header-icon">
             </div>
 
             <nav id="nav-links">
-    <a href="#/" data-view="game-list">Home</a>
-    <a href="#/upload" data-view="upload-form" class="requires-login hidden">Upload</a>
-    <a href="#/how-to" data-view="how-to">How To</a>
-    <a href="#/login" id="login-link" data-modal="login">Login</a>
-    <a href="#/register" id="register-link" data-modal="register">Register</a>
-    <button id="logout-button" class="requires-login hidden">Logout</button>
-</nav>
+                <a href="#/" data-view="game-list">Home</a>
+                <a href="#/upload" data-view="upload-form" class="requires-login hidden">Upload</a>
+                <a href="#/how-to" data-view="how-to">How To</a>
+                <a href="#/login" id="login-link" data-modal="login">Login</a>
+                <a href="#/register" id="register-link" data-modal="register">Register</a>
+                <button id="logout-button" class="requires-login hidden">Logout</button>
+            </nav>
 
             <div id="ad-slot-header" class="ad-slot">
                  <p>ADVERTISEMENT - HEADER<br>(728x90 recommended)<br>(Replace this with your ad code/image)</p>
             </div>
-            </header>
+        </header>
 
         <div id="icon-strip">
             <img src="images/8-Bit Sword Warrior.png" alt="Sword Warrior Icon" class="strip-icon">
@@ -636,6 +628,7 @@
             <img src="images/8-Bit Coder.png" alt="Coder Icon" class="strip-icon">
             <img src="images/8-Bit Broccoli.png" alt="Broccoli Icon" class="strip-icon">
         </div>
+
         <div class="main-content">
             <main>
                 <div id="view-game-list" class="view active">
@@ -712,13 +705,49 @@
                             <label for="upload-preview-image">Preview Image (Optional, JPG/PNG/GIF):</label>
                             <input type="file" id="upload-preview-image" accept="image/*">
                         </div>
+                        <div class="form-group">
+                            <label for="upload-chat-log">AI Chat Log (Optional but helpful!):</label>
+                            <textarea id="upload-chat-log" placeholder="Paste the chat log with the AI used to generate the game here..." style="min-height: 150px;"></textarea>
+                        </div>
                         <button type="submit" id="upload-submit-button">Upload Game</button>
                         <p id="upload-status" class="loading-indicator hidden"></p>
                         <p id="upload-error" class="error-message hidden"></p>
                     </form>
                 </div>
 
-                 <div id="view-terms" class="view">
+                <div id="view-how-to" class="view">
+                    <button id="howto-back-button">&lt; Back</button>
+                    <h2>How To Create Games for Vibe Gaming</h2>
+
+                    <p style="margin-top: 15px;">Welcome, Vibe Coder!</p>
+                    <p>The games on this site are special: they are entirely self-contained in **one single HTML file** and often generated with the help of AI!</p>
+
+                    <h3 style="margin-top: 20px; color: var(--secondary-color);">Core Idea: Single HTML File</h3>
+                    <p>Your entire game - HTML structure, CSS styling, and JavaScript logic - must be bundled into one `.html` file. No external `.css` or `.js` files allowed!</p>
+                    <ul>
+                        <li>Embed CSS using `<style>` tags in the `<head>`.</li>
+                        <li>Embed JavaScript using `<script>` tags, usually at the end of the `<body>`.</li>
+                    </ul>
+
+                    <h3 style="margin-top: 20px; color: var(--secondary-color);">Using AI (like ChatGPT, Claude, Gemini, etc.)</h3>
+                    <p>AI can be a great partner for "vibe coding" these simple games:</p>
+                    <ul>
+                        <li>**Prompting:** Clearly ask the AI to generate a simple game (like Snake, Pong, a basic platformer, a text adventure) that fits entirely within a single HTML file. Specify "using HTML, CSS, and JavaScript".</li>
+                        <li>**Canvas:** For graphical games, ask the AI to use the HTML `<canvas>` element for drawing.</li>
+                        <li>**Simplicity:** Start simple! Complex assets or physics can be hard to manage in one file. Focus on core mechanics.</li>
+                        <li>**Iteration:** Get a basic version working, then ask the AI to add features (scoring, levels, better graphics) one step at a time.</li>
+                        <li>**Debugging:** Paste errors the AI code gives you back into the AI and ask it to fix them!</li>
+                    </ul>
+
+                    <h3 style="margin-top: 20px; color: var(--secondary-color);">Technical Tips</h3>
+                    <ul>
+                        <li>**No Server:** Your game code runs entirely in the user's browser. It cannot easily save data persistently or communicate with external servers (unless using advanced techniques usually beyond simple single-file games).</li>
+                        <li>**Keep it Small:** While not a strict limit, try to keep the file size reasonable. Avoid huge embedded images or libraries if possible. Consider using data URIs for very small images if needed.</li>
+                        <li>**Testing:** Test your single `.html` file by simply opening it directly in your web browser before uploading.</li>
+                    </ul>
+                    <p style="margin-top: 15px;">Happy Vibe Coding!</p>
+                </div>
+                <div id="view-terms" class="view">
                      <button id="terms-back-button">&lt; Back</button>
                      <h2>Terms of Service & Content Policy</h2>
                      <p><strong>Welcome to Vibe Gaming!</strong></p>
@@ -740,13 +769,9 @@
                      <h3>8. Governing Law:</h3>
                      <ul><li>These terms shall be governed by the laws of Israel.</li></ul>
                      <p><strong>By using this site, you acknowledge and agree to these terms.</strong></p>
-                     </div>
+                </div>
 
-
-
-            </main>
-
-            <aside id="sidebar">
+            </main> <aside id="sidebar">
                 <h3>Categories</h3>
                 <ul id="sidebar-categories">
                    <li><a href="#/category/All" data-category="">All</a></li>
@@ -761,12 +786,9 @@
                  <div id="ad-slot-sidebar" class="ad-slot">
                      <p>ADVERTISEMENT - SIDEBAR<br>(e.g., 300x250)<br>(Replace this with your ad code/image)</p>
                  </div>
-                 </aside>
-        </div> 
-		<footer>
+            </aside> </div> <footer>
             <p>&copy; <span id="copyright-year"></span> Vibe Gaming. All rights reserved.</p>
-            <a href="#/terms" id="terms-link">Terms of Service</a>
-	    <span id="contact-link" style="cursor: pointer; text-decoration: underline; color: var(--link-color);">Contact Me</span> 
+            <a href="#/terms" id="terms-link" data-view="terms">Terms of Service</a> <span id="contact-link" style="cursor: pointer; text-decoration: underline; color: var(--link-color);">Contact Me</span>
         </footer>
     </div> <div id="modal-login" class="modal">
         <div class="modal-content">
@@ -833,25 +855,25 @@
                  </div>
         </div>
     </div>
+
     <script type="module">
         // --- Supabase Configuration ---
-        const SUPABASE_URL = 'https://vniwugmbpssesxvnoefc.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZuaXd1Z21icHNzZXN4dm5vZWZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwOTU0MzcsImV4cCI6MjA1OTY3MTQzN30.6uTmc7ma4Jd_H5yqN7GZEatFzzUEJS5zgbRRrblT_eU';
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); 
-        const GAME_FILES_BUCKET = 'game-files'; 
-
-        // --- SUPABASE DB/STORAGE/RLS SETUP NOTES ---
-        // ** ENSURE THIS IS DONE MANUALLY IN SUPABASE **
-        // ... (Previous detailed notes on Tables, RLS, Storage Policies) ...
+        // IMPORTANT: Replace with your actual Supabase URL and Anon Key
+        const SUPABASE_URL = 'https://vniwugmbpssesxvnoefc.supabase.co'; // Replace if necessary
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZuaXd1Z21icHNzZXN4dm5vZWZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwOTU0MzcsImV4cCI6MjA1OTY3MTQzN30.6uTmc7ma4Jd_H5yqN7GZEatFzzUEJS5zgbRRrblT_eU'; // Replace if necessary
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const GAME_FILES_BUCKET = 'game-files'; // Make sure this matches your bucket name
 
         // --- Global State ---
         let currentUser = null;
-        let currentGameData = null; 
+        let currentGameData = null; // Holds details of the currently viewed game
+        let games = []; // Holds the list of games fetched for the grid and random play
         let currentCategory = '';
         let currentSort = 'created_at.desc';
-        const PREVIEW_PLACEHOLDER_URL = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3Crect width='4' height='3' fill='%23${window.getComputedStyle(document.body).getPropertyValue('--placeholder-bg').substring(1)}'/%3E%3Ctext x='50%25' y='50%25' font-family='<span class="math-inline">\{window\.getComputedStyle\(document\.body\)\.getPropertyValue\('\-\-pixel\-font'\)\.replace\(/'/g, ''\)\}' font\-size\='1px' fill\='%23</span>{window.getComputedStyle(document.body).getPropertyValue('--primary-color').substring(1)}' dominant-baseline='middle' text-anchor='middle'%3E?%3C/text%3E%3C/svg%3E`; 
+        // Generate placeholder dynamically based on CSS variables
+        const PREVIEW_PLACEHOLDER_URL = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3Crect width='4' height='3' fill='%23${getComputedStyle(document.documentElement).getPropertyValue('--placeholder-bg').trim().substring(1)}'/%3E%3Ctext x='50%25' y='50%25' font-family='${getComputedStyle(document.documentElement).getPropertyValue('--pixel-font').trim().replace(/'/g, '')}' font-size='1px' fill='%23${getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim().substring(1)}' dominant-baseline='middle' text-anchor='middle'%3E?%3C/text%3E%3C/svg%3E`;
 
-        // --- DOM Element References --- 
+        // --- DOM Element References (Cache elements used frequently) ---
         const views = document.querySelectorAll('.view');
         const modals = document.querySelectorAll('.modal');
         const navLinksContainer = document.getElementById('nav-links');
@@ -872,13 +894,14 @@
         const likeCount = document.getElementById('like-count');
         const downloadButton = document.getElementById('download-button');
         const reportButton = document.getElementById('report-button');
-        const backButton = document.getElementById('back-button');
+        const backButton = document.getElementById('back-button'); // Back from game view
         const uploadForm = document.getElementById('upload-form');
         const uploadTitle = document.getElementById('upload-title');
         const uploadDescription = document.getElementById('upload-description');
         const uploadCategory = document.getElementById('upload-category');
         const uploadGameFile = document.getElementById('upload-game-file');
         const uploadPreviewImage = document.getElementById('upload-preview-image');
+        const uploadChatLog = document.getElementById('upload-chat-log'); // Added chat log field
         const uploadSubmitButton = document.getElementById('upload-submit-button');
         const uploadStatus = document.getElementById('upload-status');
         const uploadError = document.getElementById('upload-error');
@@ -889,184 +912,208 @@
         const messageText = document.getElementById('message-text');
         const termsLink = document.getElementById('terms-link');
         const termsBackButton = document.getElementById('terms-back-button');
+        // Note: howtoBackButton reference is added in setupEventListeners after checking existence
 
+        // --- Helper Functions ---
 
-        // --- Helper Functions --- 
+        /**
+         * Shows a specific view div and hides others.
+         * Handles login requirement for protected views.
+         * @param {string} viewId - The ID of the view div to show (e.g., 'view-game-list').
+         */
         function showView(viewId) {
-            console.log(`Showing view: ${viewId}`); 
-            views.forEach(view => view.classList.remove('active'));
+            console.log(`Attempting to show view: ${viewId}`);
+            views.forEach(view => view.classList.remove('active')); // Hide all views first
+
             const activeView = document.getElementById(viewId);
+
             if (activeView) {
+                // Check if the view requires login and user is not logged in
                 if (activeView.classList.contains('requires-login') && !currentUser) {
+                    // Show login modal if not already visible
                     if (document.getElementById('modal-login').style.display !== 'block') {
                          showMessage("Please log in or register to access this page.");
                          showModal('login');
                     }
-                     const currentActive = document.querySelector('.view.active') || document.getElementById('view-game-list');
-                     if (!currentActive) { 
-                          document.getElementById('view-game-list').classList.add('active');
-                     } else {
-                          currentActive.classList.add('active'); 
-                     }
-                    if (window.location.hash !== '#/login' && window.location.hash !== '#/register') {
-                       window.location.hash = '#/'; 
+                    // Important: Don't show the protected view. Re-activate the previous or default view.
+                    const currentActive = document.querySelector('.view.active') || document.getElementById('view-game-list');
+                    if (currentActive && currentActive.id !== viewId) { // Check if it's not the target view itself
+                        currentActive.classList.add('active'); // Re-show previous/default
+                    } else {
+                        // Fallback if something went wrong, show game list
+                        const gameListView = document.getElementById('view-game-list');
+                        if(gameListView) gameListView.classList.add('active');
                     }
-                    return; 
+                    // Reset hash if trying to access protected page directly
+                    if (window.location.hash !== '#/login' && window.location.hash !== '#/register') {
+                       window.location.hash = '#/';
+                    }
+                    return; // Stop execution for this view change
                 }
+                // Show the requested view
                 activeView.classList.add('active');
+                console.log(`Successfully activated view: ${viewId}`);
             } else {
-                console.error(`View with ID ${viewId} not found. Showing game list.`);
+                // Fallback if the view ID doesn't exist
+                console.error(`View with ID ${viewId} not found in HTML. Showing game list.`);
                 const gameListView = document.getElementById('view-game-list');
                  if(gameListView) gameListView.classList.add('active');
-                 window.location.hash = '#/';
+                 // Reset hash to avoid inconsistent state
+                 if (window.location.hash !== '#/') {
+                    window.location.hash = '#/';
+                 }
             }
-            window.scrollTo(0, 0); 
+            window.scrollTo(0, 0); // Scroll to top on view change
         }
 
-         // --- Play Random Game ---
-        function playRandomGame() {
-            console.log("Attempting to play random game..."); // Log for debugging
-
-            // Check if the global 'games' array is populated
-            if (!window.games || window.games.length === 0) {
-                console.warn("No games loaded yet to play randomly.");
-                // Optionally, try loading games first, but for simplicity, show a message
-                displayMessage('modal-message', 'Games haven\'t loaded yet. Please wait or browse first.', true);
-                return;
-            }
-
-            // Select a random game from the array
-            const randomIndex = Math.floor(Math.random() * window.games.length);
-            const randomGame = window.games[randomIndex];
-
-            if (randomGame && randomGame.id) {
-                console.log(`Selected random game: ${randomGame.name} (ID: ${randomGame.id})`);
-                // Use the existing loadGame function to display it
-                loadGame(randomGame);
-                // Ensure the game play view is shown (loadGame might already do this, but belt-and-suspenders)
-                showView('view-game-play');
-            } else {
-                console.error("Failed to select a valid random game.", randomGame);
-                displayMessage('modal-message', 'Could not select a random game to play.', true);
-            }
-        }
-
-
+        /**
+         * Shows a modal dialog.
+         * @param {string} modalId - The identifier of the modal (e.g., 'login', 'register').
+         */
         function showModal(modalId) {
-            console.log(`Attempting to show modal with ID: ${modalId}`); 
             const modal = document.getElementById(`modal-${modalId}`);
-            console.log('Found modal element:', modal); 
             if (modal) {
-                const errorElement = modal.querySelector('.error-message'); 
+                // Clear previous error messages
+                const errorElement = modal.querySelector('.error-message');
                 if (errorElement) {
                     errorElement.textContent = '';
                     errorElement.classList.add('hidden');
                 }
-                 const form = modal.querySelector('form');
-                 // if(form) form.reset(); 
+                // Optionally reset forms within the modal
+                // const form = modal.querySelector('form');
+                // if(form) form.reset();
 
                 modal.style.display = 'block';
-                console.log(`Set display=block for modal-${modalId}`); 
             } else {
-                console.error(`Modal element not found for ID: modal-${modalId}`); 
+                console.error(`Modal element not found for ID: modal-${modalId}`);
             }
         }
 
+        /**
+         * Hides a modal dialog.
+         * @param {string} modalId - The identifier of the modal (e.g., 'login', 'register').
+         */
         function hideModal(modalId) {
             const modal = document.getElementById(`modal-${modalId}`);
             if (modal) modal.style.display = 'none';
         }
 
+        /**
+         * Shows a message to the user in a dedicated message modal.
+         * @param {string} message - The message text to display.
+         * @param {boolean} [isError=false] - If true, styles the message as an error.
+         */
         function showMessage(message, isError = false) {
-            messageText.textContent = message;
-            messageText.style.color = isError ? 'var(--error-color)' : 'var(--primary-color)';
-            showModal('message'); 
+            if (messageText) {
+                messageText.textContent = message;
+                messageText.style.color = isError ? 'var(--error-color)' : 'var(--primary-color)';
+                showModal('message');
+            } else {
+                console.error("Message modal text element not found. Message:", message);
+                // Fallback to alert if message modal is broken
+                alert(message);
+            }
         }
 
 
-	// --- Routing ---
-function handleRouteChange() {
-    const hash = window.location.hash || '#/';
-    console.log("Route changed:", hash); // Keep log for debugging
+        // --- Routing ---
+        /**
+         * Handles changes in the URL hash (#) to show the correct view or modal.
+         */
+        function handleRouteChange() {
+            const hash = window.location.hash || '#/'; // Default to home if no hash
+            console.log("Route changed:", hash);
 
-    // Close any open modals on route change (important!)
-    modals.forEach(modal => { // Ensure 'modals' variable is defined above
-        if(modal) modal.style.display = 'none';
-    });
-
-    // Determine which view to show based on the hash
-    if (hash.startsWith('#/game/')) {
-        const gameId = hash.substring(7);
-        // fetchAndRenderGameDetails function is responsible 
-        // for fetching data AND calling showView('view-game-play')
-        fetchAndRenderGameDetails(gameId); 
-    } else if (hash === '#/upload') {
-        showView('view-upload-form');
-        // Reset upload form state if elements exist
-        if(uploadForm) uploadForm.reset(); 
-        if(uploadStatus) uploadStatus.classList.add('hidden');
-        if(uploadError) uploadError.classList.add('hidden');
-        if(uploadSubmitButton) {
-            uploadSubmitButton.disabled = false;
-            uploadSubmitButton.textContent = 'Upload Game';
-        }
-    } else if (hash === '#/terms') {
-        showView('view-terms');
-    } else if (hash === '#/how-to') { // Handle the new How To view
-        showView('view-how-to');
-    } else if (hash.startsWith('#/category/')) {
-        // Handle category view (which is the game list filtered)
-        const category = decodeURIComponent(hash.substring(11));
-        currentCategory = (category === 'All' || category === '') ? '' : category;
-        if(categoryFilter) categoryFilter.value = currentCategory; // Update dropdown
-        fetchAndRenderGames(); // Re-fetch games for the category
-        showView('view-game-list'); // Show the list view
-    } else if (hash === '#/login') {
-        // If someone navigates directly to #/login, show home + modal
-        showView('view-game-list'); 
-        showModal('login');
-    } else if (hash === '#/register') {
-        // If someone navigates directly to #/register, show home + modal
-        showView('view-game-list'); 
-        showModal('register');
-    } else { 
-        // Default to game list view (handles #/ or unknown hashes)
-        currentCategory = ''; 
-        if(categoryFilter) categoryFilter.value = ''; // Reset category filter
-        fetchAndRenderGames();
-        showView('view-game-list');
-    }
-} // --- End of handleRouteChange ---
-
-
-        // --- Authentication --- 
-        async function setupAuthListeners() {
-            console.log("Setting up auth listeners..."); // Added log
-            const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
-            if (sessionError) console.error("Error getting initial session:", sessionError);
-            currentUser = session?.user ?? null;
-            updateUIBasedOnAuth();
-            handleRouteChange(); 
-
-            supabaseClient.auth.onAuthStateChange((_event, session) => {
-                const previousUser = currentUser?.id;
-                currentUser = session?.user ?? null;
-                console.log("Auth state changed:", currentUser?.email ?? 'Logged out');
-                updateUIBasedOnAuth();
-                if (previousUser !== currentUser?.id) {
-                    handleRouteChange(); 
-                }
+            // Close any open modals whenever the route changes
+            modals.forEach(modal => {
+                if(modal) modal.style.display = 'none';
             });
-             console.log("Auth listeners setup complete."); // Added log
+
+            // Determine which view to show based on the hash
+            if (hash.startsWith('#/game/')) {
+                const gameId = hash.substring(7);
+                fetchAndRenderGameDetails(gameId); // Fetches data AND calls showView('view-game-play')
+            } else if (hash === '#/upload') {
+                showView('view-upload-form');
+                // Reset upload form state if elements exist
+                if(uploadForm) uploadForm.reset();
+                if(uploadStatus) uploadStatus.classList.add('hidden');
+                if(uploadError) uploadError.classList.add('hidden');
+                if(uploadSubmitButton) {
+                    uploadSubmitButton.disabled = false;
+                    uploadSubmitButton.textContent = 'Upload Game';
+                }
+            } else if (hash === '#/terms') {
+                showView('view-terms');
+            } else if (hash === '#/how-to') { // Handle the How To view
+                showView('view-how-to'); // This should now find the element
+            } else if (hash.startsWith('#/category/')) {
+                // Handle category filtering (which uses the game list view)
+                const category = decodeURIComponent(hash.substring(11));
+                currentCategory = (category === 'All' || category === '') ? '' : category;
+                if(categoryFilter) categoryFilter.value = currentCategory; // Update dropdown
+                fetchAndRenderGames(); // Re-fetch games for the category
+                showView('view-game-list'); // Show the list view
+            } else if (hash === '#/login') {
+                // If navigating directly to #/login, show home + login modal
+                showView('view-game-list'); // Show background view
+                showModal('login');
+            } else if (hash === '#/register') {
+                // If navigating directly to #/register, show home + register modal
+                showView('view-game-list'); // Show background view
+                showModal('register');
+            } else {
+                // Default to game list view (handles '#/' or unknown hashes)
+                currentCategory = ''; // Reset category filter
+                if(categoryFilter) categoryFilter.value = ''; // Reset dropdown
+                fetchAndRenderGames(); // Load default games
+                showView('view-game-list');
+            }
         }
 
+
+        // --- Authentication ---
+        /**
+         * Sets up initial authentication state and listener for changes.
+         */
+        async function setupAuthListeners() {
+            console.log("Setting up auth listeners...");
+            try {
+                const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
+                if (sessionError) console.error("Error getting initial session:", sessionError);
+                currentUser = session?.user ?? null;
+                updateUIBasedOnAuth(); // Update UI based on initial state
+                handleRouteChange(); // Handle initial route based on auth state
+
+                // Listen for changes in authentication state (login, logout)
+                supabaseClient.auth.onAuthStateChange((_event, session) => {
+                    const previousUserId = currentUser?.id;
+                    currentUser = session?.user ?? null;
+                    console.log("Auth state changed:", currentUser?.email ?? 'Logged out');
+                    updateUIBasedOnAuth(); // Update UI accordingly
+                    // Re-evaluate route if user logged in/out, might grant/revoke access
+                    if (previousUserId !== currentUser?.id) {
+                        handleRouteChange();
+                    }
+                });
+                console.log("Auth listeners setup complete.");
+            } catch (error) {
+                console.error("Fatal error during auth setup:", error);
+                showMessage("Could not initialize authentication. Please refresh.", true);
+            }
+        }
+
+        /**
+         * Handles user registration form submission.
+         */
         async function handleRegister(event) {
             event.preventDefault();
             const email = document.getElementById('register-email').value;
             const password = document.getElementById('register-password').value;
             const passwordConfirm = document.getElementById('register-password-confirm').value;
             const errorElement = document.getElementById('register-error');
-            errorElement.classList.add('hidden'); 
+            errorElement.textContent = ''; // Clear previous errors
+            errorElement.classList.add('hidden');
 
              if (password !== passwordConfirm) {
                  errorElement.textContent = "Passwords do not match.";
@@ -1080,11 +1127,13 @@ function handleRouteChange() {
              }
 
             try {
-                // Redirect URL now uses Supabase site URL setting
-                const { data, error } = await supabaseClient.auth.signUp({ email, password }); 
-                if (error) throw error;
+                // Supabase handles email verification flow if enabled in settings
+                const { data, error } = await supabaseClient.auth.signUp({ email, password });
+                if (error) throw error; // Let catch block handle Supabase errors
+
                 hideModal('register');
                 showMessage('Registration successful! Please check your email for verification (if enabled).');
+                registerForm.reset(); // Clear form
             } catch (error) {
                 console.error('Registration Error:', error);
                 errorElement.textContent = error.message || 'Registration failed.';
@@ -1092,17 +1141,24 @@ function handleRouteChange() {
             }
         }
 
+        /**
+         * Handles user login form submission.
+         */
         async function handleLogin(event) {
             event.preventDefault();
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
             const errorElement = document.getElementById('login-error');
-             errorElement.classList.add('hidden'); 
+            errorElement.textContent = ''; // Clear previous errors
+            errorElement.classList.add('hidden');
 
             try {
                 const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-                if (error) throw error;
+                if (error) throw error; // Let catch block handle Supabase errors
+
+                // Auth state listener will handle UI updates and routing
                 hideModal('login');
+                loginForm.reset(); // Clear form
             } catch (error) {
                 console.error('Login Error:', error);
                 errorElement.textContent = error.message || 'Login failed. Check email/password.';
@@ -1110,49 +1166,64 @@ function handleRouteChange() {
             }
         }
 
+        /**
+         * Handles user logout.
+         */
         async function handleLogout() {
             try {
-                console.log("Attempting logout..."); // Added log
+                console.log("Attempting logout...");
                 const { error } = await supabaseClient.auth.signOut();
                 if (error) throw error;
-                console.log("Logout successful."); // Added log
-                window.location.hash = '#/'; 
+                // Auth state listener handles UI updates and routing
+                console.log("Logout successful.");
+                // Explicitly go to home page after logout
+                window.location.hash = '#/';
             } catch (error) {
                  console.error('Logout Error:', error);
                  showMessage(`Logout failed: ${error.message}`, true);
             }
         }
 
+        /**
+         * Updates UI elements based on whether a user is logged in.
+         */
         function updateUIBasedOnAuth() {
             console.log("Updating UI for auth state:", currentUser ? currentUser.email : 'Logged out');
-            if (currentUser) {
-                loginLink.classList.add('hidden');
-                registerLink.classList.add('hidden');
-                requiresLoginElements.forEach(el => el.classList.remove('hidden'));
-                // Enable buttons if element exists
-                if(likeButton) likeButton.disabled = false;
-                if(downloadButton) downloadButton.disabled = false;
-                if(reportButton) reportButton.disabled = false;
-            } else {
-                loginLink.classList.remove('hidden');
-                registerLink.classList.remove('hidden');
-                requiresLoginElements.forEach(el => el.classList.add('hidden'));
-                 if(likeButton) likeButton.disabled = true;
-                 if(downloadButton) downloadButton.disabled = true;
-                 if(reportButton) reportButton.disabled = true;
+            const isLoggedIn = !!currentUser;
+
+            // Toggle visibility of login/register vs logout/protected elements
+            loginLink?.classList.toggle('hidden', isLoggedIn);
+            registerLink?.classList.toggle('hidden', isLoggedIn);
+            requiresLoginElements.forEach(el => el.classList.toggle('hidden', !isLoggedIn));
+
+            // Enable/disable action buttons based on login state AND if game is loaded
+            const canPerformGameActions = isLoggedIn && !!currentGameData;
+            if(likeButton) likeButton.disabled = !canPerformGameActions;
+            if(downloadButton) downloadButton.disabled = !canPerformGameActions;
+            if(reportButton) reportButton.disabled = !canPerformGameActions;
+
+            // Reset like button state if user logs out while viewing game
+            if (!isLoggedIn && likeButton) {
+                likeButton.classList.remove('liked');
+                likeButton.textContent = 'Like';
             }
         }
 
 
         // --- Game Fetching & Rendering ---
+
+        /**
+         * Fetches games from Supabase based on filters and renders them in the grid.
+         */
         async function fetchAndRenderGames() {
-            gameGrid.innerHTML = '<div class="loading-indicator">Loading games...</div>'; 
+            if (!gameGrid) return; // Exit if grid element doesn't exist
+            gameGrid.innerHTML = '<div class="loading-indicator">Loading games...</div>'; // Show loading state
 
             const [sortField, sortOrder] = currentSort.split('.');
 
             try {
                 let query = supabaseClient
-                    .from('games')
+                    .from('games') // Make sure 'games' is your table name
                     .select('id, title, description, category, preview_image_path, likes_count')
                     .order(sortField, { ascending: sortOrder === 'asc' });
 
@@ -1160,201 +1231,289 @@ function handleRouteChange() {
                     query = query.eq('category', currentCategory);
                 }
 
-                const { data: games, error } = await query.limit(100); 
+                const { data: fetchedGames, error } = await query.limit(100); // Limit results for performance
 
-                if (error) throw error;
+                if (error) throw error; // Let catch block handle errors
 
-                if (games && games.length > 0) {
-                    gameGrid.innerHTML = ''; 
-                    gameGrid.style.display = 'grid'; 
-                    gameGrid.style.textAlign = ''; 
-                    games.forEach(renderGameCard);
+                games = fetchedGames || []; // Update global games array
+                window.games = games; // Also attach to window for playRandomGame
+
+                if (games.length > 0) {
+                    gameGrid.innerHTML = ''; // Clear loading message
+                    gameGrid.style.display = 'grid'; // Ensure grid display
+                    games.forEach(renderGameCard); // Render each game
                 } else {
-                    gameGrid.style.display = 'block'; 
-                    gameGrid.innerHTML = '<p class="no-games-message">No games found matching your criteria.</p>'; 
+                    // Show "No games found" message if array is empty
+                    gameGrid.style.display = 'block'; // Use block display for single message
+                    gameGrid.innerHTML = '<p class="no-games-message">No games found matching your criteria.</p>';
                 }
             } catch (error) {
                  console.error('Error fetching games:', error);
-                 gameGrid.style.display = 'block'; 
-                 gameGrid.innerHTML = '<p class="no-games-message error-message">Could not load games. Please try again later.</p>';
+                 gameGrid.style.display = 'block'; // Use block display for error message
+                 gameGrid.innerHTML = `<p class="no-games-message error-message">Could not load games: ${error.message}. Please try again later.</p>`;
             }
         }
 
+        /**
+         * Renders a single game card HTML and appends it to the grid.
+         * @param {object} game - The game data object from Supabase.
+         */
          function renderGameCard(game) {
             const card = document.createElement('div');
             card.className = 'game-card';
-            card.dataset.gameId = game.id;
+            card.dataset.gameId = game.id; // Store ID for later use
 
+            // Construct preview image URL, use placeholder if missing
             const previewUrl = game.preview_image_path
-                ? `<span class="math-inline">\{SUPABASE\_URL\}/storage/v1/object/public/</span>{GAME_FILES_BUCKET}/${game.preview_image_path}`
+                ? `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.preview_image_path}`
                 : PREVIEW_PLACEHOLDER_URL;
 
-            const descriptionPreview = game.description ? game.description.substring(0, 100) + (game.description.length > 100 ? '...' : '') : 'No description.';
+            // Truncate description for preview
+            const descriptionPreview = game.description
+                ? (game.description.length > 100 ? game.description.substring(0, 97) + '...' : game.description)
+                : 'No description.';
 
             card.innerHTML = `
-                <img src="<span class="math-inline">\{previewUrl\}" alt\="</span>{game.title || 'Game'} Preview" class="preview" loading="lazy" onerror="this.src='<span class="math-inline">\{PREVIEW\_PLACEHOLDER\_URL\}'"\> \{/\* Added onerror \*/\}
-<h3\></span>{game.title || 'Untitled Game'}</h3>
+                <img src="${previewUrl}" alt="${game.title || 'Game'} Preview" class="preview" loading="lazy" onerror="this.onerror=null; this.src='${PREVIEW_PLACEHOLDER_URL}'"> <h3>${game.title || 'Untitled Game'}</h3>
                 <span class="category">${game.category || 'Uncategorized'}</span>
-                <p class="likes">Likes: <span class="math-inline">\{game\.likes\_count \|\| 0\}</p\>
-<p class\="description\-preview"\></span>{descriptionPreview}</p>
-                <button data-game-id="${game.id}" class="view-game-button">Play Game</button>
+                <p class="likes">Likes: ${game.likes_count || 0}</p>
+                <p class="description-preview">${descriptionPreview}</p>
+                <a href="#/game/${game.id}" class="view-game-button" role="button" style="margin-top: auto;">Play Game</a>
             `;
-            gameGrid.appendChild(card);
-        }
+            // Append the card to the grid
+            if (gameGrid) gameGrid.appendChild(card);
+         }
 
 
+        /**
+         * Fetches full details for a specific game and displays them in the game play view.
+         * @param {string} gameId - The UUID of the game to fetch.
+         */
         async function fetchAndRenderGameDetails(gameId) {
-             showView('view-game-play'); 
-             gameTitle.textContent = 'Loading Game...';
-             gameIframe.src = 'about:blank'; 
-             likeCount.textContent = '...';
-             gameDescription.textContent = '...';
-             gameUploader.textContent = '...';
-             gameCategory.textContent = '...';
+             // Reset game play view elements to loading state
+             showView('view-game-play'); // Show the view first
+             if(gameTitle) gameTitle.textContent = 'Loading Game...';
+             if(gameIframe) gameIframe.src = 'about:blank'; // Clear previous game
+             if(likeCount) likeCount.textContent = '...';
+             if(gameDescription) gameDescription.textContent = '...';
+             if(gameUploader) gameUploader.textContent = '...';
+             if(gameCategory) gameCategory.textContent = '...';
              if(likeButton) { likeButton.disabled = true; likeButton.classList.remove('liked'); likeButton.textContent = 'Like'; }
              if(downloadButton) downloadButton.disabled = true;
              if(reportButton) reportButton.disabled = true;
-             
-             currentGameData = null; 
+
+             currentGameData = null; // Clear previous game data
 
             try {
+                 // Fetch game details, including uploader's username if profiles table is set up
                  const { data: game, error: gameError } = await supabaseClient
                      .from('games')
                      .select(`
-                         id, title, description, category, uploader_user_id, game_file_path, likes_count,
-                         profiles:uploader_user_id ( username ) 
-                     `) // Fetch username from profiles if available
+                         id, title, description, category, uploader_user_id, game_file_path, preview_image_path, likes_count,
+                         profiles:uploader_user_id ( username )
+                     `)
                      .eq('id', gameId)
-                     .single(); 
+                     .single(); // Expect only one game
 
                  if (gameError) throw gameError;
                  if (!game) throw new Error("Game not found.");
 
-                 currentGameData = game; 
+                 currentGameData = game; // Store current game data globally
 
+                 // Check if the current user has liked this game
                  let userHasLiked = false;
                  if (currentUser) {
-                     const { data: likeData, error: likeError } = await supabaseClient
-                         .from('likes')
-                         .select('game_id', { count: 'exact', head: true }) // Just check if like exists
-                         .match({ user_id: currentUser.id, game_id: gameId });
-                         
-                     if (likeError) console.warn("Could not fetch like status:", likeError); 
-                     userHasLiked = (likeData?.count ?? 0) > 0; // Check count
-                 }
+                     try {
+                        const { data: likeData, error: likeError, count } = await supabaseClient
+                            .from('likes') // Assuming 'likes' table exists
+                            .select('game_id', { count: 'exact', head: true }) // More efficient count
+                            .match({ user_id: currentUser.id, game_id: gameId });
 
-                 gameTitle.textContent = game.title || 'Untitled Game';
-                 likeCount.textContent = game.likes_count || 0;
-                 gameDescription.textContent = game.description || 'No description provided.';
-                 gameUploader.textContent = game.profiles?.username || 'Anonymous'; // Use username if available
-                 gameCategory.textContent = game.category || 'Uncategorized';
-
-                 if (currentUser) {
-                     if(likeButton) {
-                          likeButton.disabled = false;
-                          likeButton.classList.toggle('liked', userHasLiked);
-                          likeButton.textContent = userHasLiked ? 'Unlike' : 'Like';
+                        if (likeError) console.warn("Could not fetch like status:", likeError);
+                        userHasLiked = (count ?? 0) > 0;
+                     } catch (likeCheckError) {
+                         console.warn("Error checking like status:", likeCheckError);
                      }
-                      if(downloadButton) downloadButton.disabled = false;
-                      if(reportButton) reportButton.disabled = false;
                  }
 
+                 // Update DOM elements with game details
+                 if(gameTitle) gameTitle.textContent = game.title || 'Untitled Game';
+                 if(likeCount) likeCount.textContent = game.likes_count || 0;
+                 if(gameDescription) gameDescription.textContent = game.description || 'No description provided.';
+                 // Use profile username if available, otherwise fallback or hide
+                 if(gameUploader) gameUploader.textContent = game.profiles?.username || 'Anonymous';
+                 if(gameCategory) gameCategory.textContent = game.category || 'Uncategorized';
+
+                 // Update like button state
+                 if (currentUser && likeButton) {
+                      likeButton.disabled = false; // Enable button for logged-in user
+                      likeButton.classList.toggle('liked', userHasLiked);
+                      likeButton.textContent = userHasLiked ? 'Unlike' : 'Like';
+                 }
+                 // Enable download/report buttons for logged-in users
+                 if (currentUser && downloadButton) downloadButton.disabled = false;
+                 if (currentUser && reportButton) reportButton.disabled = false;
+
+                // Load game into iframe if path exists
                 if (game.game_file_path) {
-                    const gameUrl = `<span class="math-inline">\{SUPABASE\_URL\}/storage/v1/object/public/</span>{GAME_FILES_BUCKET}/${game.game_file_path}`;
-                    console.log("Loading game iframe:", gameUrl); // Added log
-                    gameIframe.src = gameUrl;
+                    const gameUrl = `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.game_file_path}`;
+                    console.log("Loading game iframe:", gameUrl);
+                    if(gameIframe) gameIframe.src = gameUrl;
                 } else {
-                     console.error("Game file path missing for game:", gameId); // Added log
-                     gameDescription.textContent += "\n\nError: Game file path missing.";
-                     gameIframe.src = 'about:blank'; // Ensure blank if path missing
+                     console.error("Game file path missing for game:", gameId);
+                     if(gameDescription) gameDescription.textContent += "\n\nError: Game file could not be loaded.";
+                     if(gameIframe) gameIframe.src = 'about:blank'; // Ensure iframe is blank
                 }
 
             } catch (error) {
                 console.error("Error fetching game details:", error);
-                gameTitle.textContent = 'Error Loading Game';
-                gameDescription.textContent = `Could not load game details: ${error.message}`;
+                if(gameTitle) gameTitle.textContent = 'Error Loading Game';
+                if(gameDescription) gameDescription.textContent = `Could not load game details: ${error.message}`;
+                if(gameIframe) gameIframe.src = 'about:blank'; // Ensure iframe is blank on error
             }
         }
 
 
         // --- Game Actions ---
-        async function handleLike() {
-            if (!currentUser || !currentGameData) return;
-            if (likeButton.disabled) return; 
 
-            likeButton.disabled = true; 
+        /**
+         * Handles liking or unliking the currently viewed game.
+         */
+        async function handleLike() {
+            if (!currentUser || !currentGameData || !likeButton) return; // Checks for user, game data, and button
+            if (likeButton.disabled) return; // Prevent double-clicking
+
+            likeButton.disabled = true; // Disable button during operation
             const gameId = currentGameData.id;
             const currentLikes = parseInt(likeCount.textContent || '0');
             const userIsLiked = likeButton.classList.contains('liked');
 
             try {
                 if (userIsLiked) {
-                    const { error } = await supabaseClient
+                    // --- Unlike ---
+                    // 1. Delete the like record
+                    const { error: deleteError } = await supabaseClient
                         .from('likes')
                         .delete()
                         .match({ user_id: currentUser.id, game_id: gameId });
-                    if (error) throw error;
+                    if (deleteError) throw deleteError;
 
+                    // 2. Decrement the like count (using RPC function is recommended)
+                    // Ensure 'decrement_like_count' function exists in Supabase SQL Editor
                     const { error: rpcError } = await supabaseClient.rpc('decrement_like_count', { game_uuid: gameId });
-                    if(rpcError) console.warn("RPC decrement failed:", rpcError); 
+                    if(rpcError) console.warn("RPC decrement_like_count failed (might not exist or RLS issue):", rpcError);
 
+                    // 3. Update UI
                     likeButton.classList.remove('liked');
                     likeButton.textContent = 'Like';
-                    likeCount.textContent = Math.max(0, currentLikes - 1);
+                    if(likeCount) likeCount.textContent = Math.max(0, currentLikes - 1); // Prevent negative likes
 
                 } else {
-                    const { error } = await supabaseClient
+                    // --- Like ---
+                    // 1. Insert the like record
+                    const { error: insertError } = await supabaseClient
                         .from('likes')
                         .insert({ user_id: currentUser.id, game_id: gameId });
-                     if (error) throw error;
+                     // Handle potential unique constraint violation gracefully (user already liked)
+                     if (insertError && insertError.code !== '23505') { // 23505 is unique_violation
+                        throw insertError;
+                     } else if (insertError && insertError.code === '23505') {
+                         console.warn("Like already existed, attempting to sync state.");
+                     }
 
+                     // 2. Increment the like count (using RPC function is recommended)
+                     // Ensure 'increment_like_count' function exists in Supabase SQL Editor
                      const { error: rpcError } = await supabaseClient.rpc('increment_like_count', { game_uuid: gameId });
-                     if(rpcError) console.warn("RPC increment failed:", rpcError); 
+                     if(rpcError) console.warn("RPC increment_like_count failed (might not exist or RLS issue):", rpcError);
 
+                     // 3. Update UI
                      likeButton.classList.add('liked');
                      likeButton.textContent = 'Unlike';
-                     likeCount.textContent = currentLikes + 1;
+                     // If insert failed due to existing like, fetch actual count to sync UI
+                     if (insertError && insertError.code === '23505') {
+                         const { data: gameDataSync, error: fetchError } = await supabaseClient.from('games').select('likes_count').eq('id', gameId).single();
+                         if (!fetchError && gameDataSync && likeCount) {
+                             likeCount.textContent = gameDataSync.likes_count || 0;
+                         } else {
+                              if(likeCount) likeCount.textContent = currentLikes; // Fallback
+                         }
+                     } else if (likeCount) {
+                         likeCount.textContent = currentLikes + 1;
+                     }
                 }
             } catch(error) {
                 console.error("Error liking/unliking game:", error);
                 showMessage(`Action failed: ${error.message}`, true);
-                 likeCount.textContent = currentLikes; 
-                 likeButton.classList.toggle('liked', userIsLiked); 
-                 likeButton.textContent = userIsLiked ? 'Unlike' : 'Like'; 
-
+                 // Revert UI optimistically on error
+                 if(likeCount) likeCount.textContent = currentLikes;
+                 if(likeButton) {
+                     likeButton.classList.toggle('liked', userIsLiked);
+                     likeButton.textContent = userIsLiked ? 'Unlike' : 'Like';
+                 }
             } finally {
-                 if(currentUser) likeButton.disabled = false; 
+                 // Re-enable button only if user is still logged in
+                 if(currentUser && likeButton) likeButton.disabled = false;
             }
         }
 
+        /**
+         * Handles downloading the game's HTML file.
+         */
         async function handleDownload() {
-             if (!currentUser || !currentGameData || !currentGameData.game_file_path) return;
+             if (!currentUser || !currentGameData || !currentGameData.game_file_path) {
+                 showMessage("Cannot download game. Ensure you are logged in and viewing a valid game.", true);
+                 return;
+             }
 
              try {
-                 const gameUrl = `<span class="math-inline">\{SUPABASE\_URL\}/storage/v1/object/public/</span>{GAME_FILES_BUCKET}/${currentGameData.game_file_path}`;
-                 console.log("Attempting download from:", gameUrl); // Added log
+                 // Get a temporary signed URL for download (more secure if bucket isn't fully public)
+                 // const { data, error } = await supabaseClient.storage
+                 //     .from(GAME_FILES_BUCKET)
+                 //     .createSignedUrl(currentGameData.game_file_path, 60); // URL valid for 60 seconds
 
+                 // If bucket IS public, construct direct URL:
+                 const gameUrl = `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${currentGameData.game_file_path}`;
+                 console.log("Attempting download from:", gameUrl);
+
+                 // Create a temporary link element to trigger download
                  const link = document.createElement('a');
-                 link.href = gameUrl;
+                 link.href = gameUrl; // Use signedUrl if generated: data.signedUrl;
+                 // Create a safe filename
                  const filename = currentGameData.title ? `${currentGameData.title.replace(/[^a-z0-9_\-\s]/gi, '_')}.html` : 'game.html';
-                 link.download = filename; 
-                 document.body.appendChild(link);
+                 link.download = filename; // Suggest filename to browser
+                 document.body.appendChild(link); // Required for Firefox
                  link.click();
-                 document.body.removeChild(link);
+                 document.body.removeChild(link); // Clean up link
 
              } catch (error) {
                  console.error("Error preparing download:", error);
-                 showMessage("Could not prepare download link.", true);
+                 showMessage(`Could not prepare download link: ${error.message}`, true);
              }
         }
 
+        /**
+         * Shows the report game modal.
+         */
         function showReportModal() {
-             if (!currentUser || !currentGameData) return;
-             hideModal('report'); 
-             document.getElementById('report-game-id').value = currentGameData.id;
+             if (!currentUser || !currentGameData) {
+                 showMessage("Please log in and select a game to report.", true);
+                 return;
+             }
+             // Reset form and set hidden game ID field
+             const reportGameIdField = document.getElementById('report-game-id');
+             const reportReasonField = document.getElementById('report-reason');
+             const reportErrorElement = document.getElementById('report-error');
+
+             if(reportForm) reportForm.reset(); // Clear previous reason
+             if(reportGameIdField) reportGameIdField.value = currentGameData.id;
+             if(reportErrorElement) reportErrorElement.classList.add('hidden');
+
              showModal('report');
         }
 
+        /**
+         * Handles submission of the report game form.
+         */
         async function handleReportSubmit(event) {
             event.preventDefault();
             if (!currentUser) return;
@@ -1362,21 +1521,31 @@ function handleRouteChange() {
             const gameId = document.getElementById('report-game-id').value;
             const reason = document.getElementById('report-reason').value.trim();
             const errorElement = document.getElementById('report-error');
-            errorElement.classList.add('hidden');
+            if(errorElement) errorElement.classList.add('hidden');
 
             if (!reason) {
-                 errorElement.textContent = 'Please provide a reason.';
-                 errorElement.classList.remove('hidden');
+                 if(errorElement) {
+                    errorElement.textContent = 'Please provide a reason for reporting.';
+                    errorElement.classList.remove('hidden');
+                 }
+                 return;
+            }
+            if (!gameId) {
+                 if(errorElement) {
+                    errorElement.textContent = 'Error: Game ID missing.';
+                    errorElement.classList.remove('hidden');
+                 }
                  return;
             }
 
             try {
+                 // Insert report into 'reports' table (ensure table and policies exist)
                  const { error } = await supabaseClient
                      .from('reports')
                      .insert({
                          game_id: gameId,
                          reason: reason,
-                         reporter_user_id: currentUser.id
+                         reporter_user_id: currentUser.id // Store who reported it
                      });
                  if (error) throw error;
 
@@ -1385,12 +1554,17 @@ function handleRouteChange() {
 
             } catch (error) {
                  console.error("Error submitting report:", error);
-                 errorElement.textContent = `Failed to submit report: ${error.message}`;
-                 errorElement.classList.remove('hidden');
+                 if(errorElement) {
+                     errorElement.textContent = `Failed to submit report: ${error.message}`;
+                     errorElement.classList.remove('hidden');
+                 }
             }
         }
 
         // --- Uploading ---
+        /**
+         * Handles submission of the game upload form.
+         */
          async function handleUpload(event) {
             event.preventDefault();
             if (!currentUser) {
@@ -1398,251 +1572,340 @@ function handleRouteChange() {
                  return;
             }
 
+            // Get form values
             const title = uploadTitle.value.trim();
             const description = uploadDescription.value.trim();
             const category = uploadCategory.value;
             const gameFile = uploadGameFile.files[0];
             const previewFile = uploadPreviewImage.files[0];
+            const chatLogContent = uploadChatLog.value.trim(); // Get chat log content
 
-             uploadError.classList.add('hidden'); 
-
+            // Basic validation
+            if(uploadError) uploadError.classList.add('hidden'); // Clear previous errors
+            let validationError = false;
             if (!title || !description || !category || !gameFile) {
                  uploadError.textContent = 'Please fill in all required fields (Title, Description, Category, Game File).';
-                 uploadError.classList.remove('hidden');
-                 return;
-            }
-            if (gameFile.type !== 'text/html') {
+                 validationError = true;
+            } else if (gameFile.type !== 'text/html') {
                 uploadError.textContent = 'Game file must be an .html file.';
-                uploadError.classList.remove('hidden');
-                return;
-            }
-             if (previewFile && !previewFile.type.startsWith('image/')) {
+                validationError = true;
+            } else if (previewFile && !previewFile.type.startsWith('image/')) {
                  uploadError.textContent = 'Preview file must be an image (JPG, PNG, GIF).';
-                 uploadError.classList.remove('hidden');
+                 validationError = true;
+             }
+             // Add size validation if needed
+             // else if (gameFile.size > MAX_GAME_SIZE_BYTES) { ... }
+             // else if (previewFile && previewFile.size > MAX_PREVIEW_SIZE_BYTES) { ... }
+
+             if (validationError) {
+                 if(uploadError) uploadError.classList.remove('hidden');
                  return;
              }
 
-             uploadSubmitButton.disabled = true;
-             uploadSubmitButton.textContent = 'Uploading...';
-             uploadStatus.textContent = 'Starting upload...';
-             uploadStatus.classList.remove('hidden');
+             // Update UI to show loading state
+             if(uploadSubmitButton) uploadSubmitButton.disabled = true;
+             if(uploadSubmitButton) uploadSubmitButton.textContent = 'Uploading...';
+             if(uploadStatus) uploadStatus.textContent = 'Starting upload...';
+             if(uploadStatus) uploadStatus.classList.remove('hidden');
 
-             // Generate unique path using timestamp and user ID for better organization
+             // --- File Upload Logic ---
+             // Generate unique file paths
              const timestamp = Date.now();
-             const baseFolderPath = `games/<span class="math-inline">\{currentUser\.id\}/</span>{timestamp}`; // Folder per upload
-             const gameFileName = `game.html`; // Standard name within folder
-             const gameFolderPath = `<span class="math-inline">\{baseFolderPath\}/</span>{gameFileName}`; 
+             const baseFolderPath = `games/${currentUser.id}/${timestamp}`; // UserID/Timestamp folder
+             const gameFileName = `game.html`; // Standard name
+             const gameStoragePath = `${baseFolderPath}/${gameFileName}`;
+             let previewStoragePath = null; // Path for preview image in storage
 
              try {
+                 // 1. Upload Game File
                  uploadStatus.textContent = 'Uploading game file...';
                  const { data: gameUploadData, error: gameUploadError } = await supabaseClient.storage
                      .from(GAME_FILES_BUCKET)
-                     .upload(gameFolderPath, gameFile);
+                     .upload(gameStoragePath, gameFile, {
+                         cacheControl: '3600', // Optional: cache control
+                         upsert: false // Don't overwrite existing (shouldn't happen with timestamp)
+                     });
 
                  if (gameUploadError) throw new Error(`Game file upload failed: ${gameUploadError.message}`);
                  console.log("Game upload success:", gameUploadData);
 
-                let previewImagePath = null;
+                // 2. Upload Preview Image (if provided)
                 if (previewFile) {
                     uploadStatus.textContent = 'Uploading preview image...';
-                     const previewFileExt = previewFile.name.split('.').pop();
+                     const previewFileExt = previewFile.name.split('.').pop() || 'png'; // Get extension
                      const previewFileName = `preview.${previewFileExt}`;
-                     const previewFolderPath = `<span class="math-inline">\{baseFolderPath\}/</span>{previewFileName}`; // Store in same folder
+                     previewStoragePath = `${baseFolderPath}/${previewFileName}`; // Store in same folder
 
                      const { data: previewUploadData, error: previewUploadError } = await supabaseClient.storage
                          .from(GAME_FILES_BUCKET)
-                         .upload(previewFolderPath, previewFile);
+                         .upload(previewStoragePath, previewFile, { upsert: false });
 
+                     // Don't fail the whole upload if preview fails, just warn
                      if (previewUploadError) {
                          console.warn(`Preview image upload failed: ${previewUploadError.message}`);
-                         showMessage("Game uploaded, but preview image failed.", true); // Adjusted message
+                         showMessage("Game uploaded, but preview image failed. You can try editing later.", true);
+                         previewStoragePath = null; // Ensure path is null if upload failed
                      } else {
-                         previewImagePath = previewFolderPath; 
                          console.log("Preview upload success:", previewUploadData);
                      }
                 }
 
+                 // 3. Insert Game Metadata into Database
                  uploadStatus.textContent = 'Saving game details...';
                  const { data: gameInsertData, error: gameInsertError } = await supabaseClient
-                     .from('games')
+                     .from('games') // Your games table name
                      .insert({
                          title: title,
                          description: description,
                          category: category,
                          uploader_user_id: currentUser.id,
-                         game_file_path: gameFolderPath, 
-                         preview_image_path: previewImagePath 
+                         game_file_path: gameStoragePath, // Store the storage path
+                         preview_image_path: previewStoragePath, // Store preview path or null
+                         chat_log: chatLogContent || null // Store chat log or null if empty
+                         // likes_count is usually handled by trigger or defaults to 0
                      })
-                     .select('id') 
-                     .single(); 
+                     .select('id') // Select the ID of the newly inserted game
+                     .single(); // Expect only one row inserted
 
                  if (gameInsertError) throw new Error(`Database insert failed: ${gameInsertError.message}`);
                  console.log("Database insert success:", gameInsertData);
 
-                 uploadStatus.textContent = 'Upload Complete!';
+                 // 4. Success! Show message and navigate to the new game's page
+                 if(uploadStatus) uploadStatus.textContent = 'Upload Complete!';
                  showMessage("Game uploaded successfully!");
-                 uploadForm.reset(); 
+                 if(uploadForm) uploadForm.reset(); // Clear the form
+                 // Navigate to the new game's view
                  window.location.hash = `#/game/${gameInsertData.id}`;
 
              } catch (error) {
+                 // Handle errors during the upload process
                  console.error("Upload process error:", error);
-                 uploadError.textContent = `Upload failed: ${error.message}`;
-                 uploadError.classList.remove('hidden');
-                 uploadStatus.classList.add('hidden');
-                 // Consider cleanup logic here if needed
+                 if(uploadError) uploadError.textContent = `Upload failed: ${error.message}`;
+                 if(uploadError) uploadError.classList.remove('hidden');
+                 if(uploadStatus) uploadStatus.classList.add('hidden');
+                 // Optional: Add cleanup logic here (e.g., delete already uploaded files if DB insert fails)
+                 // This requires more complex error handling.
              } finally {
-                 uploadSubmitButton.disabled = false;
-                 uploadSubmitButton.textContent = 'Upload Game';
+                 // Always re-enable the submit button
+                 if(uploadSubmitButton) uploadSubmitButton.disabled = false;
+                 if(uploadSubmitButton) uploadSubmitButton.textContent = 'Upload Game';
              }
         }
 
+        // --- Play Random Game ---
+        /**
+         * Selects a random game from the fetched list and loads it.
+         */
+        function playRandomGame() {
+            console.log("Attempting to play random game...");
 
-        // --- Event Listeners --- 
-        	// --- Event Listeners ---
-function setupEventListeners() {
-    console.log("Setting up event listeners..."); // Log: Start
-
-    // Navigation Links & Modals
-    if (navLinksContainer) { // Check if container exists
-        navLinksContainer.addEventListener('click', (e) => {
-            console.log('Nav link container clicked!');
-            const target = e.target.closest('a[data-view], button[data-view], a[data-modal], button[data-modal]');
-            console.log('Clicked target:', target);
-
-            if (!target) return; // Exit if click wasn't on a relevant target
-
-            console.log('Target dataset:', target.dataset);
-
-            // Only prevent default browser action for Modals and Logout button
-            // Allow default behavior (hash changing) for view links
-            if (target.dataset.modal || target.id === 'logout-button') {
-               e.preventDefault();
+            // Use the globally stored 'games' array
+            if (!games || games.length === 0) {
+                console.warn("No games loaded yet to play randomly.");
+                showMessage('Games haven\'t loaded yet. Please wait or browse first.', true);
+                // Optionally, trigger fetchAndRenderGames() here and wait?
+                // await fetchAndRenderGames(); // If function is async
+                // if (!games || games.length === 0) return; // Check again after fetch
+                return; // For now, just show message
             }
 
-            // Handle actions based on target
-            if (target.id === 'logout-button') {
-                console.log('Logout button detected');
-                handleLogout();
-            } else if (target.dataset.modal) {
-                console.log(`Modal target detected: ${target.dataset.modal}`);
-                showModal(target.dataset.modal); // Call function to show modal
-            } else if (target.dataset.view) {
-                console.log(`View target detected: ${target.dataset.view}`);
-                // For view links, we let the default link behavior change the hash,
-                // which then triggers the 'hashchange' listener below.
+            // Select a random game
+            const randomIndex = Math.floor(Math.random() * games.length);
+            const randomGame = games[randomIndex];
+
+            if (randomGame && randomGame.id) {
+                console.log(`Selected random game: ${randomGame.title} (ID: ${randomGame.id})`);
+                // Navigate to the game's view using its hash
+                window.location.hash = `#/game/${randomGame.id}`;
+                // fetchAndRenderGameDetails will be called by the route change handler
+            } else {
+                console.error("Failed to select a valid random game.", randomGame);
+                showMessage('Could not select a random game to play.', true);
             }
-        });
-    } else { console.error("setupEventListeners: navLinksContainer not found"); }
-
-    // Modal Close Buttons (delegated from document)
-     document.addEventListener('click', (e) => {
-         // Close if background overlay is clicked
-         if (e.target.classList.contains('modal')) {
-             const modalId = e.target.id.replace('modal-', '');
-             // Avoid closing message modal automatically? User choice, let's allow it for now.
-             if(modalId) hideModal(modalId);
-         }
-         // Close if dedicated close button ('X') is clicked
-         else if (e.target.classList.contains('modal-close')) {
-              const modal = e.target.closest('.modal'); // Find parent modal
-              if(modal) {
-                  const modalId = modal.id.replace('modal-', '');
-                  if(modalId) hideModal(modalId);
-              }
-         }
-     });
-
-    // --- Attach Listeners to Specific Forms & Buttons ---
-    // Using if checks to prevent errors if elements are missing
-    if (loginForm) { loginForm.addEventListener('submit', handleLogin); }
-    else { console.error("setupEventListeners: loginForm not found"); }
-
-    if (registerForm) { registerForm.addEventListener('submit', handleRegister); }
-    else { console.error("setupEventListeners: registerForm not found"); }
-
-    if (categoryFilter) { categoryFilter.addEventListener('change', () => { currentCategory = categoryFilter.value; window.location.hash = `#/category/${encodeURIComponent(currentCategory || 'All')}`; }); }
-    else { console.error("setupEventListeners: categoryFilter not found"); }
-
-     if (sortBy) { sortBy.addEventListener('change', () => { currentSort = sortBy.value; fetchAndRenderGames(); }); }
-     else { console.error("setupEventListeners: sortBy not found"); }
-
-     if (sidebarCategories) { sidebarCategories.addEventListener('click', (e) => { if (e.target.tagName === 'A' && e.target.dataset.category !== undefined) { /* Let default link behavior change hash */ }}); }
-     else { console.error("setupEventListeners: sidebarCategories not found"); }
-
-    if (gameGrid) { gameGrid.addEventListener('click', (e) => { const button = e.target.closest('button.view-game-button'); if (button && button.dataset.gameId) { /* Let default link behavior change hash */ }}); }
-    else { console.error("setupEventListeners: gameGrid not found"); }
-
-    if (backButton) { backButton.addEventListener('click', () => window.location.hash = `#/category/${encodeURIComponent(currentCategory || 'All')}`); }
-    else { console.error("setupEventListeners: backButton not found"); }
-
-    if (likeButton) { likeButton.addEventListener('click', handleLike); }
-    else { console.error("setupEventListeners: likeButton not found"); }
-
-     if (downloadButton) { downloadButton.addEventListener('click', handleDownload); }
-     else { console.error("setupEventListeners: downloadButton not found"); }
-
-     if (reportButton) { reportButton.addEventListener('click', showReportModal); }
-     else { console.error("setupEventListeners: reportButton not found"); }
-
-     if (reportForm) { reportForm.addEventListener('submit', handleReportSubmit); }
-     else { console.error("setupEventListeners: reportForm not found"); }
-
-     if (uploadForm) { uploadForm.addEventListener('submit', handleUpload); }
-     else { console.error("setupEventListeners: uploadForm not found"); }
-
-     if (termsLink) { termsLink.addEventListener('click', (e) => { /* Let default link behavior change hash */ }); }
-     else { console.error("setupEventListeners: termsLink not found"); }
-
-      if (termsBackButton) { termsBackButton.addEventListener('click', () => { window.history.back(); }); }
-      else { console.error("setupEventListeners: termsBackButton not found"); }
-
-    // Listener for Contact Me Link
-    const contactLink = document.getElementById('contact-link');
-    if (contactLink) {
-        // Check if it's still a span before adding listener (it changes to 'A' after click)
-        if (contactLink.tagName === 'SPAN') {
-            contactLink.addEventListener('click', function contactClickHandler() {
-                const email = 'itayash@gmail.com';
-                contactLink.outerHTML = `<a href="mailto:${email}">${email}</a>`;
-            }, { once: true }); // Use 'once' so listener removes itself after first click
         }
-    } else { console.error("setupEventListeners: contactLink not found"); }
 
-    // Listener for How To Back Button
-    const howToBackButton = document.getElementById('howto-back-button');
-    if (howToBackButton) {
-        howToBackButton.addEventListener('click', () => {
-            if (window.history.length > 1) { // Go back if there's history
-                window.history.back();
-            } else { // Otherwise go home
-                window.location.hash = '#/';
+
+        // --- Event Listeners Setup ---
+        /**
+         * Attaches all necessary event listeners after the DOM is loaded.
+         */
+        function setupEventListeners() {
+            console.log("Setting up event listeners...");
+
+            // --- Navigation & Modal Trigger Links ---
+            if (navLinksContainer) {
+                navLinksContainer.addEventListener('click', (e) => {
+                    const targetLink = e.target.closest('a'); // Find the clicked link
+                    const targetButton = e.target.closest('button'); // Find the clicked button
+
+                    // Handle Modal Triggers
+                    if (targetLink && targetLink.dataset.modal) {
+                        e.preventDefault(); // Prevent hash change for modals
+                        console.log(`Modal target detected: ${targetLink.dataset.modal}`);
+                        showModal(targetLink.dataset.modal);
+                    }
+                    // Handle Logout Button
+                    else if (targetButton && targetButton.id === 'logout-button') {
+                        e.preventDefault(); // Prevent default button action
+                        console.log('Logout button detected');
+                        handleLogout();
+                    }
+                    // For regular view links (data-view), allow default hash change
+                    else if (targetLink && targetLink.dataset.view) {
+                         console.log(`View target detected: ${targetLink.dataset.view}`);
+                         // Let handleRouteChange manage showing the view
+                    }
+                });
+            } else { console.error("setupEventListeners: navLinksContainer not found"); }
+
+            // --- Modal Close Buttons (Delegated) ---
+             document.addEventListener('click', (e) => {
+                 // Close modal if background overlay is clicked
+                 if (e.target.classList.contains('modal')) {
+                     const modalId = e.target.id.replace('modal-', '');
+                     if(modalId) hideModal(modalId);
+                 }
+                 // Close modal if dedicated close button ('X') is clicked
+                 else if (e.target.classList.contains('modal-close')) {
+                      const modal = e.target.closest('.modal');
+                      if(modal) {
+                          const modalId = modal.id.replace('modal-', '');
+                          if(modalId) hideModal(modalId);
+                      }
+                 }
+             });
+
+            // --- Form Submissions ---
+            if (loginForm) loginForm.addEventListener('submit', handleLogin);
+            else console.error("setupEventListeners: loginForm not found");
+
+            if (registerForm) registerForm.addEventListener('submit', handleRegister);
+            else console.error("setupEventListeners: registerForm not found");
+
+            if (uploadForm) uploadForm.addEventListener('submit', handleUpload);
+            else console.error("setupEventListeners: uploadForm not found");
+
+            if (reportForm) reportForm.addEventListener('submit', handleReportSubmit);
+            else console.error("setupEventListeners: reportForm not found");
+
+            // --- Game List Filters ---
+            if (categoryFilter) categoryFilter.addEventListener('change', () => { currentCategory = categoryFilter.value; window.location.hash = `#/category/${encodeURIComponent(currentCategory || 'All')}`; });
+            else console.error("setupEventListeners: categoryFilter not found");
+
+             if (sortBy) sortBy.addEventListener('change', () => { currentSort = sortBy.value; fetchAndRenderGames(); });
+             else console.error("setupEventListeners: sortBy not found");
+
+            // --- Sidebar Category Links ---
+             if (sidebarCategories) {
+                 sidebarCategories.addEventListener('click', (e) => {
+                     if (e.target.tagName === 'A' && e.target.dataset.category !== undefined) {
+                         // Allow default link behavior to change hash
+                         console.log(`Sidebar category link clicked: ${e.target.dataset.category}`);
+                     }
+                 });
+             } else { console.error("setupEventListeners: sidebarCategories not found"); }
+
+            // --- Game Card Play Button (Handled by hash change via link) ---
+            // No listener needed here if using <a href="#/game/...">
+
+            // --- Game View Buttons ---
+            if (backButton) backButton.addEventListener('click', () => {
+                // Go back to the previous category/filter state if possible, otherwise home
+                window.location.hash = `#/category/${encodeURIComponent(currentCategory || 'All')}`;
+            });
+            else console.error("setupEventListeners: backButton not found");
+
+            if (likeButton) likeButton.addEventListener('click', handleLike);
+            else console.error("setupEventListeners: likeButton not found");
+
+             if (downloadButton) downloadButton.addEventListener('click', handleDownload);
+             else console.error("setupEventListeners: downloadButton not found");
+
+             if (reportButton) reportButton.addEventListener('click', showReportModal);
+             else console.error("setupEventListeners: reportButton not found");
+
+            // --- Terms View Back Button ---
+             if (termsBackButton) termsBackButton.addEventListener('click', () => {
+                 // Go back in history or to home
+                 if (window.history.length > 1) window.history.back();
+                 else window.location.hash = '#/';
+                });
+             else console.error("setupEventListeners: termsBackButton not found");
+
+            // --- How To View Back Button ---
+            // Get the button element *after* confirming the view exists
+            const howToBackButton = document.getElementById('howto-back-button');
+            if (howToBackButton) {
+                howToBackButton.addEventListener('click', () => {
+                    if (window.history.length > 1) window.history.back();
+                    else window.location.hash = '#/';
+                });
+            } else {
+                // This error is expected if the view-how-to div was missing initially
+                console.warn("setupEventListeners: howtoBackButton not found (may be normal if view was missing on initial load)");
             }
-        });
-    } else { console.error("setupEventListeners: howtoBackButton not found"); }
+
+            // --- Contact Me Link ---
+            const contactLink = document.getElementById('contact-link');
+            if (contactLink && contactLink.tagName === 'SPAN') { // Check if it's still a span
+                contactLink.addEventListener('click', function contactClickHandler() {
+                    const email = 'itayash@gmail.com'; // Replace with your actual email
+                    // Replace the span with a mailto link
+                    contactLink.outerHTML = `<a href="mailto:${email}">${email}</a>`;
+                }, { once: true }); // Listener removes itself after first click
+            } else if (!contactLink) {
+                console.error("setupEventListeners: contactLink not found");
+            }
+
+            // --- Icon Click Listeners (Delegated) ---
+            const headerContentElement = document.querySelector('.header-content');
+            if (headerContentElement) {
+                headerContentElement.addEventListener('click', (event) => {
+                    if (event.target.classList.contains('header-icon')) {
+                        playRandomGame();
+                    }
+                });
+            } else { console.error("setupEventListeners: header-content element not found for icon clicks"); }
+
+            const iconStripElement = document.getElementById('icon-strip');
+            if (iconStripElement) {
+                iconStripElement.addEventListener('click', (event) => {
+                    if (event.target.classList.contains('strip-icon')) {
+                        playRandomGame();
+                    }
+                });
+            } else { console.error("setupEventListeners: icon-strip element not found for icon clicks"); }
 
 
-     // Hashchange Listener for Routing (crucial)
-     window.addEventListener('hashchange', handleRouteChange);
+             // --- Hashchange Listener for Routing (Main Navigation Logic) ---
+             window.addEventListener('hashchange', handleRouteChange);
 
-     console.log("Event listeners setup complete."); // Log: End
-} // End of setupEventListeners function
+             console.log("Event listeners setup complete.");
+        } // --- End of setupEventListeners ---
 
         // --- Initialization ---
+        /**
+         * Runs when the DOM is fully loaded. Sets up the application.
+         */
         function init() {
-            console.log("Initializing AI Game Arcade...");
-             try { // Wrap init in try-catch for better error isolation
-                 document.getElementById('copyright-year').textContent = new Date().getFullYear();
-                 setupEventListeners(); 
-                 setupAuthListeners(); 
+            console.log("Initializing Vibe Gaming...");
+             try {
+                 // Set copyright year
+                 const copyrightYear = document.getElementById('copyright-year');
+                 if(copyrightYear) copyrightYear.textContent = new Date().getFullYear();
+
+                 // Setup core functionalities
+                 setupEventListeners(); // Must run after DOM is ready
+                 setupAuthListeners(); // Handles initial auth check and routing
              } catch (error) {
                   console.error("Error during initialization:", error);
-                  // Maybe display a user-friendly error message on the page itself
+                  showMessage("Application failed to initialize. Please refresh the page.", true);
              }
         }
 
+        // --- Start the application ---
         document.addEventListener('DOMContentLoaded', init);
 
     </script>
-
-</body>
+    </body>
 </html>
