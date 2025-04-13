@@ -265,6 +265,38 @@
              margin-right: 5px;
          }
 
+<div id="view-how-to" class="view">
+    <button id="howto-back-button">&lt; Back</button>
+    <h2>How To Create Games for Vibe Gaming</h2>
+
+    <p style="margin-top: 15px;">Welcome, Vibe Coder!</p>
+    <p>The games on this site are special: they are entirely self-contained in **one single HTML file** and often generated with the help of AI!</p>
+
+    <h3 style="margin-top: 20px; color: var(--secondary-color);">Core Idea: Single HTML File</h3>
+    <p>Your entire game - HTML structure, CSS styling, and JavaScript logic - must be bundled into one `.html` file. No external `.css` or `.js` files allowed!</p>
+    <ul>
+        <li>Embed CSS using `<style>` tags in the `<head>`.</li>
+        <li>Embed JavaScript using `<script>` tags, usually at the end of the `<body>`.</li>
+    </ul>
+
+    <h3 style="margin-top: 20px; color: var(--secondary-color);">Using AI (like ChatGPT, Claude, Gemini, etc.)</h3>
+    <p>AI can be a great partner for "vibe coding" these simple games:</p>
+    <ul>
+        <li>**Prompting:** Clearly ask the AI to generate a simple game (like Snake, Pong, a basic platformer, a text adventure) that fits entirely within a single HTML file. Specify "using HTML, CSS, and JavaScript".</li>
+        <li>**Canvas:** For graphical games, ask the AI to use the HTML `<canvas>` element for drawing.</li>
+        <li>**Simplicity:** Start simple! Complex assets or physics can be hard to manage in one file. Focus on core mechanics.</li>
+        <li>**Iteration:** Get a basic version working, then ask the AI to add features (scoring, levels, better graphics) one step at a time.</li>
+         <li>**Debugging:** Paste errors the AI code gives you back into the AI and ask it to fix them!</li>
+    </ul>
+
+    <h3 style="margin-top: 20px; color: var(--secondary-color);">Technical Tips</h3>
+    <ul>
+        <li>**No Server:** Your game code runs entirely in the user's browser. It cannot easily save data persistently or communicate with external servers (unless using advanced techniques usually beyond simple single-file games).</li>
+        <li>**Keep it Small:** While not a strict limit, try to keep the file size reasonable. Avoid huge embedded images or libraries if possible. Consider using data URIs for very small images if needed.</li>
+        <li>**Testing:** Test your single `.html` file by simply opening it directly in your web browser before uploading.</li>
+    </ul>
+    <p style="margin-top: 15px;">Happy Vibe Coding!</p>
+</div>
         #game-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
@@ -672,39 +704,6 @@
                                 <option value="Other">Other</option>
                             </select>
                         </div>
-			<div id="view-how-to" class="view">
-    <button id="howto-back-button">&lt; Back</button>
-    <h2>How To Create Games for Vibe Gaming</h2>
-
-    <p style="margin-top: 15px;">Welcome, Vibe Coder!</p>
-    <p>The games on this site are special: they are entirely self-contained in **one single HTML file** and often generated with the help of AI!</p>
-
-    <h3 style="margin-top: 20px; color: var(--secondary-color);">Core Idea: Single HTML File</h3>
-    <p>Your entire game - HTML structure, CSS styling, and JavaScript logic - must be bundled into one `.html` file. No external `.css` or `.js` files allowed!</p>
-    <ul>
-        <li>Embed CSS using `<style>` tags in the `<head>`.</li>
-        <li>Embed JavaScript using `<script>` tags, usually at the end of the `<body>`.</li>
-    </ul>
-
-    <h3 style="margin-top: 20px; color: var(--secondary-color);">Using AI (like ChatGPT, Claude, Gemini, etc.)</h3>
-    <p>AI can be a great partner for "vibe coding" these simple games:</p>
-    <ul>
-        <li>**Prompting:** Clearly ask the AI to generate a simple game (like Snake, Pong, a basic platformer, a text adventure) that fits entirely within a single HTML file. Specify "using HTML, CSS, and JavaScript".</li>
-        <li>**Canvas:** For graphical games, ask the AI to use the HTML `<canvas>` element for drawing.</li>
-        <li>**Simplicity:** Start simple! Complex assets or physics can be hard to manage in one file. Focus on core mechanics.</li>
-        <li>**Iteration:** Get a basic version working, then ask the AI to add features (scoring, levels, better graphics) one step at a time.</li>
-         <li>**Debugging:** Paste errors the AI code gives you back into the AI and ask it to fix them!</li>
-    </ul>
-
-    <h3 style="margin-top: 20px; color: var(--secondary-color);">Technical Tips</h3>
-    <ul>
-        <li>**No Server:** Your game code runs entirely in the user's browser. It cannot easily save data persistently or communicate with external servers (unless using advanced techniques usually beyond simple single-file games).</li>
-        <li>**Keep it Small:** While not a strict limit, try to keep the file size reasonable. Avoid huge embedded images or libraries if possible. Consider using data URIs for very small images if needed.</li>
-        <li>**Testing:** Test your single `.html` file by simply opening it directly in your web browser before uploading.</li>
-    </ul>
-    <p style="margin-top: 15px;">Happy Vibe Coding!</p>
-</div>
-
                         <div class="form-group">
                             <label for="upload-game-file">Game File (.html only):</label>
                             <input type="file" id="upload-game-file" accept=".html" required>
