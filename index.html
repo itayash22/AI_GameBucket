@@ -156,6 +156,8 @@
             height: 32px; 
             image-rendering: pixelated; 
             vertical-align: middle; 
+	    background-color: transparent;
+    	    cursor: pointer;
         }
 
         nav#nav-links {
@@ -201,6 +203,7 @@
             display: inline-block; 
             vertical-align: middle; 
 	    background-color: transparent;
+	    cursor: pointer;
         }
         
         .main-content {
@@ -916,6 +919,35 @@
             }
             window.scrollTo(0, 0); 
         }
+
+         // --- Play Random Game ---
+        function playRandomGame() {
+            console.log("Attempting to play random game..."); // Log for debugging
+
+            // Check if the global 'games' array is populated
+            if (!window.games || window.games.length === 0) {
+                console.warn("No games loaded yet to play randomly.");
+                // Optionally, try loading games first, but for simplicity, show a message
+                displayMessage('modal-message', 'Games haven\'t loaded yet. Please wait or browse first.', true);
+                return;
+            }
+
+            // Select a random game from the array
+            const randomIndex = Math.floor(Math.random() * window.games.length);
+            const randomGame = window.games[randomIndex];
+
+            if (randomGame && randomGame.id) {
+                console.log(`Selected random game: ${randomGame.name} (ID: ${randomGame.id})`);
+                // Use the existing loadGame function to display it
+                loadGame(randomGame);
+                // Ensure the game play view is shown (loadGame might already do this, but belt-and-suspenders)
+                showView('view-game-play');
+            } else {
+                console.error("Failed to select a valid random game.", randomGame);
+                displayMessage('modal-message', 'Could not select a random game to play.', true);
+            }
+        }
+
 
         function showModal(modalId) {
             console.log(`Attempting to show modal with ID: ${modalId}`); 
