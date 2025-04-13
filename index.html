@@ -200,6 +200,7 @@
             max-width: 100%; 
             display: inline-block; 
             vertical-align: middle; 
+	    background-color: transparent;
         }
         
         .main-content {
@@ -262,7 +263,7 @@
          }
 
 <div id="view-how-to" class="view">
-    <button id="howto-back-button">&lt; Back</button> {/* Added Back Button */}
+    <button id="howto-back-button">&lt; Back</button>
     <h2>How To Create Games for Vibe Gaming</h2>
 
     <p style="margin-top: 15px;">Welcome, Vibe Coder!</p>
@@ -282,7 +283,7 @@
         <li>**Canvas:** For graphical games, ask the AI to use the HTML `<canvas>` element for drawing.</li>
         <li>**Simplicity:** Start simple! Complex assets or physics can be hard to manage in one file. Focus on core mechanics.</li>
         <li>**Iteration:** Get a basic version working, then ask the AI to add features (scoring, levels, better graphics) one step at a time.</li>
-        <li>**Debugging:** Paste errors the AI code gives you back into the AI and ask it to fix them!</li>
+         <li>**Debugging:** Paste errors the AI code gives you back into the AI and ask it to fix them!</li>
     </ul>
 
     <h3 style="margin-top: 20px; color: var(--secondary-color);">Technical Tips</h3>
@@ -293,7 +294,6 @@
     </ul>
     <p style="margin-top: 15px;">Happy Vibe Coding!</p>
 </div>
-
         #game-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
