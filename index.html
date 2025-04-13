@@ -624,6 +624,10 @@
               <label for="upload-title">Game Title:</label>
               <input type="text" id="upload-title" required maxlength="100">
             </div>
+	<div class="form-group">
+      	    <label for="upload-uploader-name">Uploader Name:</label>
+            <input type="text" id="upload-uploader-name" required maxlength="50">
+    	    </div>
             <div class="form-group">
               <label for="upload-description">Description:</label>
               <textarea id="upload-description" required maxlength="500"></textarea>
@@ -1257,12 +1261,13 @@
         return;
       }
       const title = uploadTitle.value.trim();
+      const uploaderName = document.getElementById('upload-uploader-name').value.trim();
       const description = uploadDescription.value.trim();
       const category = uploadCategory.value;
       const gameFile = uploadGameFile.files[0];
       const previewFile = uploadPreviewImage.files[0];
       uploadError.classList.add('hidden');
-      if (!title || !description || !category || !gameFile) {
+      if (!title || !uploaderName || !description || !category || !gameFile) {
         uploadError.textContent = 'Please fill in all required fields (Title, Description, Category, Game File).';
         uploadError.classList.remove('hidden');
         return;
@@ -1315,6 +1320,7 @@
             description: description,
             category: category,
             uploader_user_id: currentUser.id,
+	    uploader_name: uploaderName,
             game_file_path: gameFolderPath,
             preview_image_path: previewImagePath
           })
