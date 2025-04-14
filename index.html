@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- Updated CSP to allow Google Fonts -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- CSP adjusted to allow inline styles since some uploaded game code may require it -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
   <title>Vibe Gaming</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Original font restored -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -21,25 +20,25 @@
     }
     :root {
       --pixel-font: 'Press Start 2P', cursive;
-      --bg-color: #000020; /* Deep blue */
-      --primary-color: #FFFFFF; /* White */
-      --secondary-color: #00FF00; /* Bright Green */
-      --accent-color: #FF00FF; /* Magenta */
+      --bg-color: #000020;
+      --primary-color: #FFFFFF;
+      --secondary-color: #00FF00;
+      --accent-color: #FF00FF;
       --border-color: var(--secondary-color);
-      --error-color: #FF3333; /* Red */
+      --error-color: #FF3333;
       --button-bg: var(--accent-color);
       --button-text: var(--primary-color);
       --card-bg: #111133;
       --input-bg: #222244;
       --link-color: var(--secondary-color);
-      --placeholder-bg: #333355; /* Darker placeholder */
+      --placeholder-bg: #333355;
     }
     html {
       font-size: 10px;
       scroll-behavior: smooth;
     }
     body {
-      font-family: var(--pixel-font);
+      font-family: "Press Start 2P", cursive;
       background-color: var(--bg-color);
       color: var(--primary-color);
       line-height: 1.6;
@@ -127,18 +126,17 @@
       flex-wrap: wrap;
     }
     .header-content h1 {
-      margin-bottom: 0px;
+      margin-bottom: 0;
       text-align: center;
       font-size: 2.8rem;
       color: var(--secondary-color);
       text-shadow: 2px 2px var(--accent-color);
-      margin-right: 0;
     }
     .tagline {
       font-size: 1.2rem;
       color: var(--accent-color);
       text-align: center;
-      margin-top: 0px;
+      margin-top: 0;
       line-height: 1.3;
     }
     .header-icon {
@@ -151,7 +149,6 @@
     }
     nav#nav-links {
       margin-bottom: 15px;
-      width: auto;
       text-align: center;
     }
     nav#nav-links a, nav#nav-links button {
@@ -165,11 +162,9 @@
     }
     nav#nav-links a:hover, nav#nav-links button:hover {
       text-decoration: underline;
-      transform: none;
     }
     #icon-strip {
       display: flex;
-      flex-direction: row;
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
@@ -177,19 +172,17 @@
       margin-bottom: 15px;
       border-top: 3px solid var(--border-color);
       border-bottom: 3px solid var(--border-color);
-      background-color: rgba(0,0,0, 0.2);
+      background-color: rgba(0, 0, 0, 0.2);
       gap: 15px;
-      width: 100%;
     }
     .strip-icon {
       height: 100px;
-      width: auto;
-      image-rendering: pixelated;
       max-width: 100%;
       display: inline-block;
       vertical-align: middle;
       background-color: transparent;
       cursor: pointer;
+      image-rendering: pixelated;
     }
     .main-content {
       display: flex;
@@ -263,7 +256,6 @@
       box-shadow: 4px 4px 0px var(--secondary-color);
       display: flex;
       flex-direction: column;
-      /* Hover effect for better UX */
       transition: background-color 0.3s ease;
     }
     .game-card:hover {
@@ -282,7 +274,6 @@
       font-size: 1.5rem;
       margin-bottom: 5px;
       color: var(--secondary-color);
-      overflow-wrap: break-word;
       word-break: break-all;
       min-height: 3em;
     }
@@ -312,7 +303,9 @@
       align-self: flex-start;
     }
     /* --- Game Play View --- */
-    #view-game-play button#back-button { margin-bottom: 15px; }
+    #view-game-play button#back-button {
+      margin-bottom: 15px;
+    }
     #view-game-play #game-title {
       font-size: 2.4rem;
       margin-bottom: 15px;
@@ -336,7 +329,9 @@
       border: none;
       background-color: #000;
     }
-    #game-details { margin-bottom: 15px; }
+    #game-details {
+      margin-bottom: 15px;
+    }
     #game-details p {
       margin-bottom: 10px;
       word-break: break-word;
@@ -454,7 +449,9 @@
       max-height: 70vh;
       overflow-y: auto;
     }
-    #view-terms button#terms-back-button { margin-bottom: 15px; }
+    #view-terms button#terms-back-button {
+      margin-bottom: 15px;
+    }
     #view-terms h2 {
       color: var(--secondary-color);
       margin-bottom: 15px;
@@ -464,7 +461,10 @@
       margin-bottom: 10px;
       margin-top: 15px;
     }
-    #view-terms ul { margin-left: 20px; margin-bottom: 10px; }
+    #view-terms ul {
+      margin-left: 20px;
+      margin-bottom: 10px;
+    }
     /* --- Ad Slots --- */
     .ad-slot {
       border: 2px dashed var(--accent-color);
@@ -478,12 +478,29 @@
       background-color: var(--input-bg);
       width: 100%;
     }
-    #ad-slot-header { min-height: 90px; }
-    #ad-slot-sidebar { min-height: 250px; margin-top: 0; }
+    #ad-slot-header {
+      min-height: 90px;
+    }
+    #ad-slot-sidebar {
+      min-height: 250px;
+      margin-top: 0;
+    }
     /* --- Utilities --- */
-    .hidden { display: none !important; }
-    .error-message { color: var(--error-color); font-size: 1.2rem; margin-top: 5px; display: block; }
-    .loading-indicator { text-align: center; font-size: 1.8rem; padding: 30px; color: var(--secondary-color); }
+    .hidden {
+      display: none !important;
+    }
+    .error-message {
+      color: var(--error-color);
+      font-size: 1.2rem;
+      margin-top: 5px;
+      display: block;
+    }
+    .loading-indicator {
+      text-align: center;
+      font-size: 1.8rem;
+      padding: 30px;
+      color: var(--secondary-color);
+    }
     .sr-only {
       position: absolute;
       width: 1px;
@@ -506,15 +523,32 @@
         padding-left: 0;
         padding-top: 20px;
       }
-      header { flex-direction: column; align-items: stretch; }
-      nav#nav-links { text-align: center; margin-bottom: 10px; }
-      nav#nav-links a, nav#nav-links button { margin: 0 8px; }
-      #ad-slot-header { order: 3; }
-      .modal-content { width: 90%; margin: 15% auto; }
-      #game-iframe-container { height: 50vh; }
+      header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      nav#nav-links {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+      nav#nav-links a, nav#nav-links button {
+        margin: 0 8px;
+      }
+      #ad-slot-header {
+        order: 3;
+      }
+      .modal-content {
+        width: 90%;
+        margin: 15% auto;
+      }
+      #game-iframe-container {
+        height: 50vh;
+      }
     }
     @media (max-width: 480px) {
-      html { font-size: 9px; }
+      html {
+        font-size: 9px;
+      }
       #game-grid {
         grid-template-columns: 1fr;
         gap: 15px;
@@ -523,7 +557,9 @@
         width: 24px;
         height: 24px;
       }
-      .tagline { font-size: 1.0rem; }
+      .tagline {
+        font-size: 1rem;
+      }
       .strip-icon {
         height: 70px;
       }
@@ -532,9 +568,15 @@
         padding: 8px 0;
         margin-bottom: 20px;
       }
-      nav#nav-links a, nav#nav-links button { font-size: 1.4rem; }
-      button { padding: 8px 10px; }
-      #view-game-play #game-title { font-size: 2rem; }
+      nav#nav-links a, nav#nav-links button {
+        font-size: 1.4rem;
+      }
+      button {
+        padding: 8px 10px;
+      }
+      #view-game-play #game-title {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
@@ -584,6 +626,7 @@
               <option value="Adventure">Adventure</option>
               <option value="Arcade">Arcade</option>
               <option value="Simulation">Simulation</option>
+              <option value="Shooter">Shooter</option>
               <option value="Other">Other</option>
             </select>
             <label for="sort-by">Sort By:</label>
@@ -726,7 +769,7 @@
           <li><a href="#/category/Adventure" data-category="Adventure">Adventure</a></li>
           <li><a href="#/category/Arcade" data-category="Arcade">Arcade</a></li>
           <li><a href="#/category/Simulation" data-category="Simulation">Simulation</a></li>
-          <li><a href="#/category/Shooter" data-category="Simulation">Shooter</a></li>
+          <li><a href="#/category/Shooter" data-category="Shooter">Shooter</a></li>
           <li><a href="#/category/Other" data-category="Other">Other</a></li>
         </ul>
         <hr style="border: none; border-top: 2px solid var(--border-color); margin: 20px 0;">
@@ -813,7 +856,8 @@
     const GAME_FILES_BUCKET = 'game-files';
 
     // --- SUPABASE DB/STORAGE/RLS SETUP NOTES ---
-    // ** ENSURE THIS IS DONE MANUALLY IN SUPABASE **
+    // Ensure your RLS policies allow public SELECTs on the games table,
+    // e.g., CREATE POLICY "Public select games" ON public.games FOR SELECT USING (true);
 
     // --- Global State ---
     let currentUser = null;
@@ -1100,7 +1144,7 @@
       const card = document.createElement('div');
       card.className = 'game-card';
       card.dataset.gameId = game.id;
-      // Native tooltip shows full title and description on hover.
+      // Set a native tooltip so hovering shows the full title and description.
       card.setAttribute('title', game.title + " - " + game.description);
       const previewUrl = game.preview_image_path 
         ? `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.preview_image_path}` 
@@ -1161,7 +1205,7 @@
         likeCount.textContent = game.likes_count || 0;
         gameDescription.textContent = game.description || 'No description provided.';
 
-        // Separately fetch the uploader's username from profiles.
+        // Fetch uploader's username from the profiles table.
         let uploaderUsername = 'Anonymous';
         if (game.uploader_user_id) {
           const { data: profile, error: profileError } = await supabaseClient
@@ -1417,7 +1461,14 @@
       if (registerForm) { registerForm.addEventListener('submit', handleRegister); }
       if (categoryFilter) { categoryFilter.addEventListener('change', () => { currentCategory = categoryFilter.value; window.location.hash = `#/category/${encodeURIComponent(currentCategory || 'All')}`; }); }
       if (sortBy) { sortBy.addEventListener('change', () => { currentSort = sortBy.value; fetchAndRenderGames(); }); }
-      if (sidebarCategories) { sidebarCategories.addEventListener('click', (e) => { if (e.target.tagName === 'A' && e.target.dataset.category !== undefined) {} }); }
+      if (sidebarCategories) { 
+        sidebarCategories.addEventListener('click', (e) => { 
+          if (e.target.tagName === 'A' && e.target.dataset.category !== undefined) {
+            currentCategory = e.target.dataset.category;
+            window.location.hash = `#/category/${encodeURIComponent(currentCategory)}`;
+          }
+        }); 
+      }
       if (gameGrid) { 
         gameGrid.addEventListener('click', (e) => { 
           const button = e.target.closest('button.view-game-button'); 
