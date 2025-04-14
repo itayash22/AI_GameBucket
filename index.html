@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- Adjusted CSP to allow fonts -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
+  <!-- Updated CSP to allow scripts from cdn.jsdelivr.net for Supabase -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vibe Gaming</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Font restored exactly as before -->
+  <!-- Using the original "Press Start 2P" font -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -152,7 +152,6 @@
       margin-bottom: 15px;
       text-align: center;
     }
-    /* Removed requires-login class from the Upload link so it’s always visible */
     nav#nav-links a, nav#nav-links button {
       margin: 0 8px;
       font-size: 1.4rem;
@@ -595,7 +594,7 @@
       </div>
       <nav id="nav-links">
         <a href="#/" data-view="game-list">Home</a>
-        <!-- Removed requires-login and hidden so Upload is always visible -->
+        <!-- Upload link always visible -->
         <a href="#/upload" data-view="upload-form">Upload</a>
         <a href="#/how-to" data-view="how-to">How To</a>
         <a href="#/login" id="login-link" data-modal="login">Login</a>
@@ -674,7 +673,7 @@
           </div>
         </div>
 
-        <!-- Upload Form (no requires-login or hidden class) -->
+        <!-- Upload Form -->
         <div id="view-upload-form" class="view">
           <h2>Upload Your Game</h2>
           <form id="upload-form">
@@ -863,7 +862,8 @@
 
     // --- SUPABASE DB/STORAGE/RLS SETUP NOTES ---
     // Ensure your RLS policies allow public SELECTs on the games table,
-    // e.g., CREATE POLICY "Public select games" ON public.games FOR SELECT USING (true);
+    // e.g., run:
+    // CREATE POLICY "Public select games" ON public.games FOR SELECT USING (true);
 
     // --- Global State ---
     let currentUser = null;
@@ -916,11 +916,10 @@
       views.forEach(view => view.classList.remove('active'));
       const activeView = document.getElementById(viewId);
       if (activeView) {
-        // If view requires login and no user exists, prompt for login
+        // If the upload form is requested and user is not logged in, prompt login.
         if (activeView.id === 'view-upload-form' && !currentUser) {
           showMessage("Please log in to upload a game.", true);
           showModal('login');
-          // Optionally, you could also redirect to the game list:
           showView('view-game-list');
           window.location.hash = '#/';
           return;
@@ -1093,7 +1092,6 @@
       if (currentUser) {
         loginLink.classList.add('hidden');
         registerLink.classList.add('hidden');
-        // For elements requiring login, remove hidden only if user is logged in.
         requiresLoginElements.forEach(el => el.classList.remove('hidden'));
         if (likeButton) likeButton.disabled = false;
         if (downloadButton) downloadButton.disabled = false;
@@ -1144,7 +1142,7 @@
       const card = document.createElement('div');
       card.className = 'game-card';
       card.dataset.gameId = game.id;
-      // Tooltip showing full title and description
+      // Set a native tooltip to show the full title and description on hover.
       card.setAttribute('title', game.title + " - " + game.description);
       const previewUrl = game.preview_image_path 
         ? `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.preview_image_path}` 
@@ -1180,7 +1178,7 @@
       if (reportButton) reportButton.disabled = true;
       currentGameData = null;
       try {
-        // Fetch game details.
+        // Fetch game details from the games table.
         const { data: game, error: gameError } = await supabaseClient
           .from('games')
           .select('id, title, description, category, uploader_user_id, game_file_path, likes_count, uploader_name')
@@ -1190,7 +1188,7 @@
         if (!game) throw new Error("Game not found.");
         currentGameData = game;
 
-        // Check if current user liked this game.
+        // Check the like status for authenticated users.
         let userHasLiked = false;
         if (currentUser) {
           const { data: likeData, error: likeError } = await supabaseClient
@@ -1205,7 +1203,7 @@
         likeCount.textContent = game.likes_count || 0;
         gameDescription.textContent = game.description || 'No description provided.';
 
-        // Use uploader_name from game record as fallback.
+        // Fallback: use the uploader_name stored on the game, if profiles table is empty.
         let uploaderUsername = game.uploader_name || 'Anonymous';
         if (game.uploader_user_id) {
           const { data: profile, error: profileError } = await supabaseClient
@@ -1445,13 +1443,13 @@
       document.addEventListener('click', (e) => {
         if (e.target.classList.contains('modal')) {
           const modalId = e.target.id.replace('modal-', '');
-          if (modalId) hideModal(modalId);
+          if(modalId) hideModal(modalId);
         }
         else if (e.target.classList.contains('modal-close')) {
           const modal = e.target.closest('.modal');
-          if (modal) {
+          if(modal) {
             const modalId = modal.id.replace('modal-', '');
-            if (modalId) hideModal(modalId);
+            if(modalId) hideModal(modalId);
           }
         }
       });
