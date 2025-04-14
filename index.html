@@ -785,79 +785,103 @@
       gameGrid.appendChild(card);
     }
 
+       /**
+     * Fetches full details and HTML content for a specific game from the database
+     * and displays them, loading the game content via a data URL into the iframe.
+     * @param {string} gameId - The UUID of the game to fetch.
+     */
     async function fetchAndRenderGameDetails(gameId) {
-      showView('view-game-play');
-      gameTitle.textContent = 'Loading Game...';
-      gameIframe.src = 'about:blank';
-      likeCount.textContent = '...';
-      gameDescription.textContent = '...';
-      gameUploader.textContent = '...';
-      gameCategory.textContent = '...';
-      if (likeButton) { 
-        likeButton.disabled = true; 
-        likeButton.classList.remove('liked'); 
-        likeButton.textContent = 'Like'; 
-      }
-      if (downloadButton) downloadButton.disabled = true;
-      if (reportButton) reportButton.disabled = true;
-      currentGameData = null;
-      try {
-        const { data: game, error: gameError } = await supabaseClient
-          .from('games')
-          .select('id, title, description, category, uploader_user_id, game_file_path, likes_count, uploader_name')
-          .eq('id', gameId)
-          .single();
-        if (gameError) throw gameError;
-        if (!game) throw new Error("Game not found.");
-        currentGameData = game;
-        let userHasLiked = false;
-        if (currentUser) {
-          const { data: likeData, error: likeError } = await supabaseClient
-            .from('likes')
-            .select('game_id', { count: 'exact', head: true })
-            .match({ user_id: currentUser.id, game_id: gameId });
-          if (likeError) console.warn("Could not fetch like status:", likeError);
-          userHasLiked = (likeData?.count ?? 0) > 0;
+         // Reset game play view elements to loading state
+         showView('view-game-play');
+         if(gameTitle) gameTitle.textContent = 'Loading Game...';
+         if(gameIframe) gameIframe.src = 'about:blank'; // Clear previous game
+         if(likeCount) likeCount.textContent = '...';
+         if(gameDescription) gameDescription.textContent = '...';
+         if(gameUploader) gameUploader.textContent = '...';
+         if(gameCategory) gameCategory.textContent = '...';
+         if(likeButton) { likeButton.disabled = true; likeButton.classList.remove('liked'); likeButton.textContent = 'Like'; }
+         if(downloadButton) downloadButton.disabled = true; // Revisit download logic if needed
+         if(reportButton) reportButton.disabled = true;
+
+         currentGameData = null; // Clear previous game data
+
+        try {
+             // Fetch game details AND game_content from the database
+             const { data: game, error: gameError } = await supabaseClient
+                 .from('games')
+                 .select(`
+                     id, title, description, category, uploader_user_id, uploader_name,
+                     preview_image_path, likes_count,
+                     game_content
+                 `) // Select game_content
+                 .eq('id', gameId)
+                 .single();
+
+             if (gameError) throw gameError;
+             if (!game) throw new Error("Game not found.");
+
+             currentGameData = game; // Store current game data globally
+
+             // --- Render Metadata (Same as before) ---
+             let userHasLiked = false;
+             if (currentUser) {
+                 try {
+                    const { count } = await supabaseClient
+                        .from('likes')
+                        .select('game_id', { count: 'exact', head: true })
+                        .match({ user_id: currentUser.id, game_id: gameId });
+                    userHasLiked = (count ?? 0) > 0;
+                 } catch (likeCheckError) {
+                     console.warn("Error checking like status:", likeCheckError);
+                 }
+             }
+             if(gameTitle) gameTitle.textContent = game.title || 'Untitled Game';
+             if(likeCount) likeCount.textContent = game.likes_count || 0;
+             if(gameDescription) gameDescription.textContent = game.description || 'No description provided.';
+             if(gameUploader) gameUploader.textContent = game.uploader_name || 'Anonymous'; // Use uploader_name directly
+             if(gameCategory) gameCategory.textContent = game.category || 'Uncategorized';
+             if (currentUser && likeButton) {
+                  likeButton.disabled = false;
+                  likeButton.classList.toggle('liked', userHasLiked);
+                  likeButton.textContent = userHasLiked ? 'Unlike' : 'Like';
+             }
+             // Note: Download button logic needs changing if game content is only in DB
+             // For now, let's disable it or remove it if not storing file path
+             if (downloadButton) downloadButton.disabled = true; // Disable download for now
+             if (currentUser && reportButton) reportButton.disabled = false;
+             // --- End Metadata Rendering ---
+
+
+             // --- Load Game Content via Data URL ---
+            if (game.game_content) {
+                console.log("Loading game content via data URL...");
+                // Construct the data URL
+                const dataUrl = 'data:text/html;charset=utf-8,' + encodeURIComponent(game.game_content);
+
+                // Check length (optional - very long URLs might fail in some old browsers)
+                // if (dataUrl.length > 2000000) { // Example limit (2MB)
+                //    console.warn("Data URL is very long, might cause issues.");
+                // }
+
+                if(gameIframe) {
+                    gameIframe.src = dataUrl; // Set iframe src to the data URL
+                } else {
+                     console.error("Game iframe element not found.");
+                     if(gameDescription) gameDescription.textContent += "\n\nError: Could not display game (iframe missing).";
+                }
+            } else {
+                 console.error("Game content missing from database for game:", gameId);
+                 if(gameDescription) gameDescription.textContent += "\n\nError: Game content missing.";
+                 if(gameIframe) gameIframe.src = 'about:blank'; // Ensure iframe is blank
+            }
+             // --- End Game Loading ---
+
+        } catch (error) {
+            console.error("Error fetching game details:", error);
+            if(gameTitle) gameTitle.textContent = 'Error Loading Game';
+            if(gameDescription) gameDescription.textContent = `Could not load game details: ${error.message}`;
+            if(gameIframe) gameIframe.src = 'about:blank'; // Ensure iframe is blank on error
         }
-        gameTitle.textContent = game.title || 'Untitled Game';
-        likeCount.textContent = game.likes_count || 0;
-        gameDescription.textContent = game.description || 'No description provided.';
-        // Fallback: use uploader_name stored on the game record if profiles lookup fails.
-        let uploaderUsername = game.uploader_name || 'Anonymous';
-        if (game.uploader_user_id) {
-          const { data: profile, error: profileError } = await supabaseClient
-            .from('profiles')
-            .select('username')
-            .eq('id', game.uploader_user_id)
-            .single();
-          if (!profileError && profile && profile.username) {
-            uploaderUsername = profile.username;
-          }
-        }
-        gameUploader.textContent = uploaderUsername;
-        gameCategory.textContent = game.category || 'Uncategorized';
-        if (currentUser) {
-          if (likeButton) {
-            likeButton.disabled = false;
-            likeButton.classList.toggle('liked', userHasLiked);
-            likeButton.textContent = userHasLiked ? 'Unlike' : 'Like';
-          }
-          if (downloadButton) downloadButton.disabled = false;
-          if (reportButton) reportButton.disabled = false;
-        }
-        if (game.game_file_path) {
-          const gameUrl = `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.game_file_path}`;
-          // IMPORTANT: Confirm that the uploaded game file (game.html) does not include a CSP that blocks inline styles.
-          gameIframe.src = gameUrl;
-        } else {
-          gameDescription.textContent += "\n\nError: Game file path missing.";
-          gameIframe.src = 'about:blank';
-        }
-      } catch (error) {
-        console.error("Error fetching game details:", error);
-        gameTitle.textContent = 'Error Loading Game';
-        gameDescription.textContent = `Could not load game details: ${error.message}`;
-      }
     }
 
     async function handleLike() {
@@ -959,6 +983,16 @@
      * Handles submission of the game upload form.
      * MODIFIED: Creates a File object with '.html' extension before uploading.
      */
+         /**
+     * Handles submission of the game upload form.
+     * SIMPLIFIED: Uploads the original .html file directly, relying on
+     * Supabase to set Content-Type based on the .html extension.
+     */
+         /**
+     * Handles submission of the game upload form.
+     * MODIFIED: Saves game HTML content directly to the database 'game_content' column,
+     * instead of uploading to Supabase Storage.
+     */
      async function handleUpload(event) {
         event.preventDefault();
         if (!currentUser) {
@@ -968,30 +1002,32 @@
 
         // Get form values
         const title = uploadTitle.value.trim();
-        // Get uploader name from the dedicated input field
-        const uploaderName = document.getElementById('upload-uploader-name')?.value.trim(); // Use optional chaining
+        const uploaderName = document.getElementById('upload-uploader-name')?.value.trim();
         const description = uploadDescription.value.trim();
         const category = uploadCategory.value;
-        const gameFile = uploadGameFile.files[0];
+        const gameFile = uploadGameFile.files[0]; // Original .html file
         const previewFile = uploadPreviewImage.files[0];
-        // Chat log is no longer a required field based on previous changes
-        // const chatLogContent = uploadChatLog.value.trim();
 
         // Basic validation
-        if(uploadError) uploadError.classList.add('hidden'); // Clear previous errors
+        if(uploadError) uploadError.classList.add('hidden');
         let validationError = false;
-        // Add uploaderName to validation check
         if (!title || !uploaderName || !description || !category || !gameFile) {
              uploadError.textContent = 'Please fill in all required fields (Title, Uploader Name, Description, Category, Game File).';
              validationError = true;
-        } else if (gameFile.type !== 'text/html' && !gameFile.name.endsWith('.html') && !gameFile.name.endsWith('.txt')) {
-            // Allow .txt or .html upload, but internally treat as html
-            uploadError.textContent = 'Game file must be an .html or .txt file.';
+        } else if (!gameFile.name.endsWith('.html')) { // Enforce .html extension for clarity
+            uploadError.textContent = 'Game file must have an .html extension.';
             validationError = true;
         } else if (previewFile && !previewFile.type.startsWith('image/')) {
              uploadError.textContent = 'Preview file must be an image (JPG, PNG, GIF).';
              validationError = true;
          }
+         // Optional: Add file size check for gameFile if desired (e.g., < 1MB)
+         // const MAX_GAME_SIZE_MB = 1;
+         // if (gameFile.size > MAX_GAME_SIZE_MB * 1024 * 1024) {
+         //    uploadError.textContent = `Game file size cannot exceed ${MAX_GAME_SIZE_MB}MB.`;
+         //    validationError = true;
+         // }
+
 
          if (validationError) {
              if(uploadError) uploadError.classList.remove('hidden');
@@ -1000,50 +1036,25 @@
 
          // Update UI to show loading state
          if(uploadSubmitButton) uploadSubmitButton.disabled = true;
-         if(uploadSubmitButton) uploadSubmitButton.textContent = 'Uploading...';
-         if(uploadStatus) uploadStatus.textContent = 'Starting upload...';
+         if(uploadSubmitButton) uploadSubmitButton.textContent = 'Processing...';
+         if(uploadStatus) uploadStatus.textContent = 'Reading game file...';
          if(uploadStatus) uploadStatus.classList.remove('hidden');
 
-         // --- File Upload Logic ---
-         const timestamp = Date.now();
-         const baseFolderPath = `games/${currentUser.id}/${timestamp}`;
-         // Storage path still uses game.html regardless of original extension
-         const gameStoragePath = `${baseFolderPath}/game.html`;
-         let previewStoragePath = null;
+         // --- File Processing and Database Insert ---
+         const timestamp = Date.now(); // Still useful for potential preview path
+         const baseFolderPath = `games/${currentUser.id}/${timestamp}`; // Path for preview image
+         let previewStoragePath = null; // Path for preview image in storage
 
          try {
-             // --- MODIFICATION START ---
-             // 1. Read the original file content as text
-             const fileText = await gameFile.text(); // Simpler way to read text
+             // 1. Read the game file content as text
+             const gameHtmlContent = await gameFile.text();
 
-             // 2. Clean any existing CSP meta tag (optional but good practice)
-             const cleanedText = fileText.replace(/<meta[^>]*http-equiv=["']Content-Security-Policy["'][^>]*>/gi, "");
+             // Optional: Basic cleaning (e.g., remove existing CSP - might not be needed now)
+             // const cleanedHtmlContent = gameHtmlContent.replace(/<meta[^>]*http-equiv=["']Content-Security-Policy["'][^>]*>/gi, "");
 
-             // 3. Create a Blob with the cleaned text and explicit HTML type
-             const modifiedBlob = new Blob([cleanedText], { type: 'text/html' });
-
-             // 4. Create a NEW File object from the Blob, giving it an '.html' name
-             //    This might help Supabase correctly identify the type.
-             const finalFileToUpload = new File([modifiedBlob], "game.html", { type: 'text/html' });
-             // --- MODIFICATION END ---
-
-
-             // 5. Upload Game File (using the new File object)
-             uploadStatus.textContent = 'Uploading game file...';
-             const { data: gameUploadData, error: gameUploadError } = await supabaseClient.storage
-                 .from(GAME_FILES_BUCKET)
-                 .upload(gameStoragePath, finalFileToUpload, { // Pass the new File object here
-                     contentType: 'text/html', // Still specify contentType explicitly
-                     cacheControl: '3600',
-                     upsert: false
-                 });
-
-             if (gameUploadError) throw new Error(`Game file upload failed: ${gameUploadError.message}`);
-             console.log("Game upload success:", gameUploadData);
-
-            // 6. Upload Preview Image (if provided) - unchanged
-            if (previewFile) {
-                uploadStatus.textContent = 'Uploading preview image...';
+             // 2. Upload Preview Image (if provided) - This still goes to Storage
+             if (previewFile) {
+                 uploadStatus.textContent = 'Uploading preview image...';
                  const previewFileExt = previewFile.name.split('.').pop() || 'png';
                  const previewFileName = `preview.${previewFileExt}`;
                  previewStoragePath = `${baseFolderPath}/${previewFileName}`;
@@ -1054,14 +1065,14 @@
 
                  if (previewUploadError) {
                      console.warn(`Preview image upload failed: ${previewUploadError.message}`);
-                     showMessage("Game uploaded, but preview image failed.", true);
+                     showMessage("Game details saved, but preview image failed.", true);
                      previewStoragePath = null;
                  } else {
                      console.log("Preview upload success:", previewUploadData);
                  }
-            }
+             }
 
-             // 7. Insert Game Metadata into Database - unchanged (removed chat log)
+             // 3. Insert Game Metadata AND Content into Database
              uploadStatus.textContent = 'Saving game details...';
              const { data: gameInsertData, error: gameInsertError } = await supabaseClient
                  .from('games')
@@ -1070,10 +1081,10 @@
                      description: description,
                      category: category,
                      uploader_user_id: currentUser.id,
-                     uploader_name: uploaderName, // Save the uploader name
-                     game_file_path: gameStoragePath,
-                     preview_image_path: previewStoragePath
-                     // chat_log: chatLogContent || null // Removed chat log field
+                     uploader_name: uploaderName,
+                     game_content: gameHtmlContent, // Store HTML content here
+                     preview_image_path: previewStoragePath, // Still store preview path
+                     // game_file_path: null // Set file path to null or remove if not needed
                  })
                  .select('id')
                  .single();
@@ -1081,20 +1092,20 @@
              if (gameInsertError) throw new Error(`Database insert failed: ${gameInsertError.message}`);
              console.log("Database insert success:", gameInsertData);
 
-             // 8. Success! - unchanged
+             // 4. Success!
              if(uploadStatus) uploadStatus.textContent = 'Upload Complete!';
              showMessage("Game uploaded successfully!");
              if(uploadForm) uploadForm.reset();
-             window.location.hash = `#/game/${gameInsertData.id}`;
+             window.location.hash = `#/game/${gameInsertData.id}`; // Navigate to new game
 
          } catch (error) {
-             // Handle errors - unchanged
+             // Handle errors
              console.error("Upload process error:", error);
              if(uploadError) uploadError.textContent = `Upload failed: ${error.message}`;
              if(uploadError) uploadError.classList.remove('hidden');
              if(uploadStatus) uploadStatus.classList.add('hidden');
          } finally {
-             // Always re-enable the submit button - unchanged
+             // Always re-enable the submit button
              if(uploadSubmitButton) uploadSubmitButton.disabled = false;
              if(uploadSubmitButton) uploadSubmitButton.textContent = 'Upload Game';
          }
