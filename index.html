@@ -957,6 +957,7 @@
 
     async function handleUpload(event) {
   event.preventDefault();
+  
   if (!currentUser) {
     showMessage("Please log in to upload.", true);
     return;
@@ -975,11 +976,14 @@
     uploadError.classList.remove('hidden');
     return;
   }
+  
+  // Ensure the game file is an HTML file.
   if (gameFile.type !== 'text/html') {
     uploadError.textContent = 'Game file must be an .html file.';
     uploadError.classList.remove('hidden');
     return;
   }
+  
   if (previewFile && !previewFile.type.startsWith('image/')) {
     uploadError.textContent = 'Preview file must be an image (JPG, PNG, GIF).';
     uploadError.classList.remove('hidden');
@@ -997,18 +1001,17 @@
   const gameFolderPath = `${baseFolderPath}/${gameFileName}`;
   
   try {
+    // Upload the game file with the correct MIME type (text/html)
     uploadStatus.textContent = 'Uploading game file...';
-    // Update: Set contentType to 'text/html'
     const { data: gameUploadData, error: gameUploadError } = await supabaseClient.storage
       .from(GAME_FILES_BUCKET)
-      .upload(gameFolderPath, gameFile, {
-        contentType: 'text/html'
-      });
+      .upload(gameFolderPath, gameFile, { contentType: 'text/html' });
       
     if (gameUploadError) {
       throw new Error(`Game file upload failed: ${gameUploadError.message}`);
     }
     
+    // Upload preview image if provided.
     let previewImagePath = null;
     if (previewFile) {
       uploadStatus.textContent = 'Uploading preview image...';
@@ -1026,6 +1029,7 @@
       }
     }
     
+    // Save game details in the database.
     uploadStatus.textContent = 'Saving game details...';
     const { data: gameInsertData, error: gameInsertError } = await supabaseClient
       .from('games')
@@ -1040,7 +1044,7 @@
       })
       .select('id')
       .single();
-    
+      
     if (gameInsertError) {
       throw new Error(`Database insert failed: ${gameInsertError.message}`);
     }
@@ -1049,6 +1053,7 @@
     showMessage("Game uploaded successfully!");
     uploadForm.reset();
     window.location.hash = `#/game/${gameInsertData.id}`;
+    
   } catch (error) {
     console.error("Upload process error:", error);
     uploadError.textContent = `Upload failed: ${error.message}`;
