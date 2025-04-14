@@ -297,7 +297,13 @@
           <h2 id="game-title">Loading Game...</h2>
           <div id="game-iframe-container">
             <!-- IMPORTANT: For game files to display inline styles correctly, ensure your uploaded game file (game.html) does NOT include a restrictive CSP meta tag. -->
-            <iframe id="game-iframe" sandbox="allow-scripts allow-same-origin" title="Game Area" src="about:blank"></iframe>
+            <iframe
+        id="game-iframe"
+        sandbox="allow-scripts allow-same-origin"
+        title="Game Area"
+        src="about:blank"
+        allow="fullscreen">
+    </iframe>
           </div>
           <div id="game-details">
             <p>Uploader: <span id="game-uploader">...</span></p>
