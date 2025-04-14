@@ -135,7 +135,7 @@
 
             /* --- Use responsive width + aspect ratio --- */
             width: 90%;         /* Allow container to use most of the available width */
-            max-width: 450px;   /* But limit maximum width (adjust as desired) */
+            max-width: 600px;   /* But limit maximum width (adjust as desired) */
             aspect-ratio: 3 / 5; /* Maintain a 3:5 aspect ratio (like 300x500) */
                                 /* Height will adjust automatically based on width and aspect ratio */
             margin: 15px auto;    /* Center horizontally (auto margins), add vertical margin */
@@ -305,15 +305,7 @@
             <p>Description:</p>
             <p id="game-description">...</p>
           </div>
-          <div id="game-actions">
-            <button id="like-button" class="requires-login hidden" disabled>
-              <span class="sr-only">Like status: </span>Like
-            </button>
-            <span>Likes: <span id="like-count">0</span></span>
-            <button id="download-button" class="requires-login hidden" disabled>Download</button>
-            <button id="report-button" class="requires-login hidden" disabled>Report</button>
-          </div>
-          <div id="game-actions">
+                    <div id="game-actions">
                         <button id="like-button" class="requires-login hidden" disabled><span class="sr-only">Like status: </span>Like</button>
                         <span>Likes: <span id="like-count">0</span></span>
                         <button id="download-button" class="requires-login hidden" disabled>Download</button>
