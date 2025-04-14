@@ -260,6 +260,11 @@
       box-shadow: 4px 4px 0px var(--secondary-color);
       display: flex;
       flex-direction: column;
+      /* Added hover effect for better UX */
+      transition: background-color 0.3s ease;
+    }
+    .game-card:hover {
+      background-color: #222244;
     }
     .game-card img.preview {
       width: 100%;
@@ -610,7 +615,9 @@
             <p id="game-description">...</p>
           </div>
           <div id="game-actions">
-            <button id="like-button" class="requires-login hidden" disabled><span class="sr-only">Like status: </span>Like</button>
+            <button id="like-button" class="requires-login hidden" disabled>
+              <span class="sr-only">Like status: </span>Like
+            </button>
             <span>Likes: <span id="like-count">0</span></span>
             <button id="download-button" class="requires-login hidden" disabled>Download</button>
             <button id="report-button" class="requires-login hidden" disabled>Report</button>
@@ -1088,6 +1095,8 @@
       const card = document.createElement('div');
       card.className = 'game-card';
       card.dataset.gameId = game.id;
+      // Set a native tooltip so hovering shows the full description
+      card.setAttribute('title', game.title + " - " + game.description);
       const previewUrl = game.preview_image_path ? `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.preview_image_path}` : PREVIEW_PLACEHOLDER_URL;
       const descriptionPreview = game.description ? game.description.substring(0, 100) + (game.description.length > 100 ? '...' : '') : 'No description.';
       card.innerHTML = `
@@ -1109,14 +1118,19 @@
       gameDescription.textContent = '...';
       gameUploader.textContent = '...';
       gameCategory.textContent = '...';
-      if(likeButton) { likeButton.disabled = true; likeButton.classList.remove('liked'); likeButton.textContent = 'Like'; }
+      if(likeButton) { 
+        likeButton.disabled = true; 
+        likeButton.classList.remove('liked'); 
+        likeButton.textContent = 'Like'; 
+      }
       if(downloadButton) downloadButton.disabled = true;
       if(reportButton) reportButton.disabled = true;
       currentGameData = null;
       try {
+        // Adjusted select clause; ensure that the relationship "profiles" is correctly set up in Supabase
         const { data: game, error: gameError } = await supabaseClient
           .from('games')
-          .select(`id, title, description, category, uploader_user_id, game_file_path, likes_count, profiles:uploader_user_id ( username )`)
+          .select('id, title, description, category, uploader_user_id, game_file_path, likes_count, profiles ( username )')
           .eq('id', gameId)
           .single();
         if (gameError) throw gameError;
@@ -1134,7 +1148,7 @@
         gameTitle.textContent = game.title || 'Untitled Game';
         likeCount.textContent = game.likes_count || 0;
         gameDescription.textContent = game.description || 'No description provided.';
-        gameUploader.textContent = game.profiles?.username || 'Anonymous';
+        gameUploader.textContent = (game.profiles && game.profiles.username) ? game.profiles.username : 'Anonymous';
         gameCategory.textContent = game.category || 'Uncategorized';
         if (currentUser) {
           if(likeButton) {
@@ -1379,7 +1393,6 @@
         gameGrid.addEventListener('click', (e) => { 
           const button = e.target.closest('button.view-game-button'); 
           if (button && button.dataset.gameId) { 
-            // Added missing functionality:
             const gameId = button.dataset.gameId;
             fetchAndRenderGameDetails(gameId);
             window.location.hash = `#/game/${gameId}`;
