@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- CSP adjusted to allow inline styles since some uploaded game code may require it -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
   <title>Vibe Gaming</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Original font restored -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -261,7 +263,7 @@
       box-shadow: 4px 4px 0px var(--secondary-color);
       display: flex;
       flex-direction: column;
-      /* Added hover effect for better UX */
+      /* Hover effect for better UX */
       transition: background-color 0.3s ease;
     }
     .game-card:hover {
@@ -1064,6 +1066,7 @@
 
     // --- Game Fetching & Rendering ---
     async function fetchAndRenderGames() {
+      console.log("Fetching games...");
       gameGrid.innerHTML = '<div class="loading-indicator">Loading games...</div>';
       const [sortField, sortOrder] = currentSort.split('.');
       try {
@@ -1075,6 +1078,7 @@
           query = query.eq('category', currentCategory);
         }
         const { data: games, error } = await query.limit(100);
+        console.log("Fetched games:", games, "Error:", error);
         if (error) throw error;
         if (games && games.length > 0) {
           gameGrid.innerHTML = '';
@@ -1096,10 +1100,14 @@
       const card = document.createElement('div');
       card.className = 'game-card';
       card.dataset.gameId = game.id;
-      // Set a native tooltip so hovering shows the full description
+      // Native tooltip shows full title and description on hover.
       card.setAttribute('title', game.title + " - " + game.description);
-      const previewUrl = game.preview_image_path ? `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.preview_image_path}` : PREVIEW_PLACEHOLDER_URL;
-      const descriptionPreview = game.description ? game.description.substring(0, 100) + (game.description.length > 100 ? '...' : '') : 'No description.';
+      const previewUrl = game.preview_image_path 
+        ? `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.preview_image_path}` 
+        : PREVIEW_PLACEHOLDER_URL;
+      const descriptionPreview = game.description 
+        ? game.description.substring(0, 100) + (game.description.length > 100 ? '...' : '') 
+        : 'No description.';
       card.innerHTML = `
         <img src="${previewUrl}" alt="${game.title || 'Game'} Preview" class="preview" loading="lazy" onerror="this.src='${PREVIEW_PLACEHOLDER_URL}'">
         <h3>${game.title || 'Untitled Game'}</h3>
@@ -1111,88 +1119,88 @@
       gameGrid.appendChild(card);
     }
 
-   async function fetchAndRenderGameDetails(gameId) {
-  showView('view-game-play');
-  gameTitle.textContent = 'Loading Game...';
-  gameIframe.src = 'about:blank';
-  likeCount.textContent = '...';
-  gameDescription.textContent = '...';
-  gameUploader.textContent = '...';
-  gameCategory.textContent = '...';
-  if (likeButton) { 
-    likeButton.disabled = true; 
-    likeButton.classList.remove('liked'); 
-    likeButton.textContent = 'Like'; 
-  }
-  if (downloadButton) downloadButton.disabled = true;
-  if (reportButton) reportButton.disabled = true;
-  currentGameData = null;
-  try {
-    // Fetch the game details from the games table.
-    const { data: game, error: gameError } = await supabaseClient
-      .from('games')
-      .select('id, title, description, category, uploader_user_id, game_file_path, likes_count')
-      .eq('id', gameId)
-      .single();
-    if (gameError) throw gameError;
-    if (!game) throw new Error("Game not found.");
-    currentGameData = game;
-
-    // Check like status for authenticated users.
-    let userHasLiked = false;
-    if (currentUser) {
-      const { data: likeData, error: likeError } = await supabaseClient
-        .from('likes')
-        .select('game_id', { count: 'exact', head: true })
-        .match({ user_id: currentUser.id, game_id: gameId });
-      if (likeError) console.warn("Could not fetch like status:", likeError);
-      userHasLiked = (likeData?.count ?? 0) > 0;
-    }
-
-    gameTitle.textContent = game.title || 'Untitled Game';
-    likeCount.textContent = game.likes_count || 0;
-    gameDescription.textContent = game.description || 'No description provided.';
-
-    // Separately fetch the uploader's username from profiles.
-    let uploaderUsername = 'Anonymous';
-    if (game.uploader_user_id) {
-      const { data: profile, error: profileError } = await supabaseClient
-        .from('profiles')
-        .select('username')
-        .eq('id', game.uploader_user_id)
-        .single();
-      if (!profileError && profile && profile.username) {
-        uploaderUsername = profile.username;
-      }
-    }
-    gameUploader.textContent = uploaderUsername;
-    gameCategory.textContent = game.category || 'Uncategorized';
-
-    // Re-enable interactive elements for authenticated users.
-    if (currentUser) {
-      if (likeButton) {
-        likeButton.disabled = false;
-        likeButton.classList.toggle('liked', userHasLiked);
-        likeButton.textContent = userHasLiked ? 'Unlike' : 'Like';
-      }
-      if (downloadButton) downloadButton.disabled = false;
-      if (reportButton) reportButton.disabled = false;
-    }
-
-    // Set the game iframe src to load the uploaded game file.
-    if (game.game_file_path) {
-      const gameUrl = `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.game_file_path}`;
-      gameIframe.src = gameUrl;
-    } else {
-      gameDescription.textContent += "\n\nError: Game file path missing.";
+    async function fetchAndRenderGameDetails(gameId) {
+      showView('view-game-play');
+      gameTitle.textContent = 'Loading Game...';
       gameIframe.src = 'about:blank';
+      likeCount.textContent = '...';
+      gameDescription.textContent = '...';
+      gameUploader.textContent = '...';
+      gameCategory.textContent = '...';
+      if (likeButton) { 
+        likeButton.disabled = true; 
+        likeButton.classList.remove('liked'); 
+        likeButton.textContent = 'Like'; 
+      }
+      if (downloadButton) downloadButton.disabled = true;
+      if (reportButton) reportButton.disabled = true;
+      currentGameData = null;
+      try {
+        // Fetch the game details from the games table.
+        const { data: game, error: gameError } = await supabaseClient
+          .from('games')
+          .select('id, title, description, category, uploader_user_id, game_file_path, likes_count')
+          .eq('id', gameId)
+          .single();
+        if (gameError) throw gameError;
+        if (!game) throw new Error("Game not found.");
+        currentGameData = game;
+
+        // Check like status for authenticated users.
+        let userHasLiked = false;
+        if (currentUser) {
+          const { data: likeData, error: likeError } = await supabaseClient
+            .from('likes')
+            .select('game_id', { count: 'exact', head: true })
+            .match({ user_id: currentUser.id, game_id: gameId });
+          if (likeError) console.warn("Could not fetch like status:", likeError);
+          userHasLiked = (likeData?.count ?? 0) > 0;
+        }
+
+        gameTitle.textContent = game.title || 'Untitled Game';
+        likeCount.textContent = game.likes_count || 0;
+        gameDescription.textContent = game.description || 'No description provided.';
+
+        // Separately fetch the uploader's username from profiles.
+        let uploaderUsername = 'Anonymous';
+        if (game.uploader_user_id) {
+          const { data: profile, error: profileError } = await supabaseClient
+            .from('profiles')
+            .select('username')
+            .eq('id', game.uploader_user_id)
+            .single();
+          if (!profileError && profile && profile.username) {
+            uploaderUsername = profile.username;
+          }
+        }
+        gameUploader.textContent = uploaderUsername;
+        gameCategory.textContent = game.category || 'Uncategorized';
+
+        // Re-enable interactive elements for authenticated users.
+        if (currentUser) {
+          if (likeButton) {
+            likeButton.disabled = false;
+            likeButton.classList.toggle('liked', userHasLiked);
+            likeButton.textContent = userHasLiked ? 'Unlike' : 'Like';
+          }
+          if (downloadButton) downloadButton.disabled = false;
+          if (reportButton) reportButton.disabled = false;
+        }
+
+        // Set the game iframe src to load the uploaded game file.
+        if (game.game_file_path) {
+          const gameUrl = `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.game_file_path}`;
+          gameIframe.src = gameUrl;
+        } else {
+          gameDescription.textContent += "\n\nError: Game file path missing.";
+          gameIframe.src = 'about:blank';
+        }
+      } catch (error) {
+        console.error("Error fetching game details:", error);
+        gameTitle.textContent = 'Error Loading Game';
+        gameDescription.textContent = `Could not load game details: ${error.message}`;
+      }
     }
-  } catch (error) {
-    console.error("Error fetching game details:", error);
-    gameTitle.textContent = 'Error Loading Game';
-    gameDescription.textContent = `Could not load game details: ${error.message}`;
-  }
-}
 
     async function handleLike() {
       if (!currentUser || !currentGameData) return;
