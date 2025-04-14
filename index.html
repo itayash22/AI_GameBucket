@@ -624,10 +624,10 @@
               <label for="upload-title">Game Title:</label>
               <input type="text" id="upload-title" required maxlength="100">
             </div>
-	<div class="form-group">
-      	    <label for="upload-uploader-name">Uploader Name:</label>
-            <input type="text" id="upload-uploader-name" required maxlength="50">
-    	    </div>
+            <div class="form-group">
+              <label for="upload-uploader-name">Uploader Name:</label>
+              <input type="text" id="upload-uploader-name" required maxlength="50">
+            </div>
             <div class="form-group">
               <label for="upload-description">Description:</label>
               <textarea id="upload-description" required maxlength="500"></textarea>
@@ -641,7 +641,7 @@
                 <option value="Adventure">Adventure</option>
                 <option value="Arcade">Arcade</option>
                 <option value="Simulation">Simulation</option>
-		<option value="Shooter">Shooter</option>
+                <option value="Shooter">Shooter</option>
                 <option value="Other">Other</option>
               </select>
             </div>
@@ -716,7 +716,7 @@
           <li><a href="#/category/Adventure" data-category="Adventure">Adventure</a></li>
           <li><a href="#/category/Arcade" data-category="Arcade">Arcade</a></li>
           <li><a href="#/category/Simulation" data-category="Simulation">Simulation</a></li>
-	  <li><a href="#/category/Shooter" data-category="Simulation">Shooter</a></li>
+          <li><a href="#/category/Shooter" data-category="Simulation">Shooter</a></li>
           <li><a href="#/category/Other" data-category="Other">Other</a></li>
         </ul>
         <hr style="border: none; border-top: 2px solid var(--border-color); margin: 20px 0;">
@@ -1320,7 +1320,7 @@
             description: description,
             category: category,
             uploader_user_id: currentUser.id,
-	    uploader_name: uploaderName,
+            uploader_name: uploaderName,
             game_file_path: gameFolderPath,
             preview_image_path: previewImagePath
           })
@@ -1375,7 +1375,17 @@
       if (categoryFilter) { categoryFilter.addEventListener('change', () => { currentCategory = categoryFilter.value; window.location.hash = `#/category/${encodeURIComponent(currentCategory || 'All')}`; }); }
       if (sortBy) { sortBy.addEventListener('change', () => { currentSort = sortBy.value; fetchAndRenderGames(); }); }
       if (sidebarCategories) { sidebarCategories.addEventListener('click', (e) => { if (e.target.tagName === 'A' && e.target.dataset.category !== undefined) {} }); }
-      if (gameGrid) { gameGrid.addEventListener('click', (e) => { const button = e.target.closest('button.view-game-button'); if (button && button.dataset.gameId) {} }); }
+      if (gameGrid) { 
+        gameGrid.addEventListener('click', (e) => { 
+          const button = e.target.closest('button.view-game-button'); 
+          if (button && button.dataset.gameId) { 
+            // Added missing functionality:
+            const gameId = button.dataset.gameId;
+            fetchAndRenderGameDetails(gameId);
+            window.location.hash = `#/game/${gameId}`;
+          }
+        }); 
+      }
       if (backButton) { backButton.addEventListener('click', () => window.location.hash = `#/category/${encodeURIComponent(currentCategory || 'All')}`); }
       if (likeButton) { likeButton.addEventListener('click', handleLike); }
       if (downloadButton) { downloadButton.addEventListener('click', handleDownload); }
