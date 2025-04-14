@@ -807,7 +807,7 @@
             const fullscreenBtn = document.getElementById('fullscreen-button'); // Get fullscreen button
 
             if(likeBtn) likeBtn.disabled = !canPerformGameActions;
-            if(downloadBtn) downloadBtn.disabled = true; // Revisit download logic if needed for DB content
+            if(downloadBtn) downloadBtn.disabled = !canPerformGameActions;
             if(reportBtn) reportBtn.disabled = !canPerformGameActions;
             if(fullscreenBtn) fullscreenBtn.disabled = !isGameLoaded; // Enable if game is loaded, regardless of login? Or require login too? Let's enable if game is loaded.
 
@@ -930,9 +930,6 @@
                   likeButton.classList.toggle('liked', userHasLiked);
                   likeButton.textContent = userHasLiked ? 'Unlike' : 'Like';
              }
-             // Note: Download button logic needs changing if game content is only in DB
-             // For now, let's disable it or remove it if not storing file path
-             if (downloadButton) downloadButton.disabled = true; // Disable download for now
              if (currentUser && reportButton) reportButton.disabled = false;
              // --- End Metadata Rendering ---
 
@@ -1010,22 +1007,55 @@
       }
     }
 
-    async function handleDownload() {
-      if (!currentUser || !currentGameData || !currentGameData.game_file_path) return;
-      try {
-        const gameUrl = `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${currentGameData.game_file_path}`;
-        const link = document.createElement('a');
-        link.href = gameUrl;
-        const filename = currentGameData.title ? `${currentGameData.title.replace(/[^a-z0-9_\-\s]/gi, '_')}.html` : 'game.html';
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } catch (error) {
-        console.error("Error preparing download:", error);
-        showMessage("Could not prepare download link.", true);
-      }
+        /**
+     * Handles downloading the game's HTML file directly from the
+     * game_content stored in the database.
+     */
+    function handleDownload() {
+        // Check if user is logged in and game data (with content) is loaded
+        if (!currentUser) {
+            showMessage("Please log in to download games.", true);
+            return;
+        }
+        if (!currentGameData || !currentGameData.game_content) {
+            showMessage("Game content is not available for download.", true);
+            console.error("Download failed: currentGameData or game_content missing.", currentGameData);
+            return;
+        }
+
+        console.log("Preparing download from database content...");
+
+        try {
+            // 1. Create a Blob from the HTML content
+            const blob = new Blob([currentGameData.game_content], { type: 'text/html' });
+
+            // 2. Create an Object URL for the Blob
+            const url = URL.createObjectURL(blob);
+
+            // 3. Create a temporary link element
+            const link = document.createElement('a');
+            link.href = url;
+
+            // 4. Set the download filename (use game title)
+            const filename = currentGameData.title ? `${currentGameData.title.replace(/[^a-z0-9_\-\s]/gi, '_')}.html` : 'game.html';
+            link.download = filename;
+
+            // 5. Trigger the download
+            document.body.appendChild(link); // Append required for Firefox
+            link.click();
+
+            // 6. Clean up
+            document.body.removeChild(link); // Remove link
+            URL.revokeObjectURL(url); // Release Object URL memory
+
+            console.log("Download initiated for:", filename);
+
+        } catch (error) {
+            console.error("Error creating download:", error);
+            showMessage("Could not create download file.", true);
+        }
     }
+
 
     function showReportModal() {
       if (!currentUser || !currentGameData) return;
