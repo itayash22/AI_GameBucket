@@ -870,9 +870,10 @@
       gameGrid.appendChild(card);
     }
 
-       /**
+          /**
      * Fetches full details and HTML content for a specific game from the database
      * and displays them, loading the game content via a data URL into the iframe.
+     * CORRECTED: Calls updateUIBasedOnAuth after game data is loaded.
      * @param {string} gameId - The UUID of the game to fetch.
      */
     async function fetchAndRenderGameDetails(gameId) {
@@ -884,11 +885,18 @@
          if(gameDescription) gameDescription.textContent = '...';
          if(gameUploader) gameUploader.textContent = '...';
          if(gameCategory) gameCategory.textContent = '...';
-         if(likeButton) { likeButton.disabled = true; likeButton.classList.remove('liked'); likeButton.textContent = 'Like'; }
-         if(downloadButton) downloadButton.disabled = true; // Revisit download logic if needed
-         if(reportButton) reportButton.disabled = true;
 
-         currentGameData = null; // Clear previous game data
+         // Temporarily disable buttons while loading new game details
+         const likeBtn = document.getElementById('like-button');
+         const downloadBtn = document.getElementById('download-button');
+         const reportBtn = document.getElementById('report-button');
+         const fullscreenBtn = document.getElementById('fullscreen-button');
+         if(likeBtn) { likeBtn.disabled = true; likeBtn.classList.remove('liked'); likeBtn.textContent = 'Like'; }
+         if(downloadBtn) downloadBtn.disabled = true;
+         if(reportBtn) reportBtn.disabled = true;
+         if(fullscreenBtn) fullscreenBtn.disabled = true; // Also disable fullscreen initially
+
+         currentGameData = null; // Clear previous game data before fetch
 
         try {
              // Fetch game details AND game_content from the database
@@ -905,12 +913,14 @@
              if (gameError) throw gameError;
              if (!game) throw new Error("Game not found.");
 
+             // --- Successfully fetched data ---
              currentGameData = game; // Store current game data globally
 
-             // --- Render Metadata (Same as before) ---
+             // --- Update UI with game-specific details ---
              let userHasLiked = false;
              if (currentUser) {
                  try {
+                    // Fetch like status efficiently
                     const { count } = await supabaseClient
                         .from('likes')
                         .select('game_id', { count: 'exact', head: true })
@@ -920,33 +930,27 @@
                      console.warn("Error checking like status:", likeCheckError);
                  }
              }
+             // Update DOM elements
              if(gameTitle) gameTitle.textContent = game.title || 'Untitled Game';
              if(likeCount) likeCount.textContent = game.likes_count || 0;
              if(gameDescription) gameDescription.textContent = game.description || 'No description provided.';
-             if(gameUploader) gameUploader.textContent = game.uploader_name || 'Anonymous'; // Use uploader_name directly
+             if(gameUploader) gameUploader.textContent = game.uploader_name || 'Anonymous';
              if(gameCategory) gameCategory.textContent = game.category || 'Uncategorized';
-             if (currentUser && likeButton) {
-                  likeButton.disabled = false;
-                  likeButton.classList.toggle('liked', userHasLiked);
-                  likeButton.textContent = userHasLiked ? 'Unlike' : 'Like';
+
+             // Update like button state specifically (before general auth update)
+             if (likeBtn) {
+                 likeBtn.classList.toggle('liked', userHasLiked);
+                 likeBtn.textContent = userHasLiked ? 'Unlike' : 'Like';
              }
-             if (currentUser && reportButton) reportButton.disabled = false;
-             // --- End Metadata Rendering ---
+             // --- End UI Update ---
 
 
              // --- Load Game Content via Data URL ---
             if (game.game_content) {
                 console.log("Loading game content via data URL...");
-                // Construct the data URL
                 const dataUrl = 'data:text/html;charset=utf-8,' + encodeURIComponent(game.game_content);
-
-                // Check length (optional - very long URLs might fail in some old browsers)
-                // if (dataUrl.length > 2000000) { // Example limit (2MB)
-                //    console.warn("Data URL is very long, might cause issues.");
-                // }
-
                 if(gameIframe) {
-                    gameIframe.src = dataUrl; // Set iframe src to the data URL
+                    gameIframe.src = dataUrl;
                 } else {
                      console.error("Game iframe element not found.");
                      if(gameDescription) gameDescription.textContent += "\n\nError: Could not display game (iframe missing).";
@@ -954,15 +958,25 @@
             } else {
                  console.error("Game content missing from database for game:", gameId);
                  if(gameDescription) gameDescription.textContent += "\n\nError: Game content missing.";
-                 if(gameIframe) gameIframe.src = 'about:blank'; // Ensure iframe is blank
+                 if(gameIframe) gameIframe.src = 'about:blank';
             }
              // --- End Game Loading ---
 
+             // --- !!! IMPORTANT FIX: Update button states based on loaded game data !!! ---
+             updateUIBasedOnAuth();
+             // --- !!! END FIX !!! ---
+
+
         } catch (error) {
+            // Handle errors fetching game details
             console.error("Error fetching game details:", error);
             if(gameTitle) gameTitle.textContent = 'Error Loading Game';
             if(gameDescription) gameDescription.textContent = `Could not load game details: ${error.message}`;
-            if(gameIframe) gameIframe.src = 'about:blank'; // Ensure iframe is blank on error
+            if(gameIframe) gameIframe.src = 'about:blank';
+            // Ensure currentGameData is null on error
+            currentGameData = null;
+            // Update button states on error (they should be disabled)
+            updateUIBasedOnAuth();
         }
     }
 
