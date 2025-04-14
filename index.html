@@ -2,9 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- Updated CSP to allow scripts from cdn.jsdelivr.net for Supabase -->
- <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline';">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Set a strict but explicit CSP that allows our resources:
+       - Only allow our own origin for default
+       - Scripts can load inline and from cdn.jsdelivr.net
+       - Connects are allowed to our Supabase domains
+       - Images are allowed from our origin, data URIs, and Supabase
+       - Styles and fonts from the appropriate CDNs
+       - Frames allowed from our Supabase domains -->
+  <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
+      connect-src 'self' https://vniwugmbpssesxvnoefc.supabase.co https://*.supabase.co;
+      img-src 'self' data: https://vniwugmbpssesxvnoefc.supabase.co https://*.supabase.co;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      frame-src 'self' https://vniwugmbpssesxvnoefc.supabase.co https://*.supabase.co;
+  ">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vibe Gaming</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -594,7 +608,6 @@
       </div>
       <nav id="nav-links">
         <a href="#/" data-view="game-list">Home</a>
-        <!-- Upload link always visible -->
         <a href="#/upload" data-view="upload-form">Upload</a>
         <a href="#/how-to" data-view="how-to">How To</a>
         <a href="#/login" id="login-link" data-modal="login">Login</a>
@@ -655,7 +668,11 @@
           <button id="back-button">&lt; Back to List</button>
           <h2 id="game-title">Loading Game...</h2>
           <div id="game-iframe-container">
-           <iframe id="game-iframe" sandbox="allow-scripts allow-same-origin" title="Game Area" src="about:blank"></iframe>
+            <!-- 
+              IMPORTANT: For game files to display inline styles correctly, 
+              ensure that your uploaded game file (game.html) does NOT include a restrictive CSP meta tag.
+            -->
+            <iframe id="game-iframe" sandbox="allow-scripts allow-same-origin" title="Game Area" src="about:blank"></iframe>
           </div>
           <div id="game-details">
             <p>Uploader: <span id="game-uploader">...</span></p>
@@ -719,7 +736,7 @@
         <!-- Terms View -->
         <div id="view-terms" class="view">
           <button id="terms-back-button">&lt; Back</button>
-          <h2>Terms of Service & Content Policy</h2>
+          <h2>Terms of Service &amp; Content Policy</h2>
           <p><strong>Welcome to Vibe Gaming!</strong></p>
           <p>This site allows users to share and play single-file games, often created with the help of AI. By using this site (Browse, uploading, downloading, liking, or registering), you agree to these terms.</p>
           <h3>1. User Accounts:</h3>
@@ -730,7 +747,7 @@
           </ul>
           <h3>2. Content Uploads:</h3>
           <ul>
-            <li>You may only upload single-file games (primarily `.html` format) that you have the right to share.</li>
+            <li>You may only upload single-file games (primarily <code>.html</code> format) that you have the right to share.</li>
             <li>You grant Vibe Gaming a license to host, display, and allow users to play and download your uploaded games.</li>
             <li>You are responsible for the content you upload.</li>
           </ul>
@@ -870,7 +887,13 @@
     let currentGameData = null;
     let currentCategory = '';
     let currentSort = 'created_at.desc';
-    const PREVIEW_PLACEHOLDER_URL = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3Crect width='4' height='3' fill='%23${window.getComputedStyle(document.body).getPropertyValue('--placeholder-bg').substring(1)}'/%3E%3Ctext x='50%25' y='50%25' font-family='${window.getComputedStyle(document.body).getPropertyValue('--pixel-font').replace(/'/g, '')}' font-size='1px' fill='%23${window.getComputedStyle(document.body).getPropertyValue('--primary-color').substring(1)}' dominant-baseline='middle' text-anchor='middle'%3E?%3C/text%3E%3C/svg%3E`;
+    // Use encodeURIComponent to generate the data URI for the SVG placeholder.
+    const PREVIEW_PLACEHOLDER_URL = "data:image/svg+xml," + encodeURIComponent(
+      `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'>
+         <rect width='4' height='3' fill='#${window.getComputedStyle(document.body).getPropertyValue('--placeholder-bg').substring(1)}'/>
+         <text x='50%' y='50%' font-family='${window.getComputedStyle(document.body).getPropertyValue('--pixel-font').replace(/'/g, "")}' font-size='1px' fill='#${window.getComputedStyle(document.body).getPropertyValue('--primary-color').substring(1)}' dominant-baseline='middle' text-anchor='middle'>?</text>
+       </svg>`
+    );
 
     // --- DOM Element References ---
     const views = document.querySelectorAll('.view');
@@ -916,7 +939,6 @@
       views.forEach(view => view.classList.remove('active'));
       const activeView = document.getElementById(viewId);
       if (activeView) {
-        // If the upload form is requested and user is not logged in, prompt login.
         if (activeView.id === 'view-upload-form' && !currentUser) {
           showMessage("Please log in to upload a game.", true);
           showModal('login');
@@ -934,7 +956,6 @@
       window.scrollTo(0, 0);
     }
 
-    // --- Play Random Game ---
     function playRandomGame() {
       if (!window.games || window.games.length === 0) {
         showMessage("Games haven't loaded yet. Please wait or browse first.", true);
@@ -975,7 +996,6 @@
       showModal('message');
     }
 
-    // --- Routing ---
     function handleRouteChange() {
       const hash = window.location.hash || '#/';
       if (hash.startsWith('#/game/')) {
@@ -1014,7 +1034,6 @@
       }
     }
 
-    // --- Authentication ---
     async function setupAuthListeners() {
       const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
       if (sessionError) console.error("Error getting initial session:", sessionError);
@@ -1106,7 +1125,6 @@
       }
     }
 
-    // --- Game Fetching & Rendering ---
     async function fetchAndRenderGames() {
       console.log("Fetching games...");
       gameGrid.innerHTML = '<div class="loading-indicator">Loading games...</div>';
@@ -1142,7 +1160,7 @@
       const card = document.createElement('div');
       card.className = 'game-card';
       card.dataset.gameId = game.id;
-      // Set a native tooltip to show the full title and description on hover.
+      // Set a native tooltip with the full title and description.
       card.setAttribute('title', game.title + " - " + game.description);
       const previewUrl = game.preview_image_path 
         ? `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.preview_image_path}` 
@@ -1178,7 +1196,6 @@
       if (reportButton) reportButton.disabled = true;
       currentGameData = null;
       try {
-        // Fetch game details from the games table.
         const { data: game, error: gameError } = await supabaseClient
           .from('games')
           .select('id, title, description, category, uploader_user_id, game_file_path, likes_count, uploader_name')
@@ -1187,8 +1204,6 @@
         if (gameError) throw gameError;
         if (!game) throw new Error("Game not found.");
         currentGameData = game;
-
-        // Check the like status for authenticated users.
         let userHasLiked = false;
         if (currentUser) {
           const { data: likeData, error: likeError } = await supabaseClient
@@ -1198,12 +1213,9 @@
           if (likeError) console.warn("Could not fetch like status:", likeError);
           userHasLiked = (likeData?.count ?? 0) > 0;
         }
-
         gameTitle.textContent = game.title || 'Untitled Game';
         likeCount.textContent = game.likes_count || 0;
         gameDescription.textContent = game.description || 'No description provided.';
-
-        // Fallback: use the uploader_name stored on the game, if profiles table is empty.
         let uploaderUsername = game.uploader_name || 'Anonymous';
         if (game.uploader_user_id) {
           const { data: profile, error: profileError } = await supabaseClient
@@ -1217,7 +1229,6 @@
         }
         gameUploader.textContent = uploaderUsername;
         gameCategory.textContent = game.category || 'Uncategorized';
-
         if (currentUser) {
           if (likeButton) {
             likeButton.disabled = false;
@@ -1227,7 +1238,6 @@
           if (downloadButton) downloadButton.disabled = false;
           if (reportButton) reportButton.disabled = false;
         }
-
         if (game.game_file_path) {
           const gameUrl = `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.game_file_path}`;
           gameIframe.src = gameUrl;
@@ -1384,134 +1394,4 @@
           uploadStatus.textContent = 'Uploading preview image...';
           const previewFileExt = previewFile.name.split('.').pop();
           const previewFileName = `preview.${previewFileExt}`;
-          const previewFolderPath = `${baseFolderPath}/${previewFileName}`;
-          const { data: previewUploadData, error: previewUploadError } = await supabaseClient.storage
-            .from(GAME_FILES_BUCKET)
-            .upload(previewFolderPath, previewFile);
-          if (previewUploadError) {
-            console.warn(`Preview image upload failed: ${previewUploadError.message}`);
-            showMessage("Game uploaded, but preview image failed.", true);
-          } else {
-            previewImagePath = previewFolderPath;
-          }
-        }
-        uploadStatus.textContent = 'Saving game details...';
-        const { data: gameInsertData, error: gameInsertError } = await supabaseClient
-          .from('games')
-          .insert({
-            title: title,
-            description: description,
-            category: category,
-            uploader_user_id: currentUser.id,
-            uploader_name: uploaderName,
-            game_file_path: gameFolderPath,
-            preview_image_path: previewImagePath
-          })
-          .select('id')
-          .single();
-        if (gameInsertError) throw new Error(`Database insert failed: ${gameInsertError.message}`);
-        uploadStatus.textContent = 'Upload Complete!';
-        showMessage("Game uploaded successfully!");
-        uploadForm.reset();
-        window.location.hash = `#/game/${gameInsertData.id}`;
-      } catch (error) {
-        console.error("Upload process error:", error);
-        uploadError.textContent = `Upload failed: ${error.message}`;
-        uploadError.classList.remove('hidden');
-        uploadStatus.classList.add('hidden');
-      } finally {
-        uploadSubmitButton.disabled = false;
-        uploadSubmitButton.textContent = 'Upload Game';
-      }
-    }
-
-    function setupEventListeners() {
-      if (navLinksContainer) {
-        navLinksContainer.addEventListener('click', (e) => {
-          const target = e.target.closest('a[data-view], button[data-view], a[data-modal], button[data-modal]');
-          if (!target) return;
-          if (target.dataset.modal || target.id === 'logout-button') {
-            e.preventDefault();
-          }
-          if (target.id === 'logout-button') {
-            handleLogout();
-          } else if (target.dataset.modal) {
-            showModal(target.dataset.modal);
-          }
-        });
-      }
-      document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('modal')) {
-          const modalId = e.target.id.replace('modal-', '');
-          if(modalId) hideModal(modalId);
-        }
-        else if (e.target.classList.contains('modal-close')) {
-          const modal = e.target.closest('.modal');
-          if(modal) {
-            const modalId = modal.id.replace('modal-', '');
-            if(modalId) hideModal(modalId);
-          }
-        }
-      });
-      if (loginForm) { loginForm.addEventListener('submit', handleLogin); }
-      if (registerForm) { registerForm.addEventListener('submit', handleRegister); }
-      if (categoryFilter) { categoryFilter.addEventListener('change', () => { currentCategory = categoryFilter.value; window.location.hash = `#/category/${encodeURIComponent(currentCategory || 'All')}`; }); }
-      if (sortBy) { sortBy.addEventListener('change', () => { currentSort = sortBy.value; fetchAndRenderGames(); }); }
-      if (sidebarCategories) { 
-        sidebarCategories.addEventListener('click', (e) => { 
-          if (e.target.tagName === 'A' && e.target.dataset.category !== undefined) {
-            currentCategory = e.target.dataset.category;
-            window.location.hash = `#/category/${encodeURIComponent(currentCategory)}`;
-          }
-        }); 
-      }
-      if (gameGrid) { 
-        gameGrid.addEventListener('click', (e) => { 
-          const button = e.target.closest('button.view-game-button'); 
-          if (button && button.dataset.gameId) { 
-            const gameId = button.dataset.gameId;
-            fetchAndRenderGameDetails(gameId);
-            window.location.hash = `#/game/${gameId}`;
-          }
-        }); 
-      }
-      if (backButton) { backButton.addEventListener('click', () => window.location.hash = `#/category/${encodeURIComponent(currentCategory || 'All')}`); }
-      if (likeButton) { likeButton.addEventListener('click', handleLike); }
-      if (downloadButton) { downloadButton.addEventListener('click', handleDownload); }
-      if (reportButton) { reportButton.addEventListener('click', showReportModal); }
-      if (reportForm) { reportForm.addEventListener('submit', handleReportSubmit); }
-      if (uploadForm) { uploadForm.addEventListener('submit', handleUpload); }
-      if (termsLink) { termsLink.addEventListener('click', (e) => {}); }
-      if (termsBackButton) { termsBackButton.addEventListener('click', () => { window.history.back(); }); }
-      const contactLink = document.getElementById('contact-link');
-      if (contactLink) {
-        if (contactLink.tagName === 'SPAN') {
-          contactLink.addEventListener('click', function contactClickHandler() {
-            const email = 'itayash@gmail.com';
-            contactLink.outerHTML = `<a href="mailto:${email}">${email}</a>`;
-          }, { once: true });
-        }
-      }
-      const howToBackButton = document.getElementById('howto-back-button');
-      if (howToBackButton) {
-        howToBackButton.addEventListener('click', () => {
-          if (window.history.length > 1) {
-            window.history.back();
-          } else {
-            window.location.hash = '#/';
-          }
-        });
-      }
-      window.addEventListener('hashchange', handleRouteChange);
-    }
-
-    function init() {
-      document.getElementById('copyright-year').textContent = new Date().getFullYear();
-      setupEventListeners();
-      setupAuthListeners();
-    }
-
-    document.addEventListener('DOMContentLoaded', init);
-  </script>
-</body>
-</html>
+          const previewFolderPath = `${baseFolderPath
