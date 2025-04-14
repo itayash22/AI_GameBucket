@@ -1110,68 +1110,86 @@
       gameGrid.appendChild(card);
     }
 
-    async function fetchAndRenderGameDetails(gameId) {
-      showView('view-game-play');
-      gameTitle.textContent = 'Loading Game...';
-      gameIframe.src = 'about:blank';
-      likeCount.textContent = '...';
-      gameDescription.textContent = '...';
-      gameUploader.textContent = '...';
-      gameCategory.textContent = '...';
-      if(likeButton) { 
-        likeButton.disabled = true; 
-        likeButton.classList.remove('liked'); 
-        likeButton.textContent = 'Like'; 
-      }
-      if(downloadButton) downloadButton.disabled = true;
-      if(reportButton) reportButton.disabled = true;
-      currentGameData = null;
-      try {
-        // Adjusted select clause; ensure that the relationship "profiles" is correctly set up in Supabase
-        const { data: game, error: gameError } = await supabaseClient
-          .from('games')
-          .select('id, title, description, category, uploader_user_id, game_file_path, likes_count, profiles ( username )')
-          .eq('id', gameId)
-          .single();
-        if (gameError) throw gameError;
-        if (!game) throw new Error("Game not found.");
-        currentGameData = game;
-        let userHasLiked = false;
-        if (currentUser) {
-          const { data: likeData, error: likeError } = await supabaseClient
-            .from('likes')
-            .select('game_id', { count: 'exact', head: true })
-            .match({ user_id: currentUser.id, game_id: gameId });
-          if (likeError) console.warn("Could not fetch like status:", likeError);
-          userHasLiked = (likeData?.count ?? 0) > 0;
-        }
-        gameTitle.textContent = game.title || 'Untitled Game';
-        likeCount.textContent = game.likes_count || 0;
-        gameDescription.textContent = game.description || 'No description provided.';
-        gameUploader.textContent = (game.profiles && game.profiles.username) ? game.profiles.username : 'Anonymous';
-        gameCategory.textContent = game.category || 'Uncategorized';
-        if (currentUser) {
-          if(likeButton) {
-            likeButton.disabled = false;
-            likeButton.classList.toggle('liked', userHasLiked);
-            likeButton.textContent = userHasLiked ? 'Unlike' : 'Like';
-          }
-          if(downloadButton) downloadButton.disabled = false;
-          if(reportButton) reportButton.disabled = false;
-        }
-        if (game.game_file_path) {
-          const gameUrl = `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.game_file_path}`;
-          gameIframe.src = gameUrl;
-        } else {
-          gameDescription.textContent += "\n\nError: Game file path missing.";
-          gameIframe.src = 'about:blank';
-        }
-      } catch (error) {
-        console.error("Error fetching game details:", error);
-        gameTitle.textContent = 'Error Loading Game';
-        gameDescription.textContent = `Could not load game details: ${error.message}`;
+   async function fetchAndRenderGameDetails(gameId) {
+  showView('view-game-play');
+  gameTitle.textContent = 'Loading Game...';
+  gameIframe.src = 'about:blank';
+  likeCount.textContent = '...';
+  gameDescription.textContent = '...';
+  gameUploader.textContent = '...';
+  gameCategory.textContent = '...';
+  if (likeButton) { 
+    likeButton.disabled = true; 
+    likeButton.classList.remove('liked'); 
+    likeButton.textContent = 'Like'; 
+  }
+  if (downloadButton) downloadButton.disabled = true;
+  if (reportButton) reportButton.disabled = true;
+  currentGameData = null;
+  try {
+    // Fetch game details without a join to avoid relationship errors.
+    const { data: game, error: gameError } = await supabaseClient
+      .from('games')
+      .select('id, title, description, category, uploader_user_id, game_file_path, likes_count')
+      .eq('id', gameId)
+      .single();
+    if (gameError) throw gameError;
+    if (!game) throw new Error("Game not found.");
+    currentGameData = game;
+    
+    // Check if the current user has liked this game.
+    let userHasLiked = false;
+    if (currentUser) {
+      const { data: likeData, error: likeError } = await supabaseClient
+        .from('likes')
+        .select('game_id', { count: 'exact', head: true })
+        .match({ user_id: currentUser.id, game_id: gameId });
+      if (likeError) console.warn("Could not fetch like status:", likeError);
+      userHasLiked = (likeData?.count ?? 0) > 0;
+    }
+    
+    gameTitle.textContent = game.title || 'Untitled Game';
+    likeCount.textContent = game.likes_count || 0;
+    gameDescription.textContent = game.description || 'No description provided.';
+    
+    // Since we don't use a join, fetch the uploader's username with a separate query.
+    let uploaderUsername = 'Anonymous';
+    if (game.uploader_user_id) {
+      const { data: profile, error: profileError } = await supabaseClient
+        .from('profiles')
+        .select('username')
+        .eq('id', game.uploader_user_id)
+        .single();
+      if (!profileError && profile && profile.username) {
+        uploaderUsername = profile.username;
       }
     }
+    gameUploader.textContent = uploaderUsername;
+    gameCategory.textContent = game.category || 'Uncategorized';
+    
+    if (currentUser) {
+      if (likeButton) {
+        likeButton.disabled = false;
+        likeButton.classList.toggle('liked', userHasLiked);
+        likeButton.textContent = userHasLiked ? 'Unlike' : 'Like';
+      }
+      if (downloadButton) downloadButton.disabled = false;
+      if (reportButton) reportButton.disabled = false;
+    }
+    
+    if (game.game_file_path) {
+      const gameUrl = `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.game_file_path}`;
+      gameIframe.src = gameUrl;
+    } else {
+      gameDescription.textContent += "\n\nError: Game file path missing.";
+      gameIframe.src = 'about:blank';
+    }
+  } catch (error) {
+    console.error("Error fetching game details:", error);
+    gameTitle.textContent = 'Error Loading Game';
+    gameDescription.textContent = `Could not load game details: ${error.message}`;
+  }
+}
 
     async function handleLike() {
       if (!currentUser || !currentGameData) return;
