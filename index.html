@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
   <title>Vibe Gaming</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1127,7 +1128,7 @@
   if (reportButton) reportButton.disabled = true;
   currentGameData = null;
   try {
-    // Fetch game details without a join to avoid relationship errors.
+    // Fetch the game details from the games table.
     const { data: game, error: gameError } = await supabaseClient
       .from('games')
       .select('id, title, description, category, uploader_user_id, game_file_path, likes_count')
@@ -1136,8 +1137,8 @@
     if (gameError) throw gameError;
     if (!game) throw new Error("Game not found.");
     currentGameData = game;
-    
-    // Check if the current user has liked this game.
+
+    // Check like status for authenticated users.
     let userHasLiked = false;
     if (currentUser) {
       const { data: likeData, error: likeError } = await supabaseClient
@@ -1147,12 +1148,12 @@
       if (likeError) console.warn("Could not fetch like status:", likeError);
       userHasLiked = (likeData?.count ?? 0) > 0;
     }
-    
+
     gameTitle.textContent = game.title || 'Untitled Game';
     likeCount.textContent = game.likes_count || 0;
     gameDescription.textContent = game.description || 'No description provided.';
-    
-    // Since we don't use a join, fetch the uploader's username with a separate query.
+
+    // Separately fetch the uploader's username from profiles.
     let uploaderUsername = 'Anonymous';
     if (game.uploader_user_id) {
       const { data: profile, error: profileError } = await supabaseClient
@@ -1166,7 +1167,8 @@
     }
     gameUploader.textContent = uploaderUsername;
     gameCategory.textContent = game.category || 'Uncategorized';
-    
+
+    // Re-enable interactive elements for authenticated users.
     if (currentUser) {
       if (likeButton) {
         likeButton.disabled = false;
@@ -1176,7 +1178,8 @@
       if (downloadButton) downloadButton.disabled = false;
       if (reportButton) reportButton.disabled = false;
     }
-    
+
+    // Set the game iframe src to load the uploaded game file.
     if (game.game_file_path) {
       const gameUrl = `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.game_file_path}`;
       gameIframe.src = gameUrl;
