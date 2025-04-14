@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- Updated CSP to allow Google Fonts -->
+  <!-- Adjusted CSP to allow fonts -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vibe Gaming</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Font restored exactly as before -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -38,7 +39,7 @@
       scroll-behavior: smooth;
     }
     body {
-      font-family: "Press Start 2P", cursive;
+      font-family: var(--pixel-font);
       background-color: var(--bg-color);
       color: var(--primary-color);
       line-height: 1.6;
@@ -151,6 +152,7 @@
       margin-bottom: 15px;
       text-align: center;
     }
+    /* Removed requires-login class from the Upload link so it’s always visible */
     nav#nav-links a, nav#nav-links button {
       margin: 0 8px;
       font-size: 1.4rem;
@@ -593,7 +595,8 @@
       </div>
       <nav id="nav-links">
         <a href="#/" data-view="game-list">Home</a>
-        <a href="#/upload" data-view="upload-form" class="requires-login hidden">Upload</a>
+        <!-- Removed requires-login and hidden so Upload is always visible -->
+        <a href="#/upload" data-view="upload-form">Upload</a>
         <a href="#/how-to" data-view="how-to">How To</a>
         <a href="#/login" id="login-link" data-modal="login">Login</a>
         <a href="#/register" id="register-link" data-modal="register">Register</a>
@@ -639,7 +642,7 @@
           <div id="game-grid" class="loading-indicator">Loading games...</div>
         </div>
 
-        <!-- Updated How To View with placeholder text -->
+        <!-- How To View -->
         <div id="view-how-to" class="view">
           <button id="howto-back-button">&lt; Back</button>
           <h2>How To Use Vibe Code Games</h2>
@@ -648,6 +651,7 @@
           </div>
         </div>
 
+        <!-- Game Play View -->
         <div id="view-game-play" class="view">
           <button id="back-button">&lt; Back to List</button>
           <h2 id="game-title">Loading Game...</h2>
@@ -670,7 +674,8 @@
           </div>
         </div>
 
-        <div id="view-upload-form" class="view requires-login hidden">
+        <!-- Upload Form (no requires-login or hidden class) -->
+        <div id="view-upload-form" class="view">
           <h2>Upload Your Game</h2>
           <form id="upload-form">
             <div class="form-group">
@@ -712,6 +717,7 @@
           </form>
         </div>
 
+        <!-- Terms View -->
         <div id="view-terms" class="view">
           <button id="terms-back-button">&lt; Back</button>
           <h2>Terms of Service & Content Policy</h2>
@@ -910,20 +916,13 @@
       views.forEach(view => view.classList.remove('active'));
       const activeView = document.getElementById(viewId);
       if (activeView) {
-        if (activeView.classList.contains('requires-login') && !currentUser) {
-          if (document.getElementById('modal-login').style.display !== 'block') {
-            showMessage("Please log in or register to access this page.");
-            showModal('login');
-          }
-          const currentActive = document.querySelector('.view.active') || document.getElementById('view-game-list');
-          if (!currentActive) {
-            document.getElementById('view-game-list').classList.add('active');
-          } else {
-            currentActive.classList.add('active');
-          }
-          if (window.location.hash !== '#/login' && window.location.hash !== '#/register') {
-            window.location.hash = '#/';
-          }
+        // If view requires login and no user exists, prompt for login
+        if (activeView.id === 'view-upload-form' && !currentUser) {
+          showMessage("Please log in to upload a game.", true);
+          showModal('login');
+          // Optionally, you could also redirect to the game list:
+          showView('view-game-list');
+          window.location.hash = '#/';
           return;
         }
         activeView.classList.add('active');
@@ -939,7 +938,7 @@
     // --- Play Random Game ---
     function playRandomGame() {
       if (!window.games || window.games.length === 0) {
-        displayMessage('modal-message', 'Games haven\'t loaded yet. Please wait or browse first.', true);
+        showMessage("Games haven't loaded yet. Please wait or browse first.", true);
         return;
       }
       const randomIndex = Math.floor(Math.random() * window.games.length);
@@ -948,7 +947,7 @@
         loadGame(randomGame);
         showView('view-game-play');
       } else {
-        displayMessage('modal-message', 'Could not select a random game to play.', true);
+        showMessage("Could not select a random game to play.", true);
       }
     }
 
@@ -985,10 +984,10 @@
         fetchAndRenderGameDetails(gameId);
       } else if (hash === '#/upload') {
         showView('view-upload-form');
-        if(uploadForm) uploadForm.reset();
-        if(uploadStatus) uploadStatus.classList.add('hidden');
-        if(uploadError) uploadError.classList.add('hidden');
-        if(uploadSubmitButton) {
+        if (uploadForm) uploadForm.reset();
+        if (uploadStatus) uploadStatus.classList.add('hidden');
+        if (uploadError) uploadError.classList.add('hidden');
+        if (uploadSubmitButton) {
           uploadSubmitButton.disabled = false;
           uploadSubmitButton.textContent = 'Upload Game';
         }
@@ -999,7 +998,7 @@
       } else if (hash.startsWith('#/category/')) {
         const category = decodeURIComponent(hash.substring(11));
         currentCategory = (category === 'All' || category === '') ? '' : category;
-        if(categoryFilter) categoryFilter.value = currentCategory;
+        if (categoryFilter) categoryFilter.value = currentCategory;
         fetchAndRenderGames();
         showView('view-game-list');
       } else if (hash === '#/login') {
@@ -1010,7 +1009,7 @@
         showModal('register');
       } else {
         currentCategory = '';
-        if(categoryFilter) categoryFilter.value = '';
+        if (categoryFilter) categoryFilter.value = '';
         fetchAndRenderGames();
         showView('view-game-list');
       }
@@ -1094,17 +1093,18 @@
       if (currentUser) {
         loginLink.classList.add('hidden');
         registerLink.classList.add('hidden');
+        // For elements requiring login, remove hidden only if user is logged in.
         requiresLoginElements.forEach(el => el.classList.remove('hidden'));
-        if(likeButton) likeButton.disabled = false;
-        if(downloadButton) downloadButton.disabled = false;
-        if(reportButton) reportButton.disabled = false;
+        if (likeButton) likeButton.disabled = false;
+        if (downloadButton) downloadButton.disabled = false;
+        if (reportButton) reportButton.disabled = false;
       } else {
         loginLink.classList.remove('hidden');
         registerLink.classList.remove('hidden');
         requiresLoginElements.forEach(el => el.classList.add('hidden'));
-        if(likeButton) likeButton.disabled = true;
-        if(downloadButton) downloadButton.disabled = true;
-        if(reportButton) reportButton.disabled = true;
+        if (likeButton) likeButton.disabled = true;
+        if (downloadButton) downloadButton.disabled = true;
+        if (reportButton) reportButton.disabled = true;
       }
     }
 
@@ -1144,7 +1144,7 @@
       const card = document.createElement('div');
       card.className = 'game-card';
       card.dataset.gameId = game.id;
-      // Set a native tooltip so hovering shows the full title and description.
+      // Tooltip showing full title and description
       card.setAttribute('title', game.title + " - " + game.description);
       const previewUrl = game.preview_image_path 
         ? `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.preview_image_path}` 
@@ -1180,17 +1180,17 @@
       if (reportButton) reportButton.disabled = true;
       currentGameData = null;
       try {
-        // Fetch the game details from the games table.
+        // Fetch game details.
         const { data: game, error: gameError } = await supabaseClient
           .from('games')
-          .select('id, title, description, category, uploader_user_id, game_file_path, likes_count')
+          .select('id, title, description, category, uploader_user_id, game_file_path, likes_count, uploader_name')
           .eq('id', gameId)
           .single();
         if (gameError) throw gameError;
         if (!game) throw new Error("Game not found.");
         currentGameData = game;
 
-        // Check like status for authenticated users.
+        // Check if current user liked this game.
         let userHasLiked = false;
         if (currentUser) {
           const { data: likeData, error: likeError } = await supabaseClient
@@ -1205,8 +1205,8 @@
         likeCount.textContent = game.likes_count || 0;
         gameDescription.textContent = game.description || 'No description provided.';
 
-        // Fetch uploader's username from the profiles table.
-        let uploaderUsername = 'Anonymous';
+        // Use uploader_name from game record as fallback.
+        let uploaderUsername = game.uploader_name || 'Anonymous';
         if (game.uploader_user_id) {
           const { data: profile, error: profileError } = await supabaseClient
             .from('profiles')
@@ -1220,7 +1220,6 @@
         gameUploader.textContent = uploaderUsername;
         gameCategory.textContent = game.category || 'Uncategorized';
 
-        // Re-enable interactive elements for authenticated users.
         if (currentUser) {
           if (likeButton) {
             likeButton.disabled = false;
@@ -1231,7 +1230,6 @@
           if (reportButton) reportButton.disabled = false;
         }
 
-        // Set the game iframe src to load the uploaded game file.
         if (game.game_file_path) {
           const gameUrl = `${SUPABASE_URL}/storage/v1/object/public/${GAME_FILES_BUCKET}/${game.game_file_path}`;
           gameIframe.src = gameUrl;
@@ -1261,7 +1259,7 @@
             .match({ user_id: currentUser.id, game_id: gameId });
           if (error) throw error;
           const { error: rpcError } = await supabaseClient.rpc('decrement_like_count', { game_uuid: gameId });
-          if(rpcError) console.warn("RPC decrement failed:", rpcError);
+          if (rpcError) console.warn("RPC decrement failed:", rpcError);
           likeButton.classList.remove('liked');
           likeButton.textContent = 'Like';
           likeCount.textContent = Math.max(0, currentLikes - 1);
@@ -1271,19 +1269,19 @@
             .insert({ user_id: currentUser.id, game_id: gameId });
           if (error) throw error;
           const { error: rpcError } = await supabaseClient.rpc('increment_like_count', { game_uuid: gameId });
-          if(rpcError) console.warn("RPC increment failed:", rpcError);
+          if (rpcError) console.warn("RPC increment failed:", rpcError);
           likeButton.classList.add('liked');
           likeButton.textContent = 'Unlike';
           likeCount.textContent = currentLikes + 1;
         }
-      } catch(error) {
+      } catch (error) {
         console.error("Error liking/unliking game:", error);
         showMessage(`Action failed: ${error.message}`, true);
         likeCount.textContent = currentLikes;
         likeButton.classList.toggle('liked', userIsLiked);
         likeButton.textContent = userIsLiked ? 'Unlike' : 'Like';
       } finally {
-        if(currentUser) likeButton.disabled = false;
+        if (currentUser) likeButton.disabled = false;
       }
     }
 
@@ -1447,13 +1445,13 @@
       document.addEventListener('click', (e) => {
         if (e.target.classList.contains('modal')) {
           const modalId = e.target.id.replace('modal-', '');
-          if(modalId) hideModal(modalId);
+          if (modalId) hideModal(modalId);
         }
         else if (e.target.classList.contains('modal-close')) {
           const modal = e.target.closest('.modal');
-          if(modal) {
+          if (modal) {
             const modalId = modal.id.replace('modal-', '');
-            if(modalId) hideModal(modalId);
+            if (modalId) hideModal(modalId);
           }
         }
       });
