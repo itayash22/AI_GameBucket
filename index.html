@@ -129,8 +129,20 @@
     #view-game-play button#back-button { margin-bottom: 15px; }
     #view-game-play #game-title { font-size: 2.4rem; margin-bottom: 15px; color: var(--secondary-color); word-break: break-all; }
     #game-iframe-container {
-      position: relative; width: 100%; height: 60vh; margin-bottom: 15px; background-color: #000; border: 4px solid var(--border-color);
-    }
+            position: relative;
+            /* width: 100%; */ /* Remove or comment out this line */
+            /* height: 60vh; */ /* Remove or comment out this line */
+
+            /* --- Add these lines --- */
+            width: 300px;   /* Set width to match the game's canvas */
+            height: 500px;  /* Set height to match the game's canvas */
+            margin: 0 auto 15px auto; /* Center the container horizontally and add bottom margin */
+            max-width: 100%; /* Prevent overflow on very narrow screens */
+            /* --- End Add --- */
+
+            background-color: #000; /* Keep existing styles */
+            border: 4px solid var(--border-color); /* Keep existing styles */
+        }
     #game-iframe {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; background-color: #000;
     }
