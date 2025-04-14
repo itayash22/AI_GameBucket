@@ -955,140 +955,150 @@
       }
     }
 
-    async function handleUpload(event) {
-  event.preventDefault();
+        /**
+     * Handles submission of the game upload form.
+     * MODIFIED: Creates a File object with '.html' extension before uploading.
+     */
+     async function handleUpload(event) {
+        event.preventDefault();
+        if (!currentUser) {
+             showMessage("Please log in to upload.", true);
+             return;
+        }
 
-  if (!currentUser) {
-    showMessage("Please log in to upload.", true);
-    return;
-  }
+        // Get form values
+        const title = uploadTitle.value.trim();
+        // Get uploader name from the dedicated input field
+        const uploaderName = document.getElementById('upload-uploader-name')?.value.trim(); // Use optional chaining
+        const description = uploadDescription.value.trim();
+        const category = uploadCategory.value;
+        const gameFile = uploadGameFile.files[0];
+        const previewFile = uploadPreviewImage.files[0];
+        // Chat log is no longer a required field based on previous changes
+        // const chatLogContent = uploadChatLog.value.trim();
 
-  const title = uploadTitle.value.trim();
-  const uploaderName = document.getElementById('upload-uploader-name').value.trim();
-  const description = uploadDescription.value.trim();
-  const category = uploadCategory.value;
-  const gameFile = uploadGameFile.files[0];
-  const previewFile = uploadPreviewImage.files[0];
+        // Basic validation
+        if(uploadError) uploadError.classList.add('hidden'); // Clear previous errors
+        let validationError = false;
+        // Add uploaderName to validation check
+        if (!title || !uploaderName || !description || !category || !gameFile) {
+             uploadError.textContent = 'Please fill in all required fields (Title, Uploader Name, Description, Category, Game File).';
+             validationError = true;
+        } else if (gameFile.type !== 'text/html' && !gameFile.name.endsWith('.html') && !gameFile.name.endsWith('.txt')) {
+            // Allow .txt or .html upload, but internally treat as html
+            uploadError.textContent = 'Game file must be an .html or .txt file.';
+            validationError = true;
+        } else if (previewFile && !previewFile.type.startsWith('image/')) {
+             uploadError.textContent = 'Preview file must be an image (JPG, PNG, GIF).';
+             validationError = true;
+         }
 
-  uploadError.classList.add('hidden');
-  if (!title || !uploaderName || !description || !category || !gameFile) {
-    uploadError.textContent = 'Please fill in all required fields (Title, Uploader Name, Description, Category, Game File).';
-    uploadError.classList.remove('hidden');
-    return;
-  }
+         if (validationError) {
+             if(uploadError) uploadError.classList.remove('hidden');
+             return;
+         }
 
-  // Validate that the game file is HTML.
-  if (gameFile.type !== 'text/html') {
-    uploadError.textContent = 'Game file must be an .html file.';
-    uploadError.classList.remove('hidden');
-    return;
-  }
-  
-  if (previewFile && !previewFile.type.startsWith('image/')) {
-    uploadError.textContent = 'Preview file must be an image (JPG, PNG, GIF).';
-    uploadError.classList.remove('hidden');
-    return;
-  }
-  
-  uploadSubmitButton.disabled = true;
-  uploadSubmitButton.textContent = 'Uploading...';
-  uploadStatus.textContent = 'Starting upload...';
-  uploadStatus.classList.remove('hidden');
+         // Update UI to show loading state
+         if(uploadSubmitButton) uploadSubmitButton.disabled = true;
+         if(uploadSubmitButton) uploadSubmitButton.textContent = 'Uploading...';
+         if(uploadStatus) uploadStatus.textContent = 'Starting upload...';
+         if(uploadStatus) uploadStatus.classList.remove('hidden');
 
-  const timestamp = Date.now();
-  const baseFolderPath = `games/${currentUser.id}/${timestamp}`;
-  const gameFileName = `game.html`;
-  const gameFolderPath = `${baseFolderPath}/${gameFileName}`;
+         // --- File Upload Logic ---
+         const timestamp = Date.now();
+         const baseFolderPath = `games/${currentUser.id}/${timestamp}`;
+         // Storage path still uses game.html regardless of original extension
+         const gameStoragePath = `${baseFolderPath}/game.html`;
+         let previewStoragePath = null;
 
-  try {
-    // Read the file's content as text.
-    const fileText = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsText(gameFile);
-    });
+         try {
+             // --- MODIFICATION START ---
+             // 1. Read the original file content as text
+             const fileText = await gameFile.text(); // Simpler way to read text
 
-    // Remove any existing CSP meta tag (if present) so it doesn't conflict.
-    const cleanedText = fileText.replace(/<meta[^>]*http-equiv=["']Content-Security-Policy["'][^>]*>/i, "");
+             // 2. Clean any existing CSP meta tag (optional but good practice)
+             const cleanedText = fileText.replace(/<meta[^>]*http-equiv=["']Content-Security-Policy["'][^>]*>/gi, "");
 
-    // Prepare the new CSP meta tag that forces the file to be interpreted as HTML with inline styles allowed.
-    const newCsp = `<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline';">`;
-    
-    // Insert our new meta tag immediately after the opening <head> tag.
-    let modifiedText;
-    if (cleanedText.search(/<head>/i) !== -1) {
-      modifiedText = cleanedText.replace(/<head>/i, `<head>\n  ${newCsp}`);
-    } else {
-      // If there's no head tag, prepend the meta tag.
-      modifiedText = `${newCsp}\n${cleanedText}`;
+             // 3. Create a Blob with the cleaned text and explicit HTML type
+             const modifiedBlob = new Blob([cleanedText], { type: 'text/html' });
+
+             // 4. Create a NEW File object from the Blob, giving it an '.html' name
+             //    This might help Supabase correctly identify the type.
+             const finalFileToUpload = new File([modifiedBlob], "game.html", { type: 'text/html' });
+             // --- MODIFICATION END ---
+
+
+             // 5. Upload Game File (using the new File object)
+             uploadStatus.textContent = 'Uploading game file...';
+             const { data: gameUploadData, error: gameUploadError } = await supabaseClient.storage
+                 .from(GAME_FILES_BUCKET)
+                 .upload(gameStoragePath, finalFileToUpload, { // Pass the new File object here
+                     contentType: 'text/html', // Still specify contentType explicitly
+                     cacheControl: '3600',
+                     upsert: false
+                 });
+
+             if (gameUploadError) throw new Error(`Game file upload failed: ${gameUploadError.message}`);
+             console.log("Game upload success:", gameUploadData);
+
+            // 6. Upload Preview Image (if provided) - unchanged
+            if (previewFile) {
+                uploadStatus.textContent = 'Uploading preview image...';
+                 const previewFileExt = previewFile.name.split('.').pop() || 'png';
+                 const previewFileName = `preview.${previewFileExt}`;
+                 previewStoragePath = `${baseFolderPath}/${previewFileName}`;
+
+                 const { data: previewUploadData, error: previewUploadError } = await supabaseClient.storage
+                     .from(GAME_FILES_BUCKET)
+                     .upload(previewStoragePath, previewFile, { upsert: false });
+
+                 if (previewUploadError) {
+                     console.warn(`Preview image upload failed: ${previewUploadError.message}`);
+                     showMessage("Game uploaded, but preview image failed.", true);
+                     previewStoragePath = null;
+                 } else {
+                     console.log("Preview upload success:", previewUploadData);
+                 }
+            }
+
+             // 7. Insert Game Metadata into Database - unchanged (removed chat log)
+             uploadStatus.textContent = 'Saving game details...';
+             const { data: gameInsertData, error: gameInsertError } = await supabaseClient
+                 .from('games')
+                 .insert({
+                     title: title,
+                     description: description,
+                     category: category,
+                     uploader_user_id: currentUser.id,
+                     uploader_name: uploaderName, // Save the uploader name
+                     game_file_path: gameStoragePath,
+                     preview_image_path: previewStoragePath
+                     // chat_log: chatLogContent || null // Removed chat log field
+                 })
+                 .select('id')
+                 .single();
+
+             if (gameInsertError) throw new Error(`Database insert failed: ${gameInsertError.message}`);
+             console.log("Database insert success:", gameInsertData);
+
+             // 8. Success! - unchanged
+             if(uploadStatus) uploadStatus.textContent = 'Upload Complete!';
+             showMessage("Game uploaded successfully!");
+             if(uploadForm) uploadForm.reset();
+             window.location.hash = `#/game/${gameInsertData.id}`;
+
+         } catch (error) {
+             // Handle errors - unchanged
+             console.error("Upload process error:", error);
+             if(uploadError) uploadError.textContent = `Upload failed: ${error.message}`;
+             if(uploadError) uploadError.classList.remove('hidden');
+             if(uploadStatus) uploadStatus.classList.add('hidden');
+         } finally {
+             // Always re-enable the submit button - unchanged
+             if(uploadSubmitButton) uploadSubmitButton.disabled = false;
+             if(uploadSubmitButton) uploadSubmitButton.textContent = 'Upload Game';
+         }
     }
-
-    // Create a new Blob using modifiedText with content type text/html.
-    const modifiedFile = new Blob([modifiedText], { type: 'text/html' });
-
-    uploadStatus.textContent = 'Uploading game file...';
-    // Upload the modified file with contentType explicitly set to text/html.
-    const { data: gameUploadData, error: gameUploadError } = await supabaseClient.storage
-      .from(GAME_FILES_BUCKET)
-      .upload(gameFolderPath, modifiedFile, { contentType: 'text/html' });
-      
-    if (gameUploadError) {
-      throw new Error(`Game file upload failed: ${gameUploadError.message}`);
-    }
-
-    // Upload the preview image file (if provided) without modifying it.
-    let previewImagePath = null;
-    if (previewFile) {
-      uploadStatus.textContent = 'Uploading preview image...';
-      const previewFileExt = previewFile.name.split('.').pop();
-      const previewFileName = `preview.${previewFileExt}`;
-      const previewFolderPath = `${baseFolderPath}/${previewFileName}`;
-      const { data: previewUploadData, error: previewUploadError } = await supabaseClient.storage
-        .from(GAME_FILES_BUCKET)
-        .upload(previewFolderPath, previewFile);
-      if (previewUploadError) {
-        console.warn(`Preview image upload failed: ${previewUploadError.message}`);
-        showMessage("Game uploaded, but preview image failed.", true);
-      } else {
-        previewImagePath = previewFolderPath;
-      }
-    }
-
-    uploadStatus.textContent = 'Saving game details...';
-    const { data: gameInsertData, error: gameInsertError } = await supabaseClient
-      .from('games')
-      .insert({
-        title: title,
-        description: description,
-        category: category,
-        uploader_user_id: currentUser.id,
-        uploader_name: uploaderName,
-        game_file_path: gameFolderPath,
-        preview_image_path: previewImagePath
-      })
-      .select('id')
-      .single();
-      
-    if (gameInsertError) {
-      throw new Error(`Database insert failed: ${gameInsertError.message}`);
-    }
-    
-    uploadStatus.textContent = 'Upload Complete!';
-    showMessage("Game uploaded successfully!");
-    uploadForm.reset();
-    window.location.hash = `#/game/${gameInsertData.id}`;
-    
-  } catch (error) {
-    console.error("Upload process error:", error);
-    uploadError.textContent = `Upload failed: ${error.message}`;
-    uploadError.classList.remove('hidden');
-    uploadStatus.classList.add('hidden');
-  } finally {
-    uploadSubmitButton.disabled = false;
-    uploadSubmitButton.textContent = 'Upload Game';
-  }
-}
 
     function setupEventListeners() {
       if (navLinksContainer) {
