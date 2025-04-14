@@ -977,18 +977,19 @@
     return;
   }
 
-  // Validate game file type
+  // Validate that the game file is HTML.
   if (gameFile.type !== 'text/html') {
     uploadError.textContent = 'Game file must be an .html file.';
     uploadError.classList.remove('hidden');
     return;
   }
+  
   if (previewFile && !previewFile.type.startsWith('image/')) {
     uploadError.textContent = 'Preview file must be an image (JPG, PNG, GIF).';
     uploadError.classList.remove('hidden');
     return;
   }
-
+  
   uploadSubmitButton.disabled = true;
   uploadSubmitButton.textContent = 'Uploading...';
   uploadStatus.textContent = 'Starting upload...';
@@ -1000,7 +1001,7 @@
   const gameFolderPath = `${baseFolderPath}/${gameFileName}`;
 
   try {
-    // Read the game file's content as text
+    // Read the file's content as text.
     const fileText = await new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result);
@@ -1008,22 +1009,26 @@
       reader.readAsText(gameFile);
     });
 
-    // Insert (or replace) a meta CSP tag in the <head> section.
-    // Here we insert one immediately after the opening <head> tag.
-    const metaTag = `<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline';">`;
-    // Check if there's already a <head> tag:
+    // Remove any existing CSP meta tag (if present) so it doesn't conflict.
+    const cleanedText = fileText.replace(/<meta[^>]*http-equiv=["']Content-Security-Policy["'][^>]*>/i, "");
+
+    // Prepare the new CSP meta tag that forces the file to be interpreted as HTML with inline styles allowed.
+    const newCsp = `<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline';">`;
+    
+    // Insert our new meta tag immediately after the opening <head> tag.
     let modifiedText;
-    if (fileText.indexOf('<head>') !== -1) {
-      modifiedText = fileText.replace(/<head>/i, `<head>\n  ${metaTag}`);
+    if (cleanedText.search(/<head>/i) !== -1) {
+      modifiedText = cleanedText.replace(/<head>/i, `<head>\n  ${newCsp}`);
     } else {
-      // Fallback: if no <head> tag, just prepend the meta tag.
-      modifiedText = `${metaTag}\n${fileText}`;
+      // If there's no head tag, prepend the meta tag.
+      modifiedText = `${newCsp}\n${cleanedText}`;
     }
 
-    // Create a new Blob with modified content and correct content type.
+    // Create a new Blob using modifiedText with content type text/html.
     const modifiedFile = new Blob([modifiedText], { type: 'text/html' });
-    
+
     uploadStatus.textContent = 'Uploading game file...';
+    // Upload the modified file with contentType explicitly set to text/html.
     const { data: gameUploadData, error: gameUploadError } = await supabaseClient.storage
       .from(GAME_FILES_BUCKET)
       .upload(gameFolderPath, modifiedFile, { contentType: 'text/html' });
@@ -1032,7 +1037,7 @@
       throw new Error(`Game file upload failed: ${gameUploadError.message}`);
     }
 
-    // Upload the preview image if provided (without modifying it)
+    // Upload the preview image file (if provided) without modifying it.
     let previewImagePath = null;
     if (previewFile) {
       uploadStatus.textContent = 'Uploading preview image...';
