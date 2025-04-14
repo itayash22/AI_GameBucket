@@ -128,20 +128,22 @@
     /* --- Game Play View --- */
     #view-game-play button#back-button { margin-bottom: 15px; }
     #view-game-play #game-title { font-size: 2.4rem; margin-bottom: 15px; color: var(--secondary-color); word-break: break-all; }
-    #game-iframe-container {
+     #game-iframe-container {
             position: relative;
-            /* width: 100%; */ /* Remove or comment out this line */
-            /* height: 60vh; */ /* Remove or comment out this line */
+            /* width: 300px; */   /* Remove fixed width */
+            /* height: 500px; */  /* Remove fixed height */
 
-            /* --- Add these lines --- */
-            width: 300px;   /* Set width to match the game's canvas */
-            height: 500px;  /* Set height to match the game's canvas */
-            margin: 0 auto 15px auto; /* Center the container horizontally and add bottom margin */
-            max-width: 100%; /* Prevent overflow on very narrow screens */
-            /* --- End Add --- */
+            /* --- Use responsive width + aspect ratio --- */
+            width: 90%;         /* Allow container to use most of the available width */
+            max-width: 450px;   /* But limit maximum width (adjust as desired) */
+            aspect-ratio: 3 / 5; /* Maintain a 3:5 aspect ratio (like 300x500) */
+                                /* Height will adjust automatically based on width and aspect ratio */
+            margin: 15px auto;    /* Center horizontally (auto margins), add vertical margin */
+            /* --- End Changes --- */
 
             background-color: #000; /* Keep existing styles */
             border: 4px solid var(--border-color); /* Keep existing styles */
+            overflow: hidden; /* Hide potential minor overflow due to borders/rounding */
         }
     #game-iframe {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; background-color: #000;
@@ -311,6 +313,14 @@
             <button id="download-button" class="requires-login hidden" disabled>Download</button>
             <button id="report-button" class="requires-login hidden" disabled>Report</button>
           </div>
+          <div id="game-actions">
+                        <button id="like-button" class="requires-login hidden" disabled><span class="sr-only">Like status: </span>Like</button>
+                        <span>Likes: <span id="like-count">0</span></span>
+                        <button id="download-button" class="requires-login hidden" disabled>Download</button>
+                        <button id="report-button" class="requires-login hidden" disabled>Report</button>
+                        <button id="fullscreen-button" class="requires-login hidden" disabled>Fullscreen</button>
+           </div>
+
         </div>
 
         <!-- Upload Form -->
@@ -576,6 +586,53 @@
       window.scrollTo(0, 0);
     }
 
+        /**
+         * Toggles fullscreen mode for the game iframe.
+         */
+        function toggleFullScreen() {
+            const iframe = document.getElementById('game-iframe');
+            if (!iframe) {
+                console.error("Cannot enter fullscreen: iframe not found.");
+                return;
+            }
+
+            // Check if we are currently in fullscreen
+            const isInFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+
+            if (!isInFullscreen) {
+                // --- Enter Fullscreen ---
+                console.log("Requesting fullscreen for iframe...");
+                if (iframe.requestFullscreen) {
+                    iframe.requestFullscreen().catch(err => console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`));
+                } else if (iframe.mozRequestFullScreen) { /* Firefox */
+                    iframe.mozRequestFullScreen();
+                } else if (iframe.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+                    iframe.webkitRequestFullscreen();
+                } else if (iframe.msRequestFullscreen) { /* IE/Edge */
+                    iframe.msRequestFullscreen();
+                }
+                 // Optional: Change button text after entering (might need event listener for reliability)
+                 // const fsButton = document.getElementById('fullscreen-button');
+                 // if(fsButton) fsButton.textContent = 'Exit Fullscreen';
+            } else {
+                 // --- Exit Fullscreen ---
+                 console.log("Exiting fullscreen...");
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.mozCancelFullScreen) { /* Firefox */
+                    document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { /* IE/Edge */
+                    document.msExitFullscreen();
+                }
+                 // Optional: Change button text back after exiting
+                 // const fsButton = document.getElementById('fullscreen-button');
+                 // if(fsButton) fsButton.textContent = 'Fullscreen';
+            }
+        }
+
+
     function playRandomGame() {
       if (!window.games || window.games.length === 0) {
         showMessage("Games haven't loaded yet. Please wait or browse first.", true);
@@ -727,23 +784,41 @@
       }
     }
 
-    function updateUIBasedOnAuth() {
-      if (currentUser) {
-        loginLink.classList.add('hidden');
-        registerLink.classList.add('hidden');
-        requiresLoginElements.forEach(el => el.classList.remove('hidden'));
-        if (likeButton) likeButton.disabled = false;
-        if (downloadButton) downloadButton.disabled = false;
-        if (reportButton) reportButton.disabled = false;
-      } else {
-        loginLink.classList.remove('hidden');
-        registerLink.classList.remove('hidden');
-        requiresLoginElements.forEach(el => el.classList.add('hidden'));
-        if (likeButton) likeButton.disabled = true;
-        if (downloadButton) downloadButton.disabled = true;
-        if (reportButton) reportButton.disabled = true;
-      }
-    }
+            /**
+         * Updates UI elements based on whether a user is logged in.
+         */
+        function updateUIBasedOnAuth() {
+            console.log("Updating UI for auth state:", currentUser ? currentUser.email : 'Logged out');
+            const isLoggedIn = !!currentUser;
+            const isGameLoaded = !!currentGameData; // Check if game data is loaded
+
+            // Toggle visibility of login/register vs logout/protected elements
+            loginLink?.classList.toggle('hidden', isLoggedIn);
+            registerLink?.classList.toggle('hidden', isLoggedIn);
+            // Ensure requiresLoginElements is defined and accessible
+            if (typeof requiresLoginElements !== 'undefined') {
+                 requiresLoginElements.forEach(el => el.classList.toggle('hidden', !isLoggedIn));
+            }
+
+
+            // Enable/disable action buttons based on login state AND if game is loaded
+            const canPerformGameActions = isLoggedIn && isGameLoaded;
+            const likeBtn = document.getElementById('like-button');
+            const downloadBtn = document.getElementById('download-button');
+            const reportBtn = document.getElementById('report-button');
+            const fullscreenBtn = document.getElementById('fullscreen-button'); // Get fullscreen button
+
+            if(likeBtn) likeBtn.disabled = !canPerformGameActions;
+            if(downloadBtn) downloadBtn.disabled = true; // Revisit download logic if needed for DB content
+            if(reportBtn) reportBtn.disabled = !canPerformGameActions;
+            if(fullscreenBtn) fullscreenBtn.disabled = !isGameLoaded; // Enable if game is loaded, regardless of login? Or require login too? Let's enable if game is loaded.
+
+            // Reset like button state if user logs out while viewing game
+            if (!isLoggedIn && likeBtn) {
+                likeBtn.classList.remove('liked');
+                likeBtn.textContent = 'Like';
+            }
+        }
 
     async function fetchAndRenderGames() {
       console.log("Fetching games...");
@@ -1124,6 +1199,13 @@
     }
 
     function setupEventListeners() {
+	const fullscreenButton = document.getElementById('fullscreen-button');
+        if (fullscreenButton) {
+            fullscreenButton.addEventListener('click', toggleFullScreen);
+        } else {
+            // This might log an error on initial load before the view is shown, which is okay.
+            console.warn("setupEventListeners: fullscreenButton not found initially.");
+        }
       if (navLinksContainer) {
         navLinksContainer.addEventListener('click', (e) => {
           const target = e.target.closest('a[data-view], button[data-view], a[data-modal], button[data-modal]');
