@@ -221,6 +221,56 @@
       button { padding: 8px 10px; }
       #view-game-play #game-title { font-size: 2rem; }
     }
+        /* --- Add this media query at the end of your <style> section --- */
+
+        @media (max-width: 768px) { /* Apply on tablet size and below */
+            #game-iframe-container {
+                /* Reduce height significantly on smaller screens */
+                /* Use vh (viewport height) for better adaptability */
+                height: 55vh;
+                /* Keep width setting from previous rule or adjust if needed */
+                /* width: 450px; */ /* Keep fixed width or make responsive? */
+                /* Let's make width responsive here too */
+                width: 95%; /* Use percentage width */
+                max-width: 450px; /* Still limit max width */
+                /* Aspect ratio might fight with vh height, remove it here */
+                /* aspect-ratio: 3 / 5; */
+            }
+
+            /* Optional: Reduce font size slightly in game details on mobile */
+            #game-details p {
+                font-size: 1.2rem; /* Slightly smaller text */
+                margin-bottom: 8px;
+            }
+
+             /* Ensure buttons wrap nicely if needed */
+             #game-actions {
+                 display: flex;
+                 flex-wrap: wrap; /* Allow buttons to wrap */
+                 gap: 10px; /* Add gap between wrapped buttons */
+                 justify-content: center; /* Center buttons */
+             }
+             #game-actions button {
+                 margin-right: 0; /* Remove default right margin if wrapping */
+             }
+        }
+
+        @media (max-width: 480px) { /* Apply on phone size and below */
+             #game-iframe-container {
+                 height: 50vh; /* Even shorter on small phones */
+                 width: 100%; /* Allow full width on small phones */
+                 max-width: none; /* Remove max-width constraint */
+             }
+             #game-details p {
+                 font-size: 1.1rem;
+             }
+             #game-actions span { /* Likes count text */
+                display: block; /* Make likes count take full width if needed */
+                width: 100%;
+                text-align: center;
+                margin-bottom: 5px;
+             }
+        }
   </style>
 </head>
 <body>
