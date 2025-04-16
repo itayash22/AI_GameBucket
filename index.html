@@ -271,6 +271,48 @@
                 margin-bottom: 5px;
              }
         }
+
+        /* --- Add CSS for Remix Button --- */
+        #remix-button {
+            /* Make it stand out slightly */
+            background-color: var(--secondary-color); /* Green background */
+            color: var(--bg-color); /* Dark text */
+            box-shadow: 3px 3px 0px var(--accent-color); /* Magenta shadow */
+            animation: flash 2s infinite alternate; /* Apply flashing animation */
+            margin-left: 10px; /* Space it out */
+        }
+
+        #remix-button:hover {
+            /* Adjust hover effect if needed */
+            transform: translate(1px, 1px);
+            box-shadow: 2px 2px 0px var(--accent-color);
+        }
+
+        #remix-button:disabled {
+            /* Ensure disabled state looks distinct */
+            background-color: #555;
+            border-color: #777;
+            color: #aaa;
+            box-shadow: none;
+            animation: none; /* Stop flashing when disabled */
+        }
+
+        /* Flashing Animation */
+        @keyframes flash {
+            0% {
+                opacity: 1;
+                box-shadow: 3px 3px 0px var(--accent-color);
+            }
+            50% {
+                opacity: 0.7;
+                box-shadow: 1px 1px 0px var(--accent-color);
+            }
+            100% {
+                opacity: 1;
+                box-shadow: 3px 3px 0px var(--accent-color);
+            }
+        }
+
   </style>
 </head>
 <body>
@@ -333,13 +375,18 @@
         </div>
 
         <!-- How To View -->
-        <div id="view-how-to" class="view">
+                <div id="view-how-to" class="view">
           <button id="howto-back-button">&lt; Back</button>
           <h2>How To Use Vibe Code Games</h2>
-          <div class="explanation" style="margin-top: 15px; line-height: 1.6;">
-            <p>Vibe coding means building your entire game in a single HTML file. To get started, write a prompt that tells your AI: “Put all the HTML, CSS, and JavaScript on one file – no external files allowed.” Keep it simple and self-contained for quick iteration and testing.</p>
+          <div class="explanation" style="margin-top: 15px; line-height: 1.8;">
+            <p>Vibe coding means building your entire game in a single HTML file. This makes sharing and remixing easy!</p>
+            <p>To get started creating your own, write a prompt for an AI assistant like <a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color);">Google Gemini</a> or <a href="https://chat.openai.com/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color);">ChatGPT</a>.</p>
+            <p>Tell the AI: <strong style="color: var(--secondary-color);">“Create a simple [type of game, e.g., snake] game. Put all the HTML, CSS, and JavaScript in one single file – no external files allowed.”</strong></p>
+            <p>Keep your initial request simple and self-contained for quicker results and easier testing. You can always ask the AI to add more features later!</p>
+            <p>Check out the "Remix" button on game pages for ideas on modifying existing games.</p>
           </div>
         </div>
+
 
         <!-- Game Play View -->
         <div id="view-game-play" class="view">
@@ -361,13 +408,15 @@
             <p>Description:</p>
             <p id="game-description">...</p>
           </div>
-                    <div id="game-actions">
-                        <button id="like-button" class="requires-login hidden" disabled><span class="sr-only">Like status: </span>Like</button>
-                        <span>Likes: <span id="like-count">0</span></span>
-                        <button id="download-button" class="requires-login hidden" disabled>Download</button>
-                        <button id="report-button" class="requires-login hidden" disabled>Report</button>
-                        <button id="fullscreen-button" class="requires-login hidden" disabled>Fullscreen</button>
-           </div>
+                              <div id="game-actions">
+              <button id="like-button" class="requires-login hidden" disabled><span class="sr-only">Like status: </span>Like</button>
+              <span>Likes: <span id="like-count">0</span></span>
+              <button id="download-button" class="requires-login hidden" disabled>Download</button>
+              <button id="report-button" class="requires-login hidden" disabled>Report</button>
+              <button id="fullscreen-button" class="requires-login hidden" disabled>Fullscreen</button>
+              <button id="remix-button" class="requires-login hidden" disabled>Remix</button>
+          </div>
+
 
         </div>
 
@@ -553,6 +602,40 @@
       <div class="modal-body" id="message-text"></div>
     </div>
   </div>
+
+    <div id="modal-remix" class="modal">
+        <div class="modal-content">
+           <button class="modal-close" data-modal="remix">&times;</button>
+           <h2>Remix This Game!</h2>
+           <div class="modal-body" style="text-align: left; font-size: 1.3rem; max-height: 65vh; overflow-y: auto; padding-right: 15px; line-height: 1.7;">
+               <p>Want to make this game flashier, change the rules, or add features?</p>
+               <p>You can easily remix it using AI!</p>
+               <ol style="margin: 15px 0 15px 20px; list-style: decimal;">
+                   <li style="margin-bottom: 12px;">
+                       Download the game's code:
+                       <button id="remix-modal-download-button" style="margin-left: 5px; padding: 4px 8px; font-size: 1.1rem;">Download Code</button>
+                   </li>
+                   <li style="margin-bottom: 12px;">
+                       Open an AI assistant like:
+                       <ul style="margin-top: 5px; margin-left: 15px; list-style: square;">
+                           <li><a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color);">Google Gemini</a> (Free tier available)</li>
+                           <li><a href="https://chat.openai.com/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-color);">ChatGPT</a> (Free tier available)</li>
+                       </ul>
+                   </li>
+                   <li style="margin-bottom: 12px;">
+                       Paste the entire game code into the AI chat.
+                   </li>
+                   <li style="margin-bottom: 12px;">
+                       Tell the AI what changes you want. Use a prompt like this:
+                       <pre style="background-color: var(--input-bg); border: 1px solid var(--border-color); padding: 10px; margin-top: 8px; font-size: 1.1rem; white-space: pre-wrap; word-wrap: break-word; color: #eee; line-height: 1.5;">Here is the code for a game doing [briefly describe current game]. I want you to edit it so that [describe your desired change or new feature]. Make sure you keep all the code, including HTML, CSS, and JavaScript, in a single file response.</pre>
+                   </li>
+                   <li>Upload your remixed version back to VibeGaming!</li>
+               </ol>
+               <p style="margin-top: 15px; font-size: 1.1rem; text-align: center;">Happy Remixing!</p>
+           </div>
+        </div>
+    </div>
+    
 
   <script type="module">
     // --- Supabase Configuration ---
@@ -835,38 +918,47 @@
             /**
          * Updates UI elements based on whether a user is logged in.
          */
-        function updateUIBasedOnAuth() {
-            console.log("Updating UI for auth state:", currentUser ? currentUser.email : 'Logged out');
-            const isLoggedIn = !!currentUser;
-            const isGameLoaded = !!currentGameData; // Check if game data is loaded
+            /**
+     * Updates UI elements based on whether a user is logged in.
+     */
+    function updateUIBasedOnAuth() {
+        console.log("Updating UI for auth state:", currentUser ? currentUser.email : 'Logged out');
+        const isLoggedIn = !!currentUser;
+        const isGameLoaded = !!currentGameData; // Check if game data is loaded
 
-            // Toggle visibility of login/register vs logout/protected elements
-            loginLink?.classList.toggle('hidden', isLoggedIn);
-            registerLink?.classList.toggle('hidden', isLoggedIn);
-            // Ensure requiresLoginElements is defined and accessible
-            if (typeof requiresLoginElements !== 'undefined') {
-                 requiresLoginElements.forEach(el => el.classList.toggle('hidden', !isLoggedIn));
-            }
-
-
-            // Enable/disable action buttons based on login state AND if game is loaded
-            const canPerformGameActions = isLoggedIn && isGameLoaded;
-            const likeBtn = document.getElementById('like-button');
-            const downloadBtn = document.getElementById('download-button');
-            const reportBtn = document.getElementById('report-button');
-            const fullscreenBtn = document.getElementById('fullscreen-button'); // Get fullscreen button
-
-            if(likeBtn) likeBtn.disabled = !canPerformGameActions;
-            if(downloadBtn) downloadBtn.disabled = !canPerformGameActions;
-            if(reportBtn) reportBtn.disabled = !canPerformGameActions;
-            if(fullscreenBtn) fullscreenBtn.disabled = !isGameLoaded; // Enable if game is loaded, regardless of login? Or require login too? Let's enable if game is loaded.
-
-            // Reset like button state if user logs out while viewing game
-            if (!isLoggedIn && likeBtn) {
-                likeBtn.classList.remove('liked');
-                likeBtn.textContent = 'Like';
-            }
+        // Toggle visibility of login/register vs logout/protected elements
+        loginLink?.classList.toggle('hidden', isLoggedIn);
+        registerLink?.classList.toggle('hidden', isLoggedIn);
+        if (typeof requiresLoginElements !== 'undefined' && requiresLoginElements) {
+             // This correctly targets elements with class 'requires-login' like buttons and nav links
+             requiresLoginElements.forEach(el => el.classList.toggle('hidden', !isLoggedIn));
         }
+
+        // Enable/disable action buttons based on login state AND if game is loaded
+        // Note: requiresLoginElements already hides these if not logged in,
+        // but we also disable based on game loaded state.
+        const canPerformGameActions = isLoggedIn && isGameLoaded;
+
+        // Get references to action buttons
+        const likeBtn = document.getElementById('like-button');
+        const downloadBtn = document.getElementById('download-button');
+        const reportBtn = document.getElementById('report-button');
+        const fullscreenBtn = document.getElementById('fullscreen-button');
+        const remixBtn = document.getElementById('remix-button'); // Get remix button
+
+        // Disable based on game loaded state (and implicitly login via requires-login class)
+        if(likeBtn) likeBtn.disabled = !canPerformGameActions;
+        if(downloadBtn) downloadBtn.disabled = !canPerformGameActions;
+        if(reportBtn) reportBtn.disabled = !canPerformGameActions;
+        if(remixBtn) remixBtn.disabled = !canPerformGameActions; // Add this line
+        if(fullscreenBtn) fullscreenBtn.disabled = !isGameLoaded; // Fullscreen only needs game loaded
+
+        // Reset like button state if user logs out while viewing game
+        if (!isLoggedIn && likeBtn) {
+            likeBtn.classList.remove('liked');
+            likeBtn.textContent = 'Like';
+        }
+    }
 
     async function fetchAndRenderGames() {
       console.log("Fetching games...");
@@ -1363,6 +1455,41 @@
           }, { once: true });
         }
       }
+// Listener for the main Remix Button (opens the modal)
+        const remixButton = document.getElementById('remix-button');
+        if (remixButton) {
+            remixButton.addEventListener('click', () => {
+                // Check if game data is loaded before showing modal
+                if (currentGameData) {
+                    showModal('remix');
+                } else {
+                    // Should ideally not happen if button is disabled correctly, but good fallback
+                    showMessage("Please load a game first to remix it.", true);
+                }
+            });
+        } else {
+            console.warn("setupEventListeners: remixButton not found initially.");
+        }
+
+        // Listener for the Download button INSIDE the Remix modal
+        // Use event delegation on the modal itself for simplicity
+        const remixModal = document.getElementById('modal-remix');
+        if (remixModal) {
+            remixModal.addEventListener('click', (e) => {
+                // Check if the clicked element is the download button inside the remix modal
+                // Ensure the button ID matches the one in the modal HTML ('remix-modal-download-button')
+                if (e.target && e.target.id === 'remix-modal-download-button') {
+                    console.log("Remix modal download button clicked");
+                    // Trigger the existing handleDownload function, which uses currentGameData
+                    handleDownload();
+                    // Optionally close the modal after download is initiated
+                    // hideModal('remix');
+                }
+            });
+        } else {
+             console.error("setupEventListeners: Remix modal element not found for delegation.");
+        }
+
       const howToBackButton = document.getElementById('howto-back-button');
       if (howToBackButton) {
         howToBackButton.addEventListener('click', () => {
